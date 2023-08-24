@@ -34,24 +34,24 @@ option dns_metric '20'
 My resolv.conf file (/tmp/resolv.conf.d/resolv.conf.auto) will show those and those are the ones which DNSMasq is using:  
 root@DL-WRX36:~# cat /tmp/resolv.conf.d/resolv.conf.auto  
 ```
-\# Interface wan6  
-\# Interface wan  
+# Interface wan6  
+# Interface wan  
 nameserver 9.9.9.9  
 nameserver 1.0.0.1
 ```
 When I activate my WG interface with DNS server and also weight 20, then tat will be placed at the bottom of the file. By specifying a lesser weight than the other DNS servers it will be placed at the top of the file:
 Weight 20 of WG (same as WAN)  
 ```
-\# Interface wan6  
-\# Interface wan  
+# Interface wan6  
+# Interface wan  
 nameserver 9.9.9.9  
 nameserver 1.0.0.1  
-\# Interface wgoraclecloud  
+# Interface wgoraclecloud  
 nameserver 149.112.112.112
 Weight 10 of WG the WG DNS server is now on top  
-\# Interface wgoraclecloud  
+# Interface wgoraclecloud  
 nameserver 149.112.112.112  
-\# Interface wan  
+# Interface wan  
 nameserver 9.9.9.9  
 nameserver 1.0.0.1
 ```
