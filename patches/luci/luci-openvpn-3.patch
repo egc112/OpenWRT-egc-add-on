@@ -1,0 +1,45 @@
+diff --git a/applications/luci-app-openvpn/luasrc/model/cbi/openvpn-advanced.lua b/applications/luci-app-openvpn/luasrc/model/cbi/openvpn-advanced.lua
+index 03ce38e9d2..e0a046888b 100644
+--- a/applications/luci-app-openvpn/luasrc/model/cbi/openvpn-advanced.lua
++++ b/applications/luci-app-openvpn/luasrc/model/cbi/openvpn-advanced.lua
+@@ -658,8 +658,12 @@ local knownParams = {
+ 			translate("Certificate authority") },
+ 		{ FileUpload,
+ 			"dh",
+-			"/etc/easy-rsa/keys/dh1024.pem",
+-			translate("Diffie-Hellman parameters") },
++			"none",
++			translate("Diffie-Hellman parameters, use none for ecdh curves") },
++		{ ListValue,
++			"ecdh_curve",
++			{ "secp224r1", "secp256k1", "secp384r1", "secp521r1", "prime192v1", "prime192v2", "prime192v3", "prime239v1", "prime239v2", "prime239v3", "prime256v1" },
++			translate("Set Diffie Helmann (dh) elliptical curve (optional, when dh none is chosen)") },
+ 		{ FileUpload,
+ 			"cert",
+ 			"/etc/easy-rsa/keys/some-client.crt",
+@@ -798,6 +802,10 @@ local knownParams = {
+ 			"ncp_ciphers",
+ 			"AES-256-GCM:AES-128-GCM",
+ 			translate("Restrict the allowed ciphers to be negotiated") },
++		{ Value,
++			"data_ciphers",
++			"CHACHA20-POLY1305:AES-256-GCM:AES-128-GCM::AES-256-CBC",  
++			translate("Restrict the allowed ciphers to be negotiated") },
+ 	} }
+ }
+ 
+diff --git a/applications/luci-app-openvpn/luasrc/model/cbi/openvpn-basic.lua b/applications/luci-app-openvpn/luasrc/model/cbi/openvpn-basic.lua
+index 9265cd61cc..b9fcaf4969 100644
+--- a/applications/luci-app-openvpn/luasrc/model/cbi/openvpn-basic.lua
++++ b/applications/luci-app-openvpn/luasrc/model/cbi/openvpn-basic.lua
+@@ -77,8 +77,8 @@ local basicParams = {
+ 		translate("Certificate authority") },
+ 	{ FileUpload,
+ 		"dh",
+-		"/etc/easy-rsa/keys/dh1024.pem",
+-		translate("Diffie-Hellman parameters") },
++		"none",
++		translate("Diffie-Hellman parameters, use none for ecdh curves") },
+ 	{ FileUpload,
+ 		"cert",
+ 		"/etc/easy-rsa/keys/some-client.crt",
