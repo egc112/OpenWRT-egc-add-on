@@ -1,0 +1,15 @@
+# Copy this patch file to feeds/packages/net/openvpn/patches
+# Will be executed automatically
+diff -u -r -x .DS_Store openvpn-2.5.2.old/src/openvpn/options.h openvpn-2.5.2.new/src/openvpn/options.h
+--- a/src/openvpn/options.h
++++ b/src/openvpn/options.h
+@@ -106,6 +106,9 @@
+     int connect_retry_seconds;
+     int connect_retry_seconds_max;
+     int connect_timeout;
++    int xormethod;
++    const char *xormask;
++    int xormasklen;
+     struct http_proxy_options *http_proxy_options;
+     const char *socks_proxy_server;
+     const char *socks_proxy_port;
