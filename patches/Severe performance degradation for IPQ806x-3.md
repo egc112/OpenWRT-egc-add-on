@@ -11,11 +11,11 @@ In short the introduction of `hrtimer` in
 `drivers/net/ethernet/stmicro/stmmac/stmmac_main.c` and `
 drivers/net/ethernet/stmicro/stmmac/stmmac.h` seems to have introduced a bug
 for the krait cores which started wasting many CPU cycles re-arming the hrtimer.
-
-Commit:  
+See commit:  
 <https://github.com/torvalds/linux/commit/d5a05e69ac6e4c431c380ced2b534c91f7bc3280>
 
-This patch reverts this commit. This patch is a workaround as there could be
+The included patch reverts this commit.  
+This patch is a workaround as there could be
 unwanted side effects, the devs are studying on a proper solution, but in the
 mean time you can try this.
 
