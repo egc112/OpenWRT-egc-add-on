@@ -20,7 +20,7 @@ unwanted side effects, the devs are studying on a proper solution, but in the
 mean time you can try this.
 
 From the Github repo: <https://github.com/egc112/OpenWRT-egc-add-on> download
-the zip file (under the green `Code button`
+the zip file (under the green <span style="color:green"> `<> Code` </span> button)
 
 Extract the content of the patches directory in the zip file to your `patches`
 directory.
