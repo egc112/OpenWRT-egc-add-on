@@ -33,7 +33,7 @@ After you have prepared your build system and are ready to compile, copy the
 patch for the Kernel version you are using to the OpenWRT root directory.
 
 From that directory execute the patch (this is for Kernel 5.15) with:  
-`patch -p1 \< 901-net-stmmac-revert-hrtimer-5.15.patch`
+`patch -p1 < 901-net-stmmac-revert-hrtimer-5.15.patch`
 
 This patch will add the following file to
 `target/linux/ipq806x/patches-5.15/901-net-stmmac-revert-hrtimer.patch`
