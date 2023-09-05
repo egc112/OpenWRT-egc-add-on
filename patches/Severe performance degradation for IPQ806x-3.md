@@ -46,3 +46,4 @@ EA8500 and Netgear R7800.
 
 Both 23.05 Snapshot, basic builds with wireless, Luci, WireGuard and OpenVPN.
 Both tested on my own routers and both are working.
+But I do not guarantee anything.
