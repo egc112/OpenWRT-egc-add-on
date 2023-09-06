@@ -1,0 +1,337 @@
+#!/bin/bash
+
+#NOTE run script IN the shell with . ./start-ddwrt  Note the preceding dot!
+# https://devdojo.com/bobbyiliev/how-to-create-an-interactive-menu-in-bash
+#SETTINGS
+# set -a treat all variables as export
+# OWRT build commands: https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem 
+
+#make symlink
+#ln -sf $(basename "${BASH_SOURCE}") startowrt
+
+set -a
+SRCDIR="/linuxdata/test-7"
+OWRT_BASE="/linuxdata/openwrt"
+KERNEL="not-set"	#either 5.15 for 23.05 or 6.1 for main
+DATE=$(date +%d%m%y)
+
+# Path where the config files are located 
+CONFIG_PATH="/shrd/config.openwrt"
+
+cd $OWRT_BASE
+
+WrongCommand () {
+	#do nothing
+	menu
+}
+
+submenu_clean () {
+echo -ne "
+Choose a cleaning method
+$(ColorYellow '1)') make clean
+$(ColorYellow '2)') make dirclean
+$(ColorYellow '3)') make distclean
+$(ColorYellow '4)') git reset --hard; git clean -dffx .
+$(ColorYellow '5)') git full reset
+$(ColorYellow '0)') Exit
+$(ColorBlue 'Choose an option:') "
+        read a
+        case $a in
+			"1"|"" )
+				echo "You chose make clean"
+				make clean
+				return
+				;;
+			"2" )
+				echo "You chose make dirclean"
+				read -p "Are you sure to clean your local openwrt tree of all changes y/n ? " y_or_n
+				if [ "$y_or_n" = "Y" || "$y_or_n" = "y" ];then
+					echo "Running dirclean: start"
+					make dirclean
+					echo "Running dirclean: done"
+				else
+					echo "ABORT dirclean"
+				fi
+				return
+				;;
+			"3" )
+				echo "You chose make distclean"
+				make distclean
+				return
+				;;
+			"4" )
+				echo "You chose git reset --hard; git clean -dffx ."
+				git reset --hard; git clean -dffx .
+				return
+				;;
+			"5" )
+				echo "You chose git full reset including submodules"
+				#!/bin/bash
+				#Cleans and resets a git repo and its submodules
+				#https://gist.github.com/nicktoumpelis/11214362
+				git reset --hard
+				git submodule sync --recursive
+				git submodule update --init --force --recursive
+				git clean -ffdx
+				git submodule foreach --recursive git clean -ffdx
+				return
+				;;
+			0) return 0 ;;
+			*) echo -e $red"Wrong option."$clear; WrongCommand;;
+        esac
+}
+
+submenu_update () {
+echo -ne "
+Choose update method
+$(ColorYellow '1)') git checkout openwrt-23.05 and feeds update
+$(ColorYellow '2)') git checkout master and feeds update
+$(ColorYellow '3)') ./scripts/feeds update -a && ./scripts/feeds install -a
+$(ColorYellow '4)') git-pull
+$(ColorYellow '0)') Exit
+$(ColorBlue 'Choose an option:') "
+        read a
+        case $a in
+			"1"|"" )
+				echo "git checkout openwrt-23.05"
+				VERSION=23.05
+				git checkout openwrt-23.05
+				git pull
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				return
+				;;
+			"2" )
+				echo "git checkout master "
+				VERSION=main
+				git checkout master
+				git pull
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				return
+				;;
+			"3" )
+				echo "./scripts/feeds update -a && ./scripts/feeds install -a"
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				return
+				;;
+			"4" )
+				echo "git pull"
+				git pull
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				return
+				;;
+			0) return 0 ;;
+			*) echo -e $red"Wrong option."$clear; WrongCommand;;
+        esac
+}
+
+submenu_config () {
+echo -ne "
+Choose a config file to build with
+$(ColorYellow '1)') DL-WRX36 23.05
+$(ColorYellow '2)') EA8500 23.05
+$(ColorYellow '3)') R7800 23.05
+$(ColorYellow '4)') DL-WRX36 Main
+$(ColorYellow '5)') EA8500 Main
+$(ColorYellow '6)') R7800 Main
+$(ColorYellow '0)') Exit
+$(ColorBlue 'Choose an option:') "
+        read a
+        case $a in
+			"1"|"" )
+				echo "You chose DL-WRX36 23.05"
+				MYCONFIG="DL-WRX36-23.05-diffconfig"
+				KERNEL="5.15"
+				cp $CONFIG_PATH/$MYCONFIG $OWRT_BASE/.config
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				make defconfig
+				make menuconfig
+				return
+				;;
+			"2" )
+				echo "You chose EA8500 23.05"
+				MYCONFIG="EA8500-23.05-diffconfig"
+				KERNEL="5.15"
+				cp $CONFIG_PATH/$MYCONFIG $OWRT_BASE/.config
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				make defconfig
+				make menuconfig
+				return
+				;;
+			"3" )
+				echo "You chose R7800 23.05"
+				MYCONFIG="R7800-23.05-diffconfig"
+				KERNEL="5.15"
+				cp $CONFIG_PATH/$MYCONFIG $OWRT_BASE/.config
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				make defconfig
+				make menuconfig
+				return
+				;;
+			"4" )
+				echo "You chose DL-WRX36 Main"
+				MYCONFIG="DL-WRX36-main-diffconfig"
+				KERNEL="6.1"
+				cp $CONFIG_PATH/$MYCONFIG $OWRT_BASE/.config
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				make defconfig
+				make menuconfig
+				return
+				;;
+			"5" )
+				echo "You chose EA8500 Main"
+				MYCONFIG="EA8500-main-diffconfig"
+				KERNEL="6.1"
+				cp $CONFIG_PATH/$MYCONFIG $OWRT_BASE/.config
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				make defconfig
+				make menuconfig
+				return
+				;;
+			"6" )
+				echo "You chose R7800 Main"
+				MYCONFIG="R7800-main-diffconfig"
+				KERNEL="6.1"
+				cp $CONFIG_PATH/$MYCONFIG $OWRT_BASE/.config
+				./scripts/feeds update -a && ./scripts/feeds install -a
+				make defconfig
+				make menuconfig
+				return
+				;;
+			0) return 0 ;;
+			*) echo -e $red"Wrong option."$clear; WrongCommand;;
+        esac
+}
+
+submenu_backup () {
+echo -ne "
+Make backup of current config : [$MYCONFIG]
+$(ColorYellow '1)') Make backup (diffconfig)
+$(ColorYellow '2)') Make backup and set as current config
+$(ColorYellow '0)') Exit
+$(ColorBlue 'Choose an option:') "
+        read a
+        case $a in
+			"1"|"" )
+				echo " Make backup of current config:[$MYCONFIG]"
+				[[ -z "$MYCONFIG" ]] && { echo "No config file set, nothing saved!"; return; }
+				$OWRT_BASE/scripts/diffconfig.sh > $CONFIG_PATH/$MYCONFIG-$DATE
+				echo " Backup of config file written to:[$CONFIG_PATH/$MYCONFIG-$DATE]"
+				return
+				;;
+			"2" )
+				echo "Make backup of current config: [$MYCONFIG] and set as current: [$CONFIG_PATH/$MYCONFIG]"
+				[[ -z "$MYCONFIG" ]] && { echo "No config file set, nothing saved!"; return; }
+				$OWRT_BASE/scripts/diffconfig.sh > $CONFIG_PATH/$MYCONFIG-$DATE
+				echo " Backup of config file written to:[$CONFIG_PATH/$MYCONFIG-$DATE]"
+				rm $CONFIG_PATH/$MYCONFIG
+				cp $CONFIG_PATH/$MYCONFIG-$DATE $CONFIG_PATH/$MYCONFIG
+				echo " Write current config to [$CONFIG_PATH/$MYCONFIG]"
+				return
+				;;
+			0) return 0 ;;
+			*) echo -e $red"Wrong option."$clear; WrongCommand;;
+        esac
+}
+
+
+##
+# Color  Variables
+##
+green='\e[92m'
+blue='\e[96m'
+red='\e[91m'
+yellow='\e[93m'
+clear='\e[0m'
+
+##
+# Color Functions
+##
+
+ColorGreen(){
+	echo -ne $green$1$clear
+}
+ColorBlue(){
+	echo -ne $blue$1$clear
+}
+ColorYellow(){
+	echo -ne $yellow$1$clear
+}
+ColorRed(){
+	echo -ne $red$1$clear
+}
+
+menu(){
+echo -ne "
+Community build start script
+$(ColorGreen '1)') Clean
+$(ColorGreen '2)') Update
+$(ColorGreen '3)') Choose config
+$(ColorGreen '4)') Make backup of config:[$MYCONFIG] 
+$(ColorGreen '7)') Add local patches, Kernel:[$KERNEL]
+$(ColorGreen '8)') Download and Make toolchain:[$MYCONFIG] ; Kernel:[$KERNEL] 
+$(ColorGreen '9)') Build config:[$MYCONFIG] ; Kernel:[$KERNEL] $(ColorGreen '0)') Exit
+$(ColorBlue 'Choose an option:') "
+        read a
+        case $a in
+			"1"|"" )
+				echo "you chose main item 1 clean"
+				submenu_clean
+				export SRCDIR="$SRCDIR"; export DDWRT_BASE="$DDWRT_BASE"
+				menu
+				;;
+			2 )
+				echo "you chose main item 2, update"
+				submenu_update
+				menu
+				;;
+			3 )
+				echo "you chose main item 3, choose config"
+				submenu_config
+				menu
+				;;
+			4 )
+				echo "you chose main item 4, make backup of config for [$MYCONFIG] "
+				submenu_backup
+				menu
+				;;
+			7 )
+				echo "you chose main item 7 apply patches"
+				bash  ~/apply-owrt-patches-5.sh; cd $OWRT_BASE
+				menu
+				;;
+			8 )
+				echo "you chose main item 8, download and Make toolchain [$MYCONFIG] "
+				if [[ -z $MYCONFIG ]]; then
+					echo ""
+					echo -e $red"   Please choose config first!   "$clear
+				else
+					cd $OWRT_BASE
+					make -j $(($(nproc)+1)) download #(-j sets number of CPU's)
+					make clean
+					make -j $(($(nproc)+1)) toolchain/install V=s 2>&1 | tee build.log | grep -i -E "^make.*(error|[12345]...Entering dir)"
+				fi
+				menu
+				;;
+			9 )
+				echo "you chose main item 9, now building for [$MYCONFIG] "
+				if [[ -z $MYCONFIG ]]; then
+					echo ""
+					echo -e $red"   Please choose config first!   "$clear
+				else
+					cd $OWRT_BASE
+					make -j $(($(nproc)+1)) download #(-j sets number of CPU's)
+					make clean
+					make -j $(($(nproc)+1)) toolchain/install V=s 2>&1 | tee build.log | grep -i -E "^make.*(error|[12345]...Entering dir)"
+					make world V=s 2>&1 | tee build.log | grep -i -E "^make.*(error|[12345]...Entering dir)"
+				fi
+				menu
+				;;
+			0 ) return 0 ;;
+			*) echo -e $red"Wrong option."$clear; WrongCommand;;
+        esac
+}
+
+# Call the menu function
+menu
+
+
