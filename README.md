@@ -7,4 +7,4 @@ The hrtimer patches can be found in the [patches](https://github.com/egc112/Open
 You can also find builds for various routers with the HRTimer patch included.   
 Builds are 23.05 snapshot with LuCi, wireless, OpenVPN and WireGuard
 
-
+## [Radio firmware for IPQ807x Dynalink DL-WRX36](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/DL-WRX36)  
