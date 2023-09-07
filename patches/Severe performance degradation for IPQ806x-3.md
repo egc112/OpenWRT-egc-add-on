@@ -53,5 +53,5 @@ Now also patches for IPQ807x and ready made build for DL-WRX36 which runs on my 
 Patch: 
 For K5.15: [905-ipq807x-net-stmmac-revert-hrtimer-5.15.patch](https://github.com/egc112/OpenWRT-egc-add-on/blob/main/patches/root/5.15/905-ipq807x-net-stmmac-revert-hrtimer-5.15.patch)   
 For K 6.1: [905-ipq807x-net-stmmac-revert-hrtimer-6.1.patch](https://github.com/egc112/OpenWRT-egc-add-on/blob/main/patches/root/6.1/905-ipq807x-net-stmmac-revert-hrtimer-6.1.patch)  
-Add patche with as described above
+Add patch as described above.
 
