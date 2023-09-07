@@ -47,11 +47,3 @@ EA8500 and Netgear R7800.
 Both 23.05 Snapshot, basic builds with wireless, Luci, WireGuard and OpenVPN.
 Both tested on my own routers and both are working.
 But I do not guarantee anything.
-
-## Update
-Now also patches for IPQ807x and ready made build for DL-WRX36 which runs on my own router again 23.05 Snapshot with wireless, LuCi , openVPN and WireGuard
-Patch: 
-For K5.15: [905-ipq807x-net-stmmac-revert-hrtimer-5.15.patch](https://github.com/egc112/OpenWRT-egc-add-on/blob/main/patches/root/5.15/905-ipq807x-net-stmmac-revert-hrtimer-5.15.patch)   
-For K 6.1: [905-ipq807x-net-stmmac-revert-hrtimer-6.1.patch](https://github.com/egc112/OpenWRT-egc-add-on/blob/main/patches/root/6.1/905-ipq807x-net-stmmac-revert-hrtimer-6.1.patch)  
-Add patch as described above.
-
