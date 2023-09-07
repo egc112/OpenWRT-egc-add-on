@@ -44,8 +44,8 @@ $(ColorBlue 'Choose an option:') "
 				;;
 			"2" )
 				echo "You chose make dirclean"
-				read -p "Are you sure to clean your local openwrt tree of all changes y/n ? " y_or_n
-				if [ "$y_or_n" = "Y" || "$y_or_n" = "y" ];then
+				read -p "Are you sure to clean your local openwrt tree of all changes y/N ? " y_or_n
+				if [[ "$y_or_n" = "Y" || "$y_or_n" = "y" ]]; then
 					echo "Running dirclean: start"
 					make dirclean
 					echo "Running dirclean: done"
