@@ -8,5 +8,5 @@ root@DL-WRX36:~# dmesg | grep HK
 ```
 For the radio firmware simply replace content of `/lib/firmware/IPQ8074` with e.g. content of the 1835 directory
   
+For upstream Qualcomm repo see: https://github.com/quic/upstream-wifi-fw/tree/main/ath11k-firmware/IPQ8074/hw2.0
 
-### Hrtimer patch
