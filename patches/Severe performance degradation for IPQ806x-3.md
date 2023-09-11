@@ -6,6 +6,7 @@ degradation for IPQ806x Kernel 5.11 and higher:
 <https://github.com/openwrt/openwrt/issues/11676>  
 <https://github.com/openwrt/openwrt/pull/13323>  
 <https://www.spinics.net/lists/netdev/msg931629.html>  
+Patch: https://lore.kernel.org/netdev/20230907-stmmac-coaloff-v2-1-38ccfac548b9@axis.com/ 
 
 In short the introduction of `hrtimer` in
 `drivers/net/ethernet/stmicro/stmmac/stmmac_main.c` and `
