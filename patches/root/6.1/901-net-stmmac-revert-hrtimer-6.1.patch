@@ -11,9 +11,9 @@ Signed-off-by: Oskari Lemmela <oskari@lemmela.net>
 ---
  .../901-net-stmmac-revert-hrtimer.patch       | 156 ++++++++++++++++++
  1 file changed, 156 insertions(+)
- create mode 100644 target/linux/ipq806x/patches-5.15/901-net-stmmac-revert-hrtimer.patch
+ create mode 100644 target/linux/ipq806x/patches-6.1/901-net-stmmac-revert-hrtimer.patch
 
-diff --git a/target/linux/ipq806x/patches-5.15/901-net-stmmac-revert-hrtimer.patch b/target/linux/ipq806x/patches-5.15/901-net-stmmac-revert-hrtimer.patch
+diff --git a/target/linux/ipq806x/patches-6.1/901-net-stmmac-revert-hrtimer.patch b/target/linux/ipq806x/patches-6.1/901-net-stmmac-revert-hrtimer.patch
 new file mode 100644
 index 000000000000..f5dc2b880ca8
 --- /dev/null
