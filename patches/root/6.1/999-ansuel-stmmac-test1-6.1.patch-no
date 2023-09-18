@@ -1,0 +1,56 @@
+diff --git a/target/linux/ipq806x/patches-6.1/999-stmmac-test.patch b/target/linux/ipq806x/patches-6.1/999-stmmac-test.patch
+new file mode 100755
+index 0000000000..cb5b3ba104
+--- /dev/null
++++ b/target/linux/ipq806x/patches-6.1/999-stmmac-test.patch
+@@ -0,0 +1,50 @@
++diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++index fa07b0d50b46..cf76b05bb8e0 100644
++--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++@@ -2701,11 +2701,18 @@ static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue)
++ 			mod_timer(&priv->eee_ctrl_timer, STMMAC_LPI_T(priv->tx_lpi_timer));
++ 	}
++ 
++-	/* We still have pending packets, let's call for a new scheduling */
++-	if (tx_q->dirty_tx != tx_q->cur_tx)
++-		hrtimer_start(&tx_q->txtimer,
++-			      STMMAC_COAL_TIMER(priv->tx_coal_timer[queue]),
++-			      HRTIMER_MODE_REL);
+++
+++
+++	/* We still have pending packets, let's call for a new scheduling.
+++	 * Skip timer if we expect napi to poll again for xdp.
+++	 * Cancel timer if napi will be retriggered.
+++	 */
+++	if (tx_q->dirty_tx != tx_q->cur_tx && xmits != budget) {
+++		/* Trigger timer only if not already queued */
+++		if (!hrtimer_is_queued(&tx_q->txtimer))
+++			stmmac_tx_timer_arm(priv, queue);
+++	} else
+++		hrtimer_cancel(&tx_q->txtimer);
++ 
++ 	__netif_tx_unlock_bh(netdev_get_tx_queue(priv->dev, queue));
++ 
++@@ -4317,7 +4324,9 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
++ 	netdev_tx_sent_queue(netdev_get_tx_queue(dev, queue), skb->len);
++ 
++ 	stmmac_flush_tx_descriptors(priv, queue);
++-	stmmac_tx_timer_arm(priv, queue);
+++	/* Don't arm timer if we coalesce, will be handled by napi on interrupt */
+++	if (!set_ic)
+++		stmmac_tx_timer_arm(priv, queue);
++ 
++ 	return NETDEV_TX_OK;
++ 
++@@ -4560,7 +4569,9 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
++ 	stmmac_enable_dma_transmission(priv, priv->ioaddr);
++ 
++ 	stmmac_flush_tx_descriptors(priv, queue);
++-	stmmac_tx_timer_arm(priv, queue);
+++	/* Don't arm timer if we coalesce, will be handled by napi on interrupt */
+++	if (!set_ic)
+++		stmmac_tx_timer_arm(priv, queue);
++ 
++ 	return NETDEV_TX_OK;
++ 

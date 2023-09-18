@@ -1,0 +1,41 @@
+diff --git a/target/linux/ipq806x/patches-6.1/999-stmmac-test2.patch b/target/linux/ipq806x/patches-6.1/999-stmmac-test2.patch
+new file mode 100755
+index 0000000000..7a44af75c2
+--- /dev/null
++++ b/target/linux/ipq806x/patches-6.1/999-stmmac-test2.patch
+@@ -0,0 +1,35 @@
++diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++index fa07b0d50b46..8e0c7929e695 100644
++--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++@@ -2703,9 +2703,7 @@ static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue)
++ 
++ 	/* We still have pending packets, let's call for a new scheduling */
++ 	if (tx_q->dirty_tx != tx_q->cur_tx)
++-		hrtimer_start(&tx_q->txtimer,
++-			      STMMAC_COAL_TIMER(priv->tx_coal_timer[queue]),
++-			      HRTIMER_MODE_REL);
+++		stmmac_tx_timer_arm(priv, queue);
++ 
++ 	__netif_tx_unlock_bh(netdev_get_tx_queue(priv->dev, queue));
++ 
++@@ -2986,10 +2984,16 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
++ static void stmmac_tx_timer_arm(struct stmmac_priv *priv, u32 queue)
++ {
++ 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
+++	struct stmmac_channel *ch;
+++	struct napi_struct *napi;
++ 
++-	hrtimer_start(&tx_q->txtimer,
++-		      STMMAC_COAL_TIMER(priv->tx_coal_timer[queue]),
++-		      HRTIMER_MODE_REL);
+++	ch = &priv->channel[tx_q->queue_index];
+++	napi = tx_q->xsk_pool ? &ch->rxtx_napi : &ch->tx_napi;
+++
+++	if (unlikely(!test_bit(NAPI_STATE_SCHED, &napi->state)))
+++		hrtimer_start(&tx_q->txtimer,
+++			      STMMAC_COAL_TIMER(priv->tx_coal_timer[queue]),
+++			      HRTIMER_MODE_REL);
++ }
++ 
++ /**
