@@ -60,7 +60,7 @@ Only a bit, strict-order is not very reliable and when testing you will see quer
 Strict-order easily gives up and tries the next DNS servers, there was even a DNSMasq version (2.86?) where it was not working at all.  
 So using DNS weight and strict order is not a reliable way to prevent DNS leaks.  
 There are scripts available on the forum which on ifup of the interface replace the DNS servers in the resolv config file with the ones of the interface so that you exclusively use the correct DNS servers.  
-An example can be found here. This script not only set the DNS servers of the WireGuard interface to use exclusively by DNSMasq but also always routes those via the VPN so that you should never have a DNS leak.  
+An example can be found [here](https://github.com/egc112/OpenWRT-egc-add-on/blob/main/stop-dns-leak/wg-update-resolv-3). This script not only set the DNS servers of the WireGuard interface to use exclusively by DNSMasq but also always routes those via the VPN so that you should never have a DNS leak.  
 The above example was about WireGuard which has its own interface defined, but what about OpenVPN?  
 The OpenVPN clients interface is setup by OpenVPN so you cannot define a DNS server as far as I know. But an OpenVPN server e.g. from your provider can (and often does) push a DNS server to use to your client.  
 Unfortunately OpenWRT does not seem do anything by default with these pushed DNS servers.  
