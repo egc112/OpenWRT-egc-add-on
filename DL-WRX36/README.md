@@ -13,5 +13,6 @@ For the radio firmware simply replace content of `/lib/firmware/IPQ8074` with e.
   
 For upstream Qualcomm repo see: https://github.com/quic/upstream-wifi-fw/tree/main/ath11k-firmware/IPQ8074/hw2.0
 
-KVALO's grepo: https://github.com/kvalo/ath11k-firmware/tree/master/IPQ8074
+KVALO's grepo: https://github.com/kvalo/ath11k-firmware/tree/master/IPQ8074  
 
+Official Linux firmware: https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/  
