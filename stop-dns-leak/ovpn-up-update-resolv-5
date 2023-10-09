@@ -19,7 +19,7 @@
 # https://openwrt.org/docs/guide-user/services/vpn/openvpn/extras#network_interface 
 
 #set -x
-(
+#(
 VPN_RESOLVF="/tmp/resolv_conf.vpn"
 DEF_RESOLVF="/tmp/default_resolv_ovpn"
 [[ "${-/x/}" != "$-" ]] && env > /tmp/vpn_env_var_up #for debug to get all environment variables
@@ -81,4 +81,4 @@ down)
 	;;
 esac
 exit 0
-) 2>&1 | logger -t $(basename $0)[$$] &
+#) 2>&1 | logger -t $(basename $0)[$$] &
