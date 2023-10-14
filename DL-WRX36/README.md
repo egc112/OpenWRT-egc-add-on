@@ -2,7 +2,9 @@
 
 ### Radio Firmware
 
-This repo conains several 2.9.0 firmwares for IPQ8074 e.g. Dynalink DL-WRX36  
+This repo conains several 2.9.0 firmwares for IPQ8074 e.g. Dynalink DL-WRX36
+
+There is also older 2.7 firmware available both from the kvalo (CT firmware) and official qualcomm sources
 
 You can view your current firmware with: `dmesg | grep HK`
 ```
