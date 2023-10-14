@@ -16,3 +16,5 @@ For upstream Qualcomm repo see: https://github.com/quic/upstream-wifi-fw/tree/ma
 KVALO's repo: https://github.com/kvalo/ath11k-firmware/tree/master/IPQ8074  
 
 Official Linux firmware: https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/  
+
+To download a folder from GitHub, navigate to your desired repository, select the folder you want to download from GitHub, copy the URL, navigate to https://download-directory.github.io/ and paste the URL into the text box, and hit enter.
