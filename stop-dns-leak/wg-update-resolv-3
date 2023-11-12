@@ -10,6 +10,7 @@
 #  On ifup of the WG interface the resolv.conf file will be replaced with a file containing only the WG DNS server(s)
 #  All WireGuard DNS servers will be explicitly routed via the tunnel usefull when using PBR
 #  On ifdown the old resolv.conf file is restored and routes deleted
+#  This is not compatible with the use of encrypted DNS or the setting of `Use Custom DNS servers`  (server=)
 
 # user settings, set name of the WG interface
 WG_INTERFACE="set-name-of-wg-interface"
