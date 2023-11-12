@@ -15,6 +15,7 @@
 #  Sets route for the DNS servers via the tunnel, necessary when using PBR
 #  To stop getting the pushed DNS servers by the OpenVPN server add to conf file: pull-filter ignore "dhcp-option DNS"
 #  To set your own DNS servers to use when the tunnel is up add in the opencpn conf file: dhcp-option DNS ip-address-DNS-server
+#  This is not compatible with the use of encrypted DNS or the setting of `Use Custom DNS servers`  (server=)
 
 # https://openwrt.org/docs/guide-user/services/vpn/openvpn/extras#network_interface 
 
