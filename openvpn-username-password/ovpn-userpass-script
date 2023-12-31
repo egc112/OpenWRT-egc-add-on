@@ -37,7 +37,7 @@
 #
 # Example of /etc/openvpn/cl-userpass:
 #  Hans      #username
-#  Worst!2   #password
+#  Worst@2   #password
 
 #Set the path and file name of the file with username password
 userpassfile="/etc/openvpn/userpass"
