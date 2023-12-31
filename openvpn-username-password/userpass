@@ -1,0 +1,6 @@
+# Example file with username password for the OpenVPN server
+# For each client username and password on the same line separate with a space
+# username and password can *not* contain spaces but can only consist of alphanumeric, underbar ('_'), dash ('-'), dot ('.'), or at ('@')
+Hans Worst@2
+Klaas Knot
+

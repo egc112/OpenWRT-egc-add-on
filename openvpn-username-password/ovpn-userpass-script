@@ -1,0 +1,47 @@
+#!/bin/sh
+# file-name: ovpn-userpass-script
+# version 31-12-23
+# author: egc
+# function: standlone script to incorporate username/password functionality in OpenVPN Server
+#
+#INSTALLATION
+#SERVER side
+# Place this script file in /etc/openvpn/
+# Make executable: chmod +x /etc/openvpn/ovpn-userpass-script
+#
+# In the OpenVPN Server config add:
+#  verify-client-cert none # or 'optional' or 'require' if you want username password AND cert/key
+#  auth-user-pass-verify /etc/openvpn/ovpn-userpass-script via-env
+#  script-security 3
+#  username-as-common-name
+##
+# Create a file with username and password e.g. 'userpass' which is used to validate username and password
+# For each client a username and password on the same line separated by a space, *no* spaces in username or password allowed!
+# username and password can only consist of alphanumeric, underbar ('_'), dash ('-'), dot ('.'), or at ('@') characters.
+# Example of /etc/openvpn/userpass:
+#  Hans Worst@2
+#  John Doe24
+#
+###
+###
+#CLIENT side
+# In the OpenVPN Client config add:
+# For OpenVPN 2.6 inline in config file:
+#  <auth-user-pass>
+#  username
+#  password
+#  </auth-user-pass>
+#
+# For OpenVPN 2.5 add in Client config: path and filename to text file (e.g.: /etc/openvpn/cl-userpass) with username and password both on separate line:
+#  auth-user-pass /etc/openvpn/cl-userpass
+#
+# Example of /etc/openvpn/cl-userpass:
+#  Hans      #username
+#  Worst!2   #password
+
+#Set the path and file name of the file with username password
+userpassfile="/etc/openvpn/userpass"
+
+pass="$(awk -v usr=$username '$1==usr { print $2 }' $userpassfile)"
+[[ -n $pass && $pass == $password ]] && { logger "openvpn Auth OK, $username; ${password:0:3}*"; exit 0; }
+exit 1
