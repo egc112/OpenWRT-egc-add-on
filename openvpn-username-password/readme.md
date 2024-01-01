@@ -11,7 +11,7 @@ Place this script file in `/etc/openvpn/`
 Make executable: `chmod +x /etc/openvpn/ovpn-userpass-script`  
 
 In the OpenVPN Server config add:  
- `verify-client-cert none` # or 'optional' or 'require' if you want username password AND cert/key  
+ `verify-client-cert none` # or `optional` or `require` if you want username password AND cert/key  
  `auth-user-pass-verify /etc/openvpn/ovpn-userpass-script via-env`  
  `script-security 3`  
  `username-as-common-name`  
