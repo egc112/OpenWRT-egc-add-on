@@ -5,8 +5,8 @@ version 31-12-23
 author: egc  
 function: standlone script to incorporate username/password functionality in OpenVPN Server  
 
-##INSTALLATION##  
-#SERVER side#  
+## INSTALLATION ##  
+### SERVER side ###  
 Place this script file in `/etc/openvpn/`  
 Make executable: `chmod +x /etc/openvpn/ovpn-userpass-script`  
 
@@ -23,7 +23,7 @@ Example of `/etc/openvpn/userpass`:
  `Hans Worst@2`  
  `John Doe24`  
 
-#CLIENT side#  
+## CLIENT side ##  
 In the OpenVPN Client config add:  
 For OpenVPN 2.6 inline in config file:  
  `<auth-user-pass>`  
@@ -37,7 +37,7 @@ Example of /etc/openvpn/cl-userpass:
  `Hans`  
  `Worst@2`  
 
-##PATCHES##  
+## PATCHES ##  
 Unfortunately while making this I discovered a bug in OpenVPN.   
 `script-security` is always set to `2` when using the installation with the config file, because `script-security` is not parsed from the config file  
 With `script-security 2` the password is not used/visible in the environment, script-security has to be set to 3.  
