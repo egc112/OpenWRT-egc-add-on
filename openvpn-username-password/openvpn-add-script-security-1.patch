@@ -1,0 +1,12 @@
+diff --git a/net/openvpn/files/openvpn.init b/net/openvpn/files/openvpn.init
+index 6eb3051..8b7a3d8 100644
+--- a/net/openvpn/files/openvpn.init
++++ b/net/openvpn/files/openvpn.init
+@@ -191,6 +191,7 @@ start_instance() {
+ 
+ 	if [ ! -z "$config" ]; then
+ 		append UCI_STARTED "$config" "$LIST_SEP"
++		[ -n "$script_security" ] || get_openvpn_option "$config" script_security script-security
+ 		[ -n "$up" ] || get_openvpn_option "$config" up up
+ 		[ -n "$down" ] || get_openvpn_option "$config" down down
+ 		openvpn_add_instance "$s" "${config%/*}" "$config" "$script_security" "$up" "$down"
