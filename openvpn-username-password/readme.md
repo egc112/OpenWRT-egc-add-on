@@ -46,7 +46,7 @@ There is a patch available (openvpn-add-script-security-1.patch) for compiling y
 ```
  	if [ ! -z "$config" ]; then
  		append UCI_STARTED "$config" "$LIST_SEP"
- 		*[ -n "$script_security" ] || get_openvpn_option "$config" script_security script-security*
+-> 		[ -n "$script_security" ] || get_openvpn_option "$config" script_security script-security <-
  		[ -n "$up" ] || get_openvpn_option "$config" up up
  		[ -n "$down" ] || get_openvpn_option "$config" down down
  		openvpn_add_instance "$s" "${config%/*}" "$config" "$script_security" "$up" "$down"
