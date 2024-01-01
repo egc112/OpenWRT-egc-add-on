@@ -23,7 +23,7 @@ Example of `/etc/openvpn/userpass`:
  `Hans Worst@2`  
  `John Doe24`  
 
-## CLIENT side ##  
+### CLIENT side ###  
 In the OpenVPN Client config add:  
 For OpenVPN 2.6 inline in config file:  
  `<auth-user-pass>`  
