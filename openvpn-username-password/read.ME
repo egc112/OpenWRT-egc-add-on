@@ -5,7 +5,7 @@ version 31-12-23
 author: egc
 function: standlone script to incorporate username/password functionality in OpenVPN Server
 
-##INSTALLATION##
+## INSTALLATION ##
 3SERVER side#
 Place this script file in /etc/openvpn/
 Make executable: chmod +x /etc/openvpn/ovpn-userpass-script
@@ -42,4 +42,13 @@ Example of /etc/openvpn/cl-userpass:
 Unfortunately while making this I discovered a bug in OpenVPN.
 `script-security` is always set to `2` when using the installation with the config file, because `script-security` is not parsed from the config file
 With `script-security 2` the password is not used/visisble in the environment, script-security has to be set to 3.
-There is a patch avaialbe for when you compilie your own build but if you do not want that or cannot compile you have to add
+There is a patch available (openvpn-add-script-security-1.patch) for when you compile your own build but if you do not want that or cannot compile you have to add the following line on line number 193 of `/etc/openvpn/openvpn.init`:
+`[ -n "$script_security" ] || get_openvpn_option "$config" script_security script-security`
+```
+ 	if [ ! -z "$config" ]; then
+ 		append UCI_STARTED "$config" "$LIST_SEP"
+ 		*[ -n "$script_security" ] || get_openvpn_option "$config" script_security script-security*
+ 		[ -n "$up" ] || get_openvpn_option "$config" up up
+ 		[ -n "$down" ] || get_openvpn_option "$config" down down
+ 		openvpn_add_instance "$s" "${config%/*}" "$config" "$script_security" "$up" "$down"
+````
