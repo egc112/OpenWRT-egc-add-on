@@ -41,7 +41,7 @@ Example of /etc/openvpn/cl-userpass:
 Unfortunately while making this I discovered a bug in OpenVPN.   
 `script-security` is always set to `2` when using the installation with the config file, because `script-security` is not parsed from the config file  
 With `script-security 2` the password is not used/visible in the environment, script-security has to be set to 3.  
-There is a patch available (openvpn-add-script-security-1.patch) for compiling your own build but if you do not want that or cannot compile you have to add the following line on line number 193 of `/etc/openvpn/openvpn.init`:  
+There is a patch available (openvpn-add-script-security-1.patch) for compiling your own build but if you do not want that or cannot compile you have to add the following line around line number 193 of `/etc/init.d/openvpn`:  
 `[ -n "$script_security" ] || get_openvpn_option "$config" script_security script-security`  
 ```
  	if [ ! -z "$config" ]; then
