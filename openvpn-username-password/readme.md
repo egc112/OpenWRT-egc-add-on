@@ -7,7 +7,7 @@ function: standlone script to incorporate username/password functionality in Ope
 
 ## INSTALLATION ##  
 ### SERVER side ###  
-Place this script file in `/etc/openvpn/`  
+Place the script file `ovpn-userpass-script` in `/etc/openvpn/`  
 Make executable: `chmod +x /etc/openvpn/ovpn-userpass-script`  
 
 In the OpenVPN Server config add:  
