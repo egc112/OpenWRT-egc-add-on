@@ -57,4 +57,5 @@ https://forums.openvpn.net/viewtopic.php?t=12605
 https://github.com/clayface/openvpn_xorpatch/blob/master/openvpn_xor.patch   
 https://svn.dd-wrt.com/changeset/47850   
   
-Note xor patches are not compatible with dco so compile with --disable-dco   
+Note xor patches are not compatible with dco.   
+If dco is avaialble in your firmware add in the openvpn config: `disable-dco`  
