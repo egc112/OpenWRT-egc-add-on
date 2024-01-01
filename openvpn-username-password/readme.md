@@ -1,5 +1,8 @@
 Instructions to add authorization with username and password for OpenVPN server and OpenVPN Client
 
+This is the simple poor mans solution, no pam plugin, just a script with plain text file with username password but for SoHo routers and a limited number of users it will do.
+But be advised that you should not use this as the only security measure, at least use Ca-file and tls-crypt, you can also use an additional key certificates reusing the same key in that case add: `duplicate-cn` and `verify-client-cert require` to the openvpn server config
+
 file-name: ovpn-userpass-script  
 version 31-12-23  
 author: egc  
