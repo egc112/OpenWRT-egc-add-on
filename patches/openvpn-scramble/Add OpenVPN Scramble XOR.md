@@ -17,10 +17,10 @@ Copy all patch files to `feeds/packages/net/openvpn/patches`
 On compiling the patches are executed automatically  
 
 Usage:  
-Scramble options can be used to obfuscate the connection this can be useful to escape censoring.
-It is supported by a number of OpenVPN providers e.g. TorGuard, StrongVPN, IPvanish etc.
+Scramble options can be used to obfuscate the connection this can be useful to escape censoring.   
+It is supported by a number of OpenVPN providers e.g. TorGuard, StrongVPN, IPvanish etc.  
 
-Note: scramble options must be the same on client and server side!
+Note: scramble options must be the same on client and server side!  
 
 In the OpenVPN config add:  
 `scramble "password"`  
