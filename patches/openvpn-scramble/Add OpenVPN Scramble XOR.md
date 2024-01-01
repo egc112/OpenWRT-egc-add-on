@@ -5,7 +5,7 @@ To check if the scramble options are avaialbel (compiled in) into your firmware:
 
 https://shenzhensuzy.wordpress.com/2019/01/26/openvpn-with-xor-patch/  
 
-Get tunnelblicks patches (you can skip this as I already did this for you [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/patches/openvpn-scramble/feeds), for stable 23.05.2 which uses K5.15 and OpenVPN 2.5.8 use the patches from K515, for Main build with Kernel 6.1 and OpenVPN 2.6.8 uses patches from K61) :  
+Get tunnelblicks patches (you can skip this as I already did this for you [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/patches/openvpn-scramble/feeds), for stable 23.05.2 which uses K5.15 and OpenVPN 2.5.8 use the patches from K5.15, for Main build with Kernel 6.1 and OpenVPN 2.6.8 uses patches from K6.1) :  
 https://tunnelblick.net/cOpenvpn_xorpatch.html  
 https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party/sources/openvpn/openvpn-2.6.4/patches  
 https://github.com/clayface/openvpn_xorpatch  
