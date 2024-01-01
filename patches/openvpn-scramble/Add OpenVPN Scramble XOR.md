@@ -1,6 +1,6 @@
 https://svn.dd-wrt.com/ticket/5590  
 
-To check:  
+To checkif the scramble options are avaialbel (compiled in) into your firmware:  
 `strings /usr/sbin/openvpn | grep scramble`  
 
 https://shenzhensuzy.wordpress.com/2019/01/26/openvpn-with-xor-patch/  
