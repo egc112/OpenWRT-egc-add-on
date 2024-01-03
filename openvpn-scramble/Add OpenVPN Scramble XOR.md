@@ -1,12 +1,8 @@
-https://svn.dd-wrt.com/ticket/5590  
+Scramble options can be used to obfuscate the connection this can be useful to escape censoring.   
+It is supported by a number of OpenVPN providers e.g. TorGuard, StrongVPN, IPvanish etc. and also by DDWRT, Android and Windows (see below).  
 
-To check if the scramble options are available (compiled in) into your firmware:  
-`strings /usr/sbin/openvpn | grep scramble`  
-
-https://shenzhensuzy.wordpress.com/2019/01/26/openvpn-with-xor-patch/  
-
-Get tunnelblicks patches (you can skip this as I already did this for you [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds), for stable 23.05.2 which uses K5.15 and OpenVPN 2.5.8 use the patches from 515, for Main build with Kernel 6.1 and OpenVPN 2.6.8 uses patches from 61) :  
-https://tunnelblick.net/cOpenvpn_xorpatch.html  
+Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds), for stable 23.05.2 which uses K5.15 and OpenVPN 2.5.8 use the patches from 515, for Main build with Kernel 6.1 and OpenVPN 2.6.8 uses patches from 61) 
+The patches are derived from  tunnelblicks patches https://tunnelblick.net/cOpenvpn_xorpatch.html  
 https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party/sources/openvpn/openvpn-2.6.4/patches  
 https://github.com/clayface/openvpn_xorpatch  
 https://scramblevpn.wordpress.com/2017/04/16/compile-patched-openvpn-ipk-package-for-openwrtlede-router/  
@@ -15,12 +11,9 @@ To compile:
 Copy all patch files to `feeds/packages/net/openvpn/patches`  
 On compiling the patches are executed automatically  
 
-Usage:  
-Scramble options can be used to obfuscate the connection this can be useful to escape censoring.   
-It is supported by a number of OpenVPN providers e.g. TorGuard, StrongVPN, IPvanish etc. and also by DDWRT, Android and Windows (see below).  
-
 Note: scramble options must be the same on client and server side!  
 
+Usage:
 In the OpenVPN config add:  
 `scramble "password"`  
 scramble is the leftmost option name. This can be followed by a string which will be used to perform a simple xor operation on the packet payload.  
@@ -46,9 +39,14 @@ https://github.com/lawtancool/ics-openvpn-xor/releases
 Windows:  
 https://github.com/lawtancool/openvpn-windows-xor/releases
 
-See also:  
-https://forum.openwrt.org/t/scramble-obfuscate-in-openvpn/151570  
 
+To check if the scramble options are available (compiled in) into your firmware:  
+`strings /usr/sbin/openvpn | grep scramble`  
+
+See also: 
+https://shenzhensuzy.wordpress.com/2019/01/26/openvpn-with-xor-patch/  
+https://forum.openwrt.org/t/scramble-obfuscate-in-openvpn/151570  
+https://svn.dd-wrt.com/ticket/5590  
 https://tunnelblick.net/cOpenvpn_xorpatch.html  
 https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party/sources/openvpn/openvpn-2.6.4/patches  
 https://scramblevpn.wordpress.com/2017/04/16/compile-patched-openvpn-ipk-package-for-openwrtlede-router/
@@ -58,3 +56,4 @@ https://svn.dd-wrt.com/changeset/47850
   
 Note xor patches are not compatible with dco.   
 If dco is available in your firmware add in the openvpn config: `disable-dco`  
+
