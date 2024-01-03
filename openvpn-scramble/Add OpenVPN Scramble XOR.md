@@ -17,7 +17,7 @@ On compiling the patches are executed automatically
 
 Usage:  
 Scramble options can be used to obfuscate the connection this can be useful to escape censoring.   
-It is supported by a number of OpenVPN providers e.g. TorGuard, StrongVPN, IPvanish etc.  
+It is supported by a number of OpenVPN providers e.g. TorGuard, StrongVPN, IPvanish etc. and also by DDWRT, Android and Windows (see below).  
 
 Note: scramble options must be the same on client and server side!  
 
@@ -37,7 +37,7 @@ This performs a xor operation, utilising the current position in the packet payl
 `scramble obfuscate "password"`  
 This method is more secure. It utilises the 3 types of scrambling mentioned above. "password" is the string which you want to use.  
 
-Both DDWRT OpenVPN Client and server supports scramble there are also clients available for Android and Windows:  
+Both DDWRT OpenVPN Client and server supports scramble, there are also clients available for Android and Windows:  
 https://github.com/lawtancool  
  
 Android:  
