@@ -16,7 +16,7 @@ Usage:
 In the OpenVPN config add:  
 For the tunnelblick patches (and that is what is used here) this option is:  
 `scramble xormask "password"`  
-For other builds use:
+For other builds use:  
 `scramble "password"`  
 scramble is the leftmost option name. This can be followed by a string which will be used to perform a simple xor operation on the packet payload.  
 
