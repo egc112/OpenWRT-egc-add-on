@@ -30,7 +30,9 @@ This performs a xor operation, utilising the current position in the packet payl
 `scramble obfuscate "password"`  
 This method is more secure. It utilises the 3 types of scrambling mentioned above. "password" is the string which you want to use.  
 
-Note: scramble options must be the same on client and server side!  
+Note 1: scramble options must be the same on client and server side!  
+Note 2: xor patches are not compatible with dco.   
+If dco is available in your firmware add in the openvpn config: `disable-dco`  
 
 Both DDWRT OpenVPN Client and server supports scramble, there are also clients available for Android and Windows:  
 https://github.com/lawtancool  
@@ -56,6 +58,5 @@ https://forums.openvpn.net/viewtopic.php?t=12605
 https://github.com/clayface/openvpn_xorpatch/blob/master/openvpn_xor.patch   
 https://svn.dd-wrt.com/changeset/47850   
   
-Note xor patches are not compatible with dco.   
-If dco is available in your firmware add in the openvpn config: `disable-dco`  
+
 
