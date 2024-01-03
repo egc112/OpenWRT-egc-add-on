@@ -2,7 +2,8 @@ Scramble options can be used to obfuscate the connection this can be useful to e
 It is supported by a number of OpenVPN providers e.g. TorGuard, StrongVPN, IPvanish etc. and also by DDWRT, Android and Windows (see below).  
 
 Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds), for stable 23.05.2 which uses K5.15 and OpenVPN 2.5.8 use the patches from 515, for Main build with Kernel 6.1 and OpenVPN 2.6.8 uses patches from 61) 
-The patches are derived from  tunnelblicks patches https://tunnelblick.net/cOpenvpn_xorpatch.html  
+The patches are derived from tunnelblicks patches:   
+https://tunnelblick.net/cOpenvpn_xorpatch.html  
 https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party/sources/openvpn/openvpn-2.6.4/patches  
 https://github.com/clayface/openvpn_xorpatch  
 https://scramblevpn.wordpress.com/2017/04/16/compile-patched-openvpn-ipk-package-for-openwrtlede-router/  
@@ -11,14 +12,13 @@ To compile:
 Copy all patch files to `feeds/packages/net/openvpn/patches`  
 On compiling the patches are executed automatically  
 
-Note: scramble options must be the same on client and server side!  
-
 Usage:
 In the OpenVPN config add:  
+For the tunnelblick patches (and that is what is used here) this option is:  
+`scramble xormask "password"`  
+For other builds use:
 `scramble "password"`  
 scramble is the leftmost option name. This can be followed by a string which will be used to perform a simple xor operation on the packet payload.  
-Note for tunnelblick (and this is what is used here) this option is:  
-`scramble xormask "password"`  
 
 However if the following are used instead, a different action will occur.  
 `scramble reverse`  
@@ -29,6 +29,8 @@ This performs a xor operation, utilising the current position in the packet payl
 
 `scramble obfuscate "password"`  
 This method is more secure. It utilises the 3 types of scrambling mentioned above. "password" is the string which you want to use.  
+
+Note: scramble options must be the same on client and server side!  
 
 Both DDWRT OpenVPN Client and server supports scramble, there are also clients available for Android and Windows:  
 https://github.com/lawtancool  
