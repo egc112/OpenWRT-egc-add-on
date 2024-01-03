@@ -45,7 +45,7 @@ https://github.com/lawtancool/openvpn-windows-xor/releases
 To check if the scramble options are available (compiled in) into your firmware:  
 `strings /usr/sbin/openvpn | grep scramble`  
 
-See also: 
+See also:  
 https://shenzhensuzy.wordpress.com/2019/01/26/openvpn-with-xor-patch/  
 https://forum.openwrt.org/t/scramble-obfuscate-in-openvpn/151570  
 https://svn.dd-wrt.com/ticket/5590  
