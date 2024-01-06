@@ -35,9 +35,9 @@ For OpenVPN 2.6 inline in config file:
  `password`   
  `</auth-user-pass>`  
 
-For OpenVPN 2.5 add in Client config: path and filename to text file (e.g.: /etc/openvpn/cl-userpass) with username and password both on separate line:  
+For OpenVPN 2.5 add in Client config: path and filename to text file (e.g.: /etc/openvpn/cl-userpass) with username and password:  
  `auth-user-pass /etc/openvpn/cl-userpass`  
-Example of /etc/openvpn/cl-userpass:  
+Example of /etc/openvpn/cl-userpass, username and password on separate line:  
  `Hans`  
  `Worst@2`  
 
