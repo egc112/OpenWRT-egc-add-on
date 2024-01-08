@@ -5,9 +5,8 @@ Version: 08-jan-2024
 Description: OpenWRT hoptlug script routing a specific sourceport via the WAN  
 Usage: When running a concurrent VPN client and VPN server and needing to route the VPN server port via the WAN  
 Installation:   
-  copy script to /etc/hotplug.d/iface  
-  make executable: cmod +x /etc/hotplug.d/custom-sport-route  
   adapt the port you want to route via the WAN  
+  copy script to /etc/hotplug.d/iface   
 
 ## Alternative solution
 Add the following rules to /etc/rc.local or add via LuCI > System > Startup > Local Startup:
