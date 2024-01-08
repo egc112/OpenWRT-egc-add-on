@@ -10,11 +10,11 @@ Installation:
   adapt the port you want to route via the WAN  
 
 ## Alternative solution
-Add the following rules to /etc/rc.local or add via LuCI > System >Startup > Local Startup:
+Add the following rules to /etc/rc.local or add via LuCI > System > Startup > Local Startup:
 ```
 GATEWAY="$(ifstatus wan | grep nexthop | sed 's/[^0-9.]//g')"  
 ip route add default via $GATEWAY table 101  
 ip rule add sport 1194 table 101 
 ```
-Althoug this is persistent between reboots this is not persistent between network restarts, if you restart the network (`service network restart`) the cnages are gone.
+Althoug this is persistent between reboots this is not persistent between network restarts, if you restart the network (`service network restart`) the changes are gone.
 
