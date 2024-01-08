@@ -1,17 +1,16 @@
 #!/bin/sh
-#https://openwrt.org/docs/guide-user/base-system/hotplug
 
 # Name: 98-custom-sport-route
 # Version: 08-jan-2024
 # Description: OpenWRT hoptlug script routing a specific sourceport via the WAN
 # Usage: When running a concurrent VPN client and VPN server and needing to route the VPN server port via the WAN
 # Installation: 
+#  in this script below adapt the port you want to route via the WAN to resemble the VPN server port
 #  copy script to /etc/hotplug.d/iface
-#  Set the port you want to route via the WAN to resemble the VPN server port
 
-#DEBUG=; set -x; logger -t hotplug $(env); # uncomment/comment to enable/disable debug mode
 SPORT=1194  # adapt the port number e.g 1194 for OpenVPN 51820 for WireGuard
 
+#DEBUG=; set -x; logger -t hotplug $(env); # uncomment/comment to enable/disable debug mode
 TID=100
 {
 # getdefault gateway
@@ -38,7 +37,7 @@ set_routes() {
 		if [ "$ACTION" == "ifdown" ]; then
 			while ip rule delete from 0/0 to 0/0 table $TID >/dev/null 2>&1; do true; done
 			ip route flush table $TID
-			echo "Clean up"
+			echo "clean up"
 		fi
 	fi
 }
