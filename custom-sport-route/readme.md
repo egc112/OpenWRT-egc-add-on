@@ -1,4 +1,4 @@
-# Name: custom-sport-route
+# Name: 98-custom-sport-route
 # Version: 08-jan-2024
 # Description: OpenWRT hoptlug script routing a specific sourceport via the WAN
 # Usage: When running a concurrent VPN client and VPN server and needing to route the VPN server port via the WAN
