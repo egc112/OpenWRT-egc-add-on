@@ -19,5 +19,5 @@ ip rule add sport 1194 table 101
 ```
 Reboot router to take effect
 
-*Althoug this is persistent between reboots this is not persistent between network restarts, if you restart the network (`service network restart`) the changes are gone, so the script option is the better one*  
+*Although this alternative solution is persistent between reboots this is not persistent between network restarts, if the network is restarted either by yourself (`service network restart`) or by a process, the changes are gone, so the script option is the better one*  
 
