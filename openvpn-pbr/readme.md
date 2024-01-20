@@ -4,8 +4,8 @@ OpenVPN has the ability to [run scripts](https://openvpn.net/community-resources
 
 In this repo you can find scripts which setup a simple Policy Based Routing by source.
 
-Download scripst and adapt to your need.  
-Upload scripst to your router to `/etc/openvpn`  
+Download scripts and adapt to your need.  
+Upload scripts to your router to `/etc/openvpn`  
 
 For up script:  
 Make executable, from Commandline: `chmod +x /etc/openvpn/ovpn-pbr-up`  
