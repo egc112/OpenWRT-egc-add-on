@@ -13,7 +13,7 @@ In the OpenVPN config add: 'route-up /etc/openvpn/ovpn-pbr-up` this will execute
 
 For down script:  
 Make executable, from Commandline: `chmod +x /etc/openvpn/ovpn-pbr-down`  
-In the OpenVPN config add: 'route-pre-down /etc/openvpn/ovpn-pbr-down` this will execute the script on route down  
+In the OpenVPN config add: 'down /etc/openvpn/ovpn-pbr-down` this will execute the script on closing of the OpenVPN  
 
 
 
