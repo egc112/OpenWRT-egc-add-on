@@ -9,7 +9,7 @@ To do this you first have to take care of disabling the default routing via the 
 To stop default route via the VPN add the following to the OpenVPN config:  
 `pull-filter ignore "redirect-gateway"`
 
-NNext, download scripts and adapt to your need.  
+Next, download scripts and adapt to your need.  
 Upload scripts to your router to `/etc/openvpn`  
 
 For up script:  
