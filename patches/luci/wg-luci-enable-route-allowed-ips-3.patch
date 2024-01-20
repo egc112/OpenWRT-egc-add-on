@@ -1,0 +1,51 @@
+diff --git a/protocols/luci-proto-wireguard/htdocs/luci-static/resources/protocol/wireguard.js b/protocols/luci-proto-wireguard/htdocs/luci-static/resources/protocol/wireguard.js
+old mode 100644
+new mode 100755
+index d05acfb..5cfd5b7
+--- a/protocols/luci-proto-wireguard/htdocs/luci-static/resources/protocol/wireguard.js
++++ b/protocols/luci-proto-wireguard/htdocs/luci-static/resources/protocol/wireguard.js
+@@ -375,6 +375,7 @@ return network.registerProtocol('wireguard', {
+ 						uci.set('network', sid, 'preshared_key', pconf.peer_presharedkey);
+ 						uci.set('network', sid, 'allowed_ips', pconf.peer_allowedips);
+ 						uci.set('network', sid, 'persistent_keepalive', pconf.peer_persistentkeepalive);
++						uci.set('network', sid, 'route_allowed_ips', '1');
+ 
+ 						if (pconf.peer_endpoint) {
+ 							uci.set('network', sid, 'endpoint_host', pconf.peer_endpoint[0]);
+@@ -408,6 +409,7 @@ return network.registerProtocol('wireguard', {
+ 							uci.set('network', sid, 'preshared_key', pconf.peer_presharedkey);
+ 							uci.set('network', sid, 'allowed_ips', pconf.peer_allowedips);
+ 							uci.set('network', sid, 'persistent_keepalive', pconf.peer_persistentkeepalive);
++							uci.set('network', sid, 'route_allowed_ips', '1');
+ 							break;
+ 						}
+ 					}
+@@ -507,6 +509,19 @@ return network.registerProtocol('wireguard', {
+ 			return E('em', _('No peers defined yet.'));
+ 		};
+ 
++		ss.handleAdd = function(ev, name) {
++			var config_name = this.uciconfig || this.map.config,
++				section_id = this.map.data.add(config_name, this.sectiontype, name),
++				mapNode = this.getPreviousModalMap(),
++				prevMap = mapNode ? dom.findClassInstance(mapNode) : this.map;
++
++			prevMap.addedSection = section_id;
++
++			this.map.data.set(config_name, section_id, 'route_allowed_ips', '1');
++
++			return this.renderMoreOptionsModal(section_id);
++		};
++
+ 		o = ss.option(form.Flag, 'disabled', _('Peer disabled'), _('Enable / Disable peer. Restart wireguard interface to apply changes.'));
+ 		o.modalonly = true;
+ 		o.optional = true;
+@@ -650,7 +665,7 @@ return network.registerProtocol('wireguard', {
+ 			return E('span', { 'style': 'display:inline-flex;flex-wrap:wrap;gap:.125em' }, list);
+ 		};
+ 
+-		o = ss.option(form.Flag, 'route_allowed_ips', _('Route Allowed IPs'), _('Optional. Create routes for Allowed IPs for this peer.'));
++		o = ss.option(form.Flag, 'route_allowed_ips', _('Route Allowed IPs'), _('Create routes for Allowed IPs for this peer.'));
+ 		o.modalonly = true;
+ 
+ 		o = ss.option(form.Value, 'endpoint_host', _('Endpoint Host'), _('Optional. Host of peer. Names are resolved prior to bringing up the interface.'));
