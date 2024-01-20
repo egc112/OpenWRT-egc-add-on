@@ -13,4 +13,5 @@ ip route show | grep -Ev '^default |^0.0.0.0/1 |^128.0.0.0/1 ' | while read rout
     ip route add $route table $TABLE >/dev/null 2>&1
 done
 # Add rules, you can add more rules with e.g.: interface:iif, sourceport:sport etc., see ip rule man page
-ip rule add from $IPSOURCE table $TABLE
+ip rule add from $IPSOURCE table $TABLE  
+
