@@ -9,11 +9,11 @@ Upload scripts to your router to `/etc/openvpn`
 
 For up script:  
 Make executable, from Commandline: `chmod +x /etc/openvpn/ovpn-pbr-up`  
-In the OpenVPN config add: 'route-up /etc/openvpn/ovpn-pbr-up` this will execute the script on route up  
+In the OpenVPN config add: `route-up /etc/openvpn/ovpn-pbr-up` this will execute the script on route up  
 
 For down script:  
 Make executable, from Commandline: `chmod +x /etc/openvpn/ovpn-pbr-down`  
-In the OpenVPN config add: 'down /etc/openvpn/ovpn-pbr-down` this will execute the script on closing of the OpenVPN  
+In the OpenVPN config add: `down /etc/openvpn/ovpn-pbr-down` this will execute the script on closing of the OpenVPN  
 
 
 
