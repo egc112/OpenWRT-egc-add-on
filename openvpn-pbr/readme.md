@@ -1,6 +1,7 @@
 Simple scripts for OpenVPN Policy Based routing
 
 OpenVPN has the ability to [run scripts](https://openvpn.net/community-resources/reference-manual-for-openvpn-2-6/#scripting-integration) from the openvpn config file  
+Due to a recently resolved bug this only works on 23.05.2 and Main/snapshot builds from 21-jan-2024 or newer.  
 
 In this repo you can find scripts which setup a simple Policy Based Routing by source.
 
