@@ -34,7 +34,7 @@ Note 1: scramble options must be the same on client and server side!
 Note 2: xor patches are not compatible with dco.   
 If dco is available in your firmware add in the openvpn config: `disable-dco`  
 
-Both DDWRT OpenVPN Client and Server support scramble, there are also clients available for Android and Windows:  
+Both [DDWRT OpenVPN Client (page 14)](https://forum.dd-wrt.com/phpBB2/download.php?id=48550) and Server support scramble, there are also clients available for Android and Windows:  
 https://github.com/lawtancool  
  
 Android:  
