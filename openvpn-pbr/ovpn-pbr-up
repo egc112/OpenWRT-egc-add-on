@@ -1,5 +1,5 @@
 #!/bin/sh
-# set clients ip addrsses t0 route via the VPN use CIDR notation, change to your need
+# set clients ip addresses to route via the VPN, use CIDR notation, change to your need
 IPSOURCE="192.168.1.64/26"
 # Interface used by the OpenVPN tunnel
 TUN="tun0"
