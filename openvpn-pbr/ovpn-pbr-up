@@ -14,4 +14,7 @@ ip route show | grep -Ev '^default |^0.0.0.0/1 |^128.0.0.0/1 ' | while read rout
 done
 # Add rules, you can add more rules with e.g.: interface:iif, sourceport:sport etc., see ip rule man page
 ip rule add from $IPSOURCE table $TABLE  
+# examples
+# ip rule add iif br-guest table $TABLE  
+
 
