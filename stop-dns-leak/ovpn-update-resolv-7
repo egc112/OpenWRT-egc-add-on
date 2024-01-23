@@ -1,5 +1,5 @@
 #!/bin/sh
-# File name: ovpn-up-update-resolv-6
+# File name: ovpn-update-resolv-7
 # Description: Script to grab DNS servers from the tunnel for exclusive use by DNSMasq and routes those via the tunnel to prevent DNS leaks
 # Version: 22-jan-2024
 # Before you start make a backup of your settings just in case
