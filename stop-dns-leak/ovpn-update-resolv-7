@@ -31,7 +31,7 @@ case $script_type in
 up)
 	# if $DEF_RESOLVF exists when the tunnel is brought up it indicates a dirty ifdown so reset to defaults
 	[[ "$VPN_RESOLVF" = "$(uci get dhcp.@dnsmasq[0].resolvfile)" ]] && { uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.d/resolv.conf.auto"; \
-		 rm -fr "$DEF_RESOLVF" >/dev/null 2>&1; logger -t $(basename $0)[$$] -p user.notice "Dirty ifdown detected reset DNSMasq to default"; }
+		 rm -fr "$DEF_RESOLVF" >/dev/null 2>&1; uci commit dhcp; logger -t $(basename $0)[$$] -p user.notice "Dirty ifdown detected reset DNSMasq to default"; }
 
 	# Get DNS servers and DNS servers manually set in conf file
 	rm -fr "$VPN_RESOLVF" >/dev/null 2>&1
