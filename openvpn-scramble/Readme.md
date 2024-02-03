@@ -48,8 +48,8 @@ https://tunnelblick.net/
   
 To check if the scramble options are available (compiled in) into your firmware:  
 `strings /usr/sbin/openvpn | grep scramble`  
-
-
+  
+ 
 #### DCO
 Upcoming OpenVPN version will have DCO (Data Channel Offload), unfortunately the scramble options are not compatible with DCO.  
 so even if DCO is compiled in you have to disable DCO (in openVPN config add: `disable-dco`)  
