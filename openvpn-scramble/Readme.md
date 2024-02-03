@@ -1,7 +1,7 @@
 Scramble options can be used to obfuscate the connection this can be useful to escape censoring.   
 It is supported by a number of OpenVPN providers e.g. TorGuard, [StrongVPN](https://support.strongvpn.com/hc/en-us/articles/360034090394-About-the-Scramble-feature-in-StrongVPN), IPvanish etc. and also by DDWRT, Android and Windows (see below).  
 
-Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds), for stable 23.05.2 which uses K5.15 and OpenVPN 2.5.8 use the patches from 515, for Main build with Kernel 6.1 and OpenVPN 2.6.8 uses patches from 61) 
+Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds), for stable 23.05 which uses K5.15 and OpenVPN 2.5.8 use the patches from 515, for Main build with Kernel 6.1 and OpenVPN 2.6.8 uses patches from 61) 
 The patches are derived from tunnelblicks patches:   
 https://tunnelblick.net/cOpenvpn_xorpatch.html  
 https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party/sources/openvpn/openvpn-2.6.4/patches  
