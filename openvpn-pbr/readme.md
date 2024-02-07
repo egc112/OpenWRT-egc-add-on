@@ -1,7 +1,6 @@
 Simple scripts for OpenVPN Policy Based routing
 
 OpenVPN has the ability to [run scripts](https://openvpn.net/community-resources/reference-manual-for-openvpn-2-6/#scripting-integration) from the openvpn config file  
-Due to a recently resolved bug this only works on 23.05.2 and Main/snapshot builds from 21-jan-2024 or newer.  
 
 In this repo you can find scripts which setup a simple Policy Based Routing by source.
 
@@ -15,7 +14,9 @@ Upload scripts to your router to `/etc/openvpn`
 
 For up script:  
 Make executable, from Commandline: `chmod +x /etc/openvpn/ovpn-pbr-up`  
-In the OpenVPN config add: `route-up /etc/openvpn/ovpn-pbr-up` this will execute the script on route up  
+In the OpenVPN config add: `route-up /etc/openvpn/ovpn-pbr-up` this will execute the script on route up.  
+Due to a recently resolved bug this should work on 23.05.2 and Main/snapshot builds from 21-jan-2024 or newer.  
+For older builds use `up` instead of `route-up`  
 
 For down script:  
 Make executable, from Commandline: `chmod +x /etc/openvpn/ovpn-pbr-down`  
