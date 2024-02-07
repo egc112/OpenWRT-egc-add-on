@@ -10,7 +10,8 @@ IPSOURCE="192.168.1.64/26"
 TABLE=101
 
 # Start script add default route to table
-ip route add default via $route_vpn_gateway dev $TUN table $TABLE
+ip route add default dev $TUN table $TABLE
+#ip route add default via $route_vpn_gateway dev $TUN table $TABLE
 # Add local routes
 ip route show | grep -Ev '^default |^0.0.0.0/1 |^128.0.0.0/1 ' | while read route; do
     ip route add $route table $TABLE >/dev/null 2>&1
