@@ -42,7 +42,8 @@ Example of /etc/openvpn/cl-userpass, username and password on separate line:
  `Worst@2`  
 
 ## PATCHES ##  
-Unfortunately while making this I discovered a bug in OpenVPN see [#23014](https://github.com/openwrt/packages/issues/23014) .   
+Unfortunately while making this I discovered a bug in OpenVPN see [#23014](https://github.com/openwrt/packages/issues/23014) .  
+In the mean time I have made pull requests to solve this bug and in 23.05 snapshot and Main builds *after* January 2024 this bug has been patched so no need to read furhter if you are using those builds.   
 `script-security` is always set to `2` when using the installation with the config file, because `script-security` is not parsed from the config file.  
 With `script-security 2` the password is not used/visible in the environment, script-security has to be set to 3.  
 There is a patch available (openvpn-add-script-security-1.patch) for compiling your own build but if you do not want that or cannot compile you have to add the following line around line number 193 of `/etc/init.d/openvpn`:  
