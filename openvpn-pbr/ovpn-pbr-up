@@ -2,7 +2,7 @@
 # set clients ip addresses to route via the VPN, use CIDR notation, change to your need
 IPSOURCE="192.168.1.64/26"
 
-# Interface used by the OpenVPN tunnel, usualy tun0, trying to get it from environment with $dev
+# Interface used by the OpenVPN tunnel, usually tun0, trying to get it from environment with $dev
 [[ -z "$dev" ]] && TUN="tun0" || TUN="$dev"
 #logger -t egc "$(echo $(basename $0)) uses interface:[$dev] = $TUN"
 
