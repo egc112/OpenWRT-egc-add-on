@@ -9,7 +9,6 @@ These scripts will route the ip sources of your choice via the VPN and all other
 To do this you first have to take care of disabling the default routing via the VPN.  
 To stop default route via the VPN add the following to the OpenVPN config:  
 `pull-filter ignore "redirect-gateway"`  
-`redirect-private def1`  
 
 Next, download scripts and adapt to your needs.  
 Upload scripts to your router to `/etc/openvpn`  
