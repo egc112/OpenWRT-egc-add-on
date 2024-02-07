@@ -7,7 +7,9 @@ In this repo you can find scripts which setup a simple Policy Based Routing by s
 
 These scripts will route the ip sources of your choice via the VPN and all other things via the WAN.  
 To do this you first have to take care of disabling the default routing via the VPN.  
-To stop default route via the VPN add the following to the OpenVPN config: `pull-filter ignore "redirect-gateway"`
+To stop default route via the VPN add the following to the OpenVPN config: 
+`pull-filter ignore "redirect-gateway"`
+`redirect-private def1`
 
 Next, download scripts and adapt to your needs.  
 Upload scripts to your router to `/etc/openvpn`  
