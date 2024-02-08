@@ -9,8 +9,7 @@ To do this you first have to take care of disabling the default routing via the 
 To stop default route via the VPN add the following to the OpenVPN config:  
 `pull-filter ignore "redirect-gateway"`  
 `redirect-private def1`  
-This last entry is optional but could be necessary if you want the vpn_gateway to make routes in route-up scripts
-
+(This last entry is optional but could be necessary if you want the $route_vpn_gateway/vpn_gateway to make routes in route-up scripts or openvpn config)  
 
 Next, download scripts and adapt to your needs.  
 Upload scripts to your router to `/etc/openvpn`  
