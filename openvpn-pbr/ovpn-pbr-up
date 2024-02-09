@@ -1,16 +1,14 @@
 #!/bin/sh
+#DEBUG=; set -x; # uncomment/comment to enable/disable debug mode
+{
 # set clients ip addresses to route via the VPN, use CIDR notation, change to your need
 IPSOURCE="192.168.1.64/26"
+# Table number
+TABLE=101
 
 # Interface used by the OpenVPN tunnel, usually tun0, trying to get it from environment with $dev
 [[ -z "$dev" ]] && TUN="tun0" || TUN="$dev"
 #logger -t egc "$(echo $(basename $0)) uses interface:[$dev] = $TUN"
-
-# Table number
-TABLE=101
-
-#DEBUG=; set -x; # uncomment/comment to enable/disable debug mode
-{
 # Start script add default route to table
 ip route add default dev $TUN table $TABLE
 #ip route add default via $route_vpn_gateway dev $TUN table $TABLE
@@ -24,6 +22,3 @@ ip rule add from $IPSOURCE table $TABLE
 # ip rule add iif br-guest table $TABLE  
 } 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
     -t $(echo $(basename $0) | grep -Eo '^.{0,23}')[$$] &
-
-
-
