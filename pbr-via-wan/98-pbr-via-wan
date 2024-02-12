@@ -1,0 +1,98 @@
+#!/bin/sh
+
+# Name: 98-pbr-via-wan
+# Version: 12-feb-2024 by egc
+# Description: OpenWRT hoptlug script routing a specific sourceport or local IP address via the WAN
+# Usage: e.g. When running a concurrent VPN client and VPN server and needing to route the VPN server port via the WAN and/or
+#	when excluding some local IP addresses from using the VPN
+# Installation: 
+#  in this script below adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN 
+#  copy script to /etc/hotplug.d/iface
+#  reboot or restart network (service network restart)
+
+SPORT=51820  # adapt the port number e.g 1194 for OpenVPN 51820 for WireGuard
+#IPADDR="192.168.1.2/32 192.168.1.64/26"  # list of IP address with CIDR notation, space delimited
+MYINTERFACE="wg0"	#set the interface you are using for your WireGuard interface
+
+#DEBUG=; set -x; logger -t hotplug $(env); # uncomment/comment to enable/disable debug mode
+TID=100
+{
+# getdefault gateway
+get_gateway() {
+		GATEWAY="$(ifstatus wan | grep nexthop | sed 's/[^0-9.]//g')"
+		# if there is no WAN e.g. a Dumb AP
+		if [[ -z "$GATEWAY" ]]; then
+			GATEWAY="$(uci get network.lan.gateway)"
+		fi
+}
+
+valid_ipv4()
+{
+        local addrmask="$1"
+		local addr="${addrmask%/*}"
+		local mask="${addrmask#*/}"
+        local N
+        local OIFS
+        # only numbers and dots in the entire IP address, no empty quads, and no
+        # leading or trailing dots
+        case "${addr}" in
+                *[!0-9.]* |  *..* | .* | *. ) #
+                        return 1
+                        ;;
+        esac
+        OIFS="${IFS}"
+        IFS=.
+        set -- $addr
+        IFS="${OIFS}"
+        if [ $# -ne 4 ]; then
+                return 1
+        fi
+        for N in "$@"; do
+                if [ "${#N}" -lt 1 -o "${#N}" -gt 3 ]; then
+                        return 1
+                fi
+                # at this point, we are guaranteed it is a positive number 
+                # of reasonable length
+                if [ "$N" -gt 255 ]; then
+                        return 1
+                fi
+        done
+		[[ -n "$mask" ]] && [[ "$mask" -gt 32 || "$mask" -lt 0 ]] && return 1 || return 0
+}
+
+set_routes() {
+	if [ "$INTERFACE" == "$MYINTERFACE" ]; then
+		if [ "$ACTION" == "ifup" ]; then
+			get_gateway
+			# add default route via WAN to table
+			ip route add default via $GATEWAY table $TID
+			echo "pbr: default route via $GATEWAY added to table $TID"
+			# add local routes can be enabled if needed
+			# ip route show | grep -Ev '^default |^0.0.0.0/1 |^128.0.0.0/1 ' | while read route; do
+				# ip route add $route table $TID >/dev/null 2>&1
+			# done
+			# add rule
+			[[ -n $SPORT ]] && ip rule add sport $SPORT table $TID
+			echo "pbr: rule $SPORT added to table $TID"
+			if [[ -n "$IPADDR" ]]; then
+				for ip in $IPADDR; do
+					if valid_ipv4 "$ip"; then
+						ip rule add from $ip table $TID
+						echo "pbr: rule $ip added to table $TID"
+					else
+						echo "pbr: Could not add rule $ip to table $TID"
+					fi
+				done
+			fi
+		fi
+		# remove table and rules
+		if [ "$ACTION" == "ifdown" ]; then
+			while ip rule delete from 0/0 to 0/0 table $TID >/dev/null 2>&1; do true; done
+			ip route flush table $TID
+			echo "pbr: clean up"
+		fi
+	fi
+}
+set_routes
+} 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
+    -t $(echo $(basename $0) | grep -Eo '^.{0,23}')[$$] &
