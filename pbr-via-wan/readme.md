@@ -4,7 +4,7 @@ Description: OpenWRT hoptlug script routing a specific sourceport or local IP ad
 Usage: e.g. When running a concurrent VPN client and VPN server and needing to route the VPN server port via the WAN and/or  
 	when excluding some local IP addresses from using the VPN  
 Installation:   
- in this script below adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN   
+ in this script adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN   
  copy script to /etc/hotplug.d/iface  
  reboot or restart network (service network restart)  
 
