@@ -3,7 +3,7 @@
  Version: 22-jan-2024  
  Before you start make a backup of your settings just in case  
  Install:  
-  Copy this cript to /etc/openvpn  
+  Copy the script to /etc/openvpn  
   Make executable: chmod +x /etc/openvpn/ovpn-update-resolv-7  
   Add in the OpenVPN config file these two lines:  
    up /etc/openvpn/ovpn-update-resolv-7  
