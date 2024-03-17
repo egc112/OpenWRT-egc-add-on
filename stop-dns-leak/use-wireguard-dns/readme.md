@@ -1,4 +1,4 @@
-### Use DNS servers for wireGuard  
+### Use DNS servers for WireGuard  
 
  Script to set WG DNS servers exclusive to DNSMasq  
  File name: wg-update-resolv-3  
