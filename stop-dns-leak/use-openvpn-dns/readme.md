@@ -1,4 +1,4 @@
-3## Use Pushed DNS servers for OpenVPN
+### Use Pushed DNS servers for OpenVPN
  Description: Script to grab DNS servers from the tunnel for exclusive use by DNSMasq and route those via the tunnel to prevent DNS leaks  
  Filename: ovpn-update-resolv-7  
  Version: 22-jan-2024  
