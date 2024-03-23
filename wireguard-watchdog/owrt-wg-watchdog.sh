@@ -2,7 +2,7 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: owrt-wg-watchdog.sh
-# version: 0.1, 23-mar-2024, by egc
+# version: 0.2, 24-mar-2024, by egc
 # purpose: WireGuard watchdog , in case of failure of a wireguard tunnel the next tunnel is automatically started
 # script type: shell script
 # installation:
@@ -23,6 +23,7 @@
 #    under DHCP and DNS > Hostnames (/etc/config/dhcp, config domain) add:
 #    ping-host 8.8.8.8
 #    ping-host 9.9.9.9
+#    Check if the name resolves with nslookup ping-host
 #    Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if one server is down e.g.:
 #    /usr/share/owrt-wg-watchdog.sh 10 ping-host &
 #    This will ping every 10 seconds, after a delay of 120 seconds on startup, to 8.8.8.8 and 9.9.9.9
@@ -89,7 +90,7 @@ search_active() {
 }
 
 watchdog(){
-	echo "WireGuard watchdog: pinging every $SLEEP seconds on tunnel ${wga}"
+	echo "WireGuard watchdog: pinging every $SLEEP seconds to $PINGIP on tunnel ${wga} with endpoint $(uci get network.@wireguard_${wga}[0].endpoint_host)"
 		while sleep $SLEEP; do
 		while ! ping -qc1 -W6 -n $PINGIP -I ${wga} &> /dev/null; do
 			sleep 7
