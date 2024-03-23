@@ -22,5 +22,9 @@ installation:
    `ping-host 9.9.9.9`   
    Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if if one server is down e.g.:  
    `/usr/share/owrt-wg-watchdog.sh 10 ping-host &`  
-7. reboot  
-8. Debug by removing the # on the second line of this script, view with: logread | grep debug  
+6. reboot  
+7. Debug by removing the # on the second line of this script, view with: logread | grep debug
+8. You can test the script by blocking the endpoint address of a tunnel with:  
+   `nft insert rule inet fw4 output ip daddr <ip-endpoint-address> counter reject`  
+    do not forget to reset the firewall (service firewall restart) or remove the rule
+ 
