@@ -20,12 +20,12 @@ There is a sorting of the DNS servers, the more weight you add the more the DNS 
 My WAN has two DNS servers with weight 20  
 ```  
 config interface 'wan'  
-option device 'wan'  
-option proto 'dhcp'  
-option peerdns '0'  
-list dns '9.9.9.9'  
-list dns '1.0.0.1'  
-option dns_metric '20'  
+    option device 'wan'  
+    option proto 'dhcp'  
+    option peerdns '0'  
+    list dns '9.9.9.9'  
+    list dns '1.0.0.1'  
+    option dns_metric '20'  
 ```  
 My resolv.conf file (/tmp/resolv.conf.d/resolv.conf.auto) will show those and those are the ones which DNSMasq is using:  
 root@DL-WRX36:~# cat /tmp/resolv.conf.d/resolv.conf.auto  
@@ -84,19 +84,19 @@ First you make a tag (in this case tag1) with the option and the DNS servers of 
 Then you add clients (e.g. static leases) and assign a tag to these clients, Below an example of three clients.    
 ```  
 config tag 'tag1'  
-option dhcp_option '6,8.8.8.8,8.8.4.4'  
+    option dhcp_option '6,8.8.8.8,8.8.4.4'  
 
 config host  
-option name 'client1'  
-option mac '00:21:63:75:aa:17'  
-option ip '10.11.12.14'  
-option tag 'tag1'  
+    option name 'client1'
+    option mac '00:21:63:75:aa:17'
+    option ip '10.11.12.14'
+    option tag 'tag1'  
 
 config host  
-option name 'client2'  
-option mac '01:22:64:76:bb:18'  
-option ip '10.11.12.15'  
-option tag 'tag1'  
+    option name 'client2'  
+    option mac '01:22:64:76:bb:18'  
+    option ip '10.11.12.15'  
+    option tag 'tag1'  
 ```  
     
 It is also possible to assign option 6 to a whole interface, e.g. add under the general options:    
@@ -121,14 +121,14 @@ You can also use `Port Forwarding` to make the iptables rules:
 ```  
 /etc/config/firewall:  
 config redirect 'dns_int'  
-option name 'Intercept-DNS'  
-option src 'lan'  
-option src_dport '53'  
-option proto 'tcp udp'  
-option target 'DNAT'  
-option dest_port '53'  
-option dest_ip '8.8.4.4'  
-option src_ip '192.168.9.224  
+    option name 'Intercept-DNS'  
+    option src 'lan'  
+    option src_dport '53'  
+    option proto 'tcp udp'  
+    option target 'DNAT'  
+    option dest_port '53'  
+    option dest_ip '8.8.4.4'  
+    option src_ip '192.168.9.224  
 ```  
 As the query will follow the routing of the client there is no specific need to set a route for the DNS server involved.  
 ## Stopping DNS hijacking  
