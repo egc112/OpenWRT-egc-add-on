@@ -3,7 +3,7 @@ version: 0.1, 23-mar-2024, by egc
 purpose: WireGuard watchdog , in case of failure of a wireguard tunnel the next tunnel is automatically started  
 script type: shell script  
 installation:  
-1. Copy owrt-wg-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh` to /usr/share  
+1. Copy owrt-wg-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh to /usr/share  
    either with: `curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh`  
    or by clicking the download icon in the upper right corner of the script  
 2. Make executable: `chmod +x /usr/share/owrt-wg-watchdog.sh`  
