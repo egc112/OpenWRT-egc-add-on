@@ -6,23 +6,20 @@ installation:
 1. Copy owrt-wg-watchdog.sh from https://github.com/egc112/ddwrt/tree/main/adblock/dnsmasq to /usr/share  
    either with: curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/ddwrt/main/adblock/dnsmasq/ddwrt-adblock-d.sh  
    or by clicking the download icon in the upper right corner of the script  
-4. Make executable: chmod +x /usr/share/owrt-wg-watchdog.sh
-5. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):  
-     /usr/share/owrt-wg-watchdog.sh &   
-6. The script can take two parameters, the first the ping time in seconds default is 30, the second the ip address used for pinging, default 8.8.8.8  
-   Use a ping time between 10 and 60 seconds, do not set ping time lower than 10 or you run the risk of being banned from the server you are pinging to.
-   As IP address you want to use for pinging (default 8.8.8.8) you can set an address which resolves to multiple IP addresses, under DHCP and DNS > Hostnames add  
+2. Make executable: chmod +x /usr/share/owrt-wg-watchdog.sh
+3. In the script add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:   
+   WG1=tunnel-name
+   WG2=second-tunnel-name
+   etc, you can set upt to 9 tunnels to use.
+4. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):  
+   /usr/share/owrt-wg-watchdog.sh &
+   Note the ampersand (&) at the end indicating that the script is executed asynchronously
+5. The script can take two parameters, the first the ping time in seconds default is 30, the second the ip address used for pinging, default 8.8.8.8  
+   Use a ping time between 10 and 60 seconds, do not set ping time lower than 10 or you run the risk of being banned from the server you are pinging to
+   As IP address you want to use for pinging (default 8.8.8.8) you can set an address which resolves to multiple IP addresses, under DHCP and DNS > Hostnames (/etc/config/dhcp, config domain) add  
    ping-host 8.8.8.8
    ping-host 9.9.9.9   
-   Then use ping-host as ping address e.g.:
+   Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if one address is not reachabl e.g.:
    /usr/share/owrt-wg-watchdog.sh 10 ping-host &
-8. modify options e.g. URL list, MYWHITELIST and MYBLACKLIST:  
-    vi /jffs/ddwrt-adblock-d.sh   
-    or edit with WinSCP  
-9. (optional) enable cron (administration->management) and add the  
-    following job (runs daily at 4 a.m.):  
-    0 4 * * * root /jffs/ddwrt-adblock-d.sh  
-10. reboot  
-11. (optional) Prevent LAN clients to use their own DNS by ticking/enabling Forced DNS Redirection and
-   Forced DNS Redirection DoT on Basic Setup page  
-12. Debug by removing the # on the second line of this script, view with: logread | grep debug  
+6. reboot  
+7. Debug by removing the # on the second line of this script, view with: logread | grep debug  
