@@ -1,4 +1,4 @@
-#!/bin/sh
+vi or winscp#!/bin/sh
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: owrt-wg-watchdog.sh
@@ -10,7 +10,7 @@
 #    either with: curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh
 #    or by clicking the download icon in the upper right corner of the script
 # 2. Make executable: chmod +x /usr/share/owrt-wg-watchdog.sh
-# 3. In the script add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:
+# 3. Edit the script with vi or winscpIn to add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:
 #    WG1=tunnel-name
 #    WG2=second-tunnel-name
 #    etc., you can set up to 9 tunnels to use.
