@@ -104,6 +104,7 @@ watchdog(){
 				activetunnel=$((activetunnel + 1))
 				set_active $activetunnel
 				search_active
+				echo "WireGuard watchdog: started, pinging every $SLEEP seconds to $PINGIP on tunnel ${wga} with endpoint $(uci get network.@wireguard_${wga}[0].endpoint_host)"
 			fi
 		done
 	done
