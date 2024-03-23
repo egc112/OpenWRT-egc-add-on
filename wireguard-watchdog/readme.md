@@ -1,7 +1,7 @@
  name: owrt-wg-watchdog.sh  
 version: 0.2, 24-mar-2024, by egc  
 purpose: WireGuard watchdog, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in case of failure of the WireGuard tunnel the next tunnel is automatically started  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in case of failure of the WireGuard tunnel the next tunnel is automatically started  
 script type: shell script  
 installation:  
 1. Copy owrt-wg-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh to /usr/share  
