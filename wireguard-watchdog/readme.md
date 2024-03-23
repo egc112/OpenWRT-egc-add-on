@@ -1,5 +1,5 @@
 name: owrt-wg-watchdog.sh  
-version: 0.1, 23-mar-2024, by egc  
+version: 0.2, 24-mar-2024, by egc  
 purpose: WireGuard watchdog , in case of failure of a wireguard tunnel the next tunnel is automatically started  
 script type: shell script  
 installation:  
