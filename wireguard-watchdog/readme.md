@@ -3,24 +3,22 @@ version: 0.1, 23-mar-2024, by egc
 purpose: WireGuard watchdog , in case of failure of a wireguard tunnel the next tunnel is automatically started  
 script type: shell script  
 installation:  
-1. copy owrt-wg-watchdog.sh from https://github.com/egc112/ddwrt/tree/main/adblock/dnsmasq to /usr/share  
+1. Copy owrt-wg-watchdog.sh from https://github.com/egc112/ddwrt/tree/main/adblock/dnsmasq to /usr/share  
    either with: curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/ddwrt/main/adblock/dnsmasq/ddwrt-adblock-d.sh  
    or by clicking the download icon in the upper right corner of the script  
-4. make executable: chmod +x /usr/share/owrt-wg-watchdog.sh  
-5. add to Administration  > Commands:  
-     /jffs/ddwrt-adblock-d.sh & 
-     if placed on USB then "Save USB" ; if jffs2 is used then : "Save Startup"  
-6. add the following to the "additional dnsmasq options" field on the
-    services page:  
-    conf-dir=/tmp,*.blck  
-    /tmp/ is the directory where the blocklists: *.blck are placed and can be checked  
-7. modify options e.g. URL list, MYWHITELIST and MYBLACKLIST:  
+4. Make executable: chmod +x /usr/share/owrt-wg-watchdog.sh
+5. The script can take two parameters, the first the ping time in seconds default is 30, the second the ip address used for pinging, default 8.8.8.8  
+   Use a ping time between 10 and 60 seconds, do not set ping time lower than 10 or you run the risk of being banned from the server you are pinging to.
+   As IP address you want to use for pining (default 8.8.8.8) you can 
+7. Add to System > Startup > Local Startup (/etc/rc.local):  
+     /usr/share/owrt-wg-watchdog.sh &   
+8. modify options e.g. URL list, MYWHITELIST and MYBLACKLIST:  
     vi /jffs/ddwrt-adblock-d.sh   
     or edit with WinSCP  
-8. (optional) enable cron (administration->management) and add the  
+9. (optional) enable cron (administration->management) and add the  
     following job (runs daily at 4 a.m.):  
     0 4 * * * root /jffs/ddwrt-adblock-d.sh  
-9. reboot  
-10. (optional) Prevent LAN clients to use their own DNS by ticking/enabling Forced DNS Redirection and
+10. reboot  
+11. (optional) Prevent LAN clients to use their own DNS by ticking/enabling Forced DNS Redirection and
    Forced DNS Redirection DoT on Basic Setup page  
-11. Debug by removing the # on the second line of this script, view with: logread | grep debug  
+12. Debug by removing the # on the second line of this script, view with: logread | grep debug  
