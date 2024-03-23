@@ -10,7 +10,7 @@ installation:
 3. In the script add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:   
    `WG1=tunnel-name`  
    `WG2=second-tunnel-name`  
-   etc, you can set up to 9 tunnels to use.
+   etc., you can set up to 9 tunnels to use.
 4. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):  
    `/usr/share/owrt-wg-watchdog.sh &`
    Note the ampersand (&) at the end indicating that the script is executed asynchronously
