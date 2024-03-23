@@ -33,7 +33,7 @@
 #    do not forget to reset the firewall (service firewall restart) or remove the rule
 
 
-#Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc max 9 tunnels
+#Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc., max 9 tunnels
 WG1="wg_mullv_se"
 WG2="wgoraclecloud"
 #WG3=
