@@ -20,7 +20,7 @@ installation:
    under DHCP and DNS > Hostnames (/etc/config/dhcp, config domain) add:  
    `ping-host 8.8.8.8`  
    `ping-host 9.9.9.9`   
-   Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if if one server is down:  
+   Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if if one server is down e.g.:  
    `/usr/share/owrt-wg-watchdog.sh 10 ping-host &`  
 7. reboot  
 8. Debug by removing the # on the second line of this script, view with: logread | grep debug  
