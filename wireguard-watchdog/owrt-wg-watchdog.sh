@@ -56,7 +56,7 @@ done
 # activate tunnel
 set_active(){
 	activetunnel=$1
-	[[ $activetunnel -gt $maxtunnels ]] && { activetunnel=1; echo "WireGuard watchdog: all tunnels failed starting over"; }
+	[[ $activetunnel -gt $maxtunnels ]] && { activetunnel=1; echo "WireGuard watchdog: all tunnels failed, starting over"; }
 	for i in $(seq 1 $maxtunnels); do
 		eval "wgi=\$$(echo WG${i})"
 		if [[ $i = "$activetunnel" ]]; then
@@ -89,7 +89,7 @@ search_active() {
 }
 
 watchdog(){
-	echo "WireGuard watchdog: $0 on tunnel ${wga} is running"
+	echo "WireGuard watchdog: pinging every $SLEEP seconds on tunnel ${wga}"
 		while sleep $SLEEP; do
 		while ! ping -qc1 -W6 -n $PINGIP -I ${wga} &> /dev/null; do
 			sleep 7
@@ -103,7 +103,7 @@ watchdog(){
 	done
 }
 
-echo "WireGuard watchdog: $0 is started"
+echo "WireGuard watchdog: $0 is started, waiting for services"
 sleep 120	# on startup wait till everything is running
 search_active
 watchdog
