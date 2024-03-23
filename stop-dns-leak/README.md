@@ -85,11 +85,13 @@ Then you add clients (e.g. static leases) and assign a tag to these clients, Bel
 ```  
 config tag 'tag1'  
 option dhcp_option '6,8.8.8.8,8.8.4.4'  
+
 config host  
 option name 'client1'  
 option mac '00:21:63:75:aa:17'  
 option ip '10.11.12.14'  
 option tag 'tag1'  
+
 config host  
 option name 'client2'  
 option mac '01:22:64:76:bb:18'  
