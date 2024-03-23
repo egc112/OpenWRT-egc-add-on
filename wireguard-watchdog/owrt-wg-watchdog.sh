@@ -6,14 +6,14 @@
 # purpose: WireGuard watchdog , in case of failure of a wireguard tunnel the next tunnel is automatically started
 # script type: shell script
 # installation:
-# 1. Copy owrt-wg-watchdog.sh from https://github.com/egc112/ddwrt/tree/main/adblock/dnsmasq to /usr/share
-#    either with: curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/ddwrt/main/adblock/dnsmasq/owrt-wg-watchdog.sh
+# 1. Copy owrt-wg-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh to /usr/share
+#    either with: curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh
 #    or by clicking the download icon in the upper right corner of the script
 # 2. Make executable: chmod +x /usr/share/owrt-wg-watchdog.sh
 # 3. In the script add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:
 #    WG1=tunnel-name
 #    WG2=second-tunnel-name
-#    etc., you can set upt to 9 tunnels to use.
+#    etc., you can set up to 9 tunnels to use.
 # 4. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):
 #    /usr/share/owrt-wg-watchdog.sh &
 #    Note the ampersand (&) at the end indicating that the script is executed asynchronously
@@ -44,10 +44,6 @@ PINGIP="$2"
 : ${PINGIP:=8.8.8.8}
 activetunnel=1
 
-# https://unix.stackexchange.com/questions/452723/is-it-possible-to-print-the-content-of-the-content-of-a-variable-with-shell-script
-# https://stackoverflow.com/questions/1921279/how-to-get-a-variable-value-if-variable-name-is-stored-as-string
-#for i in $(seq 1 9);do wgi='$'"$(echo WG${i})"; echo $wgi;eval echo $wgi;done
-
 # get max numer of tunnels
 for i in $(seq 1 9);do 
 	#eval echo "\$$(echo WG${i})"
@@ -68,7 +64,6 @@ set_active(){
 		fi
 	done
 	uci -q commit network
-	#( service network restart >/dev/null 2>&1 && service firewall restart >/dev/null 2>&1 ) &
 	( service network restart >/dev/null 2>&1 ) &
 	sleep 20
 }
