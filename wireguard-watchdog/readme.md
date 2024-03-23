@@ -3,8 +3,8 @@ version: 0.1, 23-mar-2024, by egc
 purpose: WireGuard watchdog , in case of failure of a wireguard tunnel the next tunnel is automatically started  
 script type: shell script  
 installation:  
-1. Copy owrt-wg-watchdog.sh from https://github.com/egc112/ddwrt/tree/main/adblock/dnsmasq to /usr/share  
-   either with: `curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/ddwrt/main/adblock/dnsmasq/ddwrt-adblock-d.sh  
+1. Copy `owrt-wg-watchdog.sh` from `https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh` to `/usr/share`  
+   either with: `curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh`  
    or by clicking the download icon in the upper right corner of the script  
 2. Make executable: `chmod +x /usr/share/owrt-wg-watchdog.sh`  
 3. In the script add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:   
