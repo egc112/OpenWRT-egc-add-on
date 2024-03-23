@@ -3,7 +3,7 @@
 
 # name: owrt-wg-watchdog.sh
 # version: 0.2, 24-mar-2024, by egc
-# purpose: WireGuard watchdog, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
+# purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
 #          in case of failure of the WireGuard tunnel the next tunnel is automatically started
 # script type: shell script
 # installation:
