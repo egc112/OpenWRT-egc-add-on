@@ -1,4 +1,4 @@
-vi or winscp#!/bin/sh
+#!/bin/sh
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: owrt-wg-watchdog.sh
@@ -26,8 +26,10 @@ vi or winscp#!/bin/sh
 #    Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if one server is down e.g.:
 #    /usr/share/owrt-wg-watchdog.sh 10 ping-host &
 # 6. reboot
-# 7. Debug by removing the # on the second line of this script, view with: logread | grep debug  
-
+# 7. View log with: logread -e watchdog, debug by removing the # on the second line of this script, view with: logread | grep debug
+# 8. You can test the script by blocking the endpoint address of a tunnel with:
+#    nft insert rule inet fw4 output ip daddr <ip-endpoint-address> counter reject
+#    do not forget to reset the firewall (service firewall restart) or remove the rule
 
 
 #Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc max 9 tunnels
@@ -64,6 +66,7 @@ set_active(){
 		fi
 	done
 	uci -q commit network
+	#( service network restart >/dev/null 2>&1 && service firewall restart >/dev/null 2>&1 ) &
 	( service network restart >/dev/null 2>&1 ) &
 	sleep 20
 }
