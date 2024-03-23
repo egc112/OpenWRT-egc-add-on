@@ -26,7 +26,7 @@ installation:
    Check if the name resolves with `nslookup ping-host`  
    Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if one server is down e.g.:  
    `/usr/share/owrt-wg-watchdog.sh 10 ping-host &`  
-   This will ping every 10 seconds, after a delay of 120 seconds on startup, to 8.8.8.8 and 9.9.9.9  
+   This will ping every 10 seconds, after a delay of 120 seconds on startup, to ping-host (= 8.8.8.8 and 9.9.9.9)  
 7. reboot  
 8. View log with: `logread -e watchdog`, debug by removing the # on the second line of the script, view with: `logread | grep debug`  
 9. You can test the script by blocking the endpoint address of a tunnel with:  
