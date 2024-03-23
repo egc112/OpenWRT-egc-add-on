@@ -2,7 +2,7 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: owrt-wg-watchdog.sh
-# version: 0.2, 24-mar-2024, by egc
+# version: 0.21, 24-mar-2024, by egc
 # purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
 #          in case of failure of the WireGuard tunnel the next tunnel is automatically started
 # script type: shell script
@@ -41,6 +41,9 @@ WG2="wgoraclecloud"
 #WG3=
 #WG4=
 
+#set seconds between log message indicating running watchdog
+alive=3600
+
 #------Do not change below this line------------
 (
 SLEEP="$1"
@@ -69,7 +72,6 @@ set_active(){
 		fi
 	done
 	uci -q commit network
-	#( service network restart >/dev/null 2>&1 && service firewall restart >/dev/null 2>&1 ) &
 	( service network restart >/dev/null 2>&1 ) &
 	sleep 20
 }
@@ -91,8 +93,10 @@ search_active() {
 }
 
 watchdog(){
-	echo "WireGuard watchdog: pinging every $SLEEP seconds to $PINGIP on tunnel ${wga} with endpoint $(uci get network.@wireguard_${wga}[0].endpoint_host)"
-		while sleep $SLEEP; do
+	echo "WireGuard watchdog: started, pinging every $SLEEP seconds to $PINGIP on tunnel ${wga} with endpoint $(uci get network.@wireguard_${wga}[0].endpoint_host)"
+	while sleep $SLEEP; do
+		[[ $active -gt $alive ]] >/dev/null 2>&1 && { echo "WireGuard watchdog: still running, pinging every $SLEEP seconds to $PINGIP on tunnel ${wga} with endpoint $(uci get network.@wireguard_${wga}[0].endpoint_host)"; \
+			active=0; } || active=$((active + $SLEEP))
 		while ! ping -qc1 -W6 -n $PINGIP -I ${wga} &> /dev/null; do
 			sleep 7
 			if ! ping -qc1 -W6 -n $PINGIP -I ${wga} &> /dev/null; then
