@@ -5,7 +5,7 @@ purpose: WireGuard watchdog with fail-over, by pinging every x seconds through t
 script type: shell script  
 installation:  
 1. Copy owrt-wg-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh to /usr/share  
-   either with:  
+   either with, from commandline (SSH):  
    `curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh`  
    or by clicking the download icon in the upper right corner of the script  
 3. Make executable: `chmod +x /usr/share/owrt-wg-watchdog.sh`  
