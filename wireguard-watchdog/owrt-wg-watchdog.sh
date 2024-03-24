@@ -2,13 +2,13 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: owrt-wg-watchdog.sh
-# version: 0.21, 24-mar-2024, by egc
+# version: 0.22, 25-mar-2024, by egc
 # purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
 #          in case of failure of the WireGuard tunnel the next tunnel is automatically started
 # script type: shell script
 # installation:
 # 1. Copy owrt-wg-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh to /usr/share
-#    either with: curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh
+#    either with, from commandline (SSH): curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh
 #    or by clicking the download icon in the upper right corner of the script
 # 2. Make executable: chmod +x /usr/share/owrt-wg-watchdog.sh
 # 3. Edit the script with vi or winscp to add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:
@@ -27,12 +27,13 @@
 #    Check if the name resolves with nslookup ping-host
 #    Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if one server is down e.g.:
 #    /usr/share/owrt-wg-watchdog.sh 10 ping-host &
-#    This will ping every 10 seconds, after a delay of 120 seconds on startup, to 8.8.8.8 and 9.9.9.9
+#    This will ping every 10 seconds, after a delay of 120 seconds on startup, to  ping-host (= 8.8.8.8 and 9.9.9.9)
 # 6. reboot
 # 7. View log with: logread -e watchdog, debug by removing the # on the second line of this script, view with: logread | grep debug
 # 8. You can test the script by blocking the endpoint address of a tunnel with:
 #    nft insert rule inet fw4 output ip daddr <ip-endpoint-address> counter reject
 #    do not forget to reset the firewall (service firewall restart) or remove the rule
+# 9. To stop a running script, do from the command line: killall owrt-wg-watchdog.sh
 
 
 #Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc., max 9 tunnels
