@@ -2,7 +2,7 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: owrt-wg-watchdog.sh
-# version: 0.22, 25-mar-2024, by egc
+# version: 0.3, 25-mar-2024, by egc
 # purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
 #          in case of failure of the WireGuard tunnel the next tunnel is automatically started
 # script type: shell script
@@ -37,10 +37,9 @@
 
 
 #Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc., max 9 tunnels
-WG1="wg_mullv_se"
-WG2="wgoraclecloud"
-#WG3=
-#WG4=
+WG1="name-of-wg1-interface"
+WG2="name-of-wg2-interface"
+#WG3="etc."
 
 #set seconds between log message indicating running watchdog
 alive=3600
@@ -48,16 +47,33 @@ alive=3600
 #------Do not change below this line------------
 (
 SLEEP="$1"
+if [[ -z $SLEEP ]]; then
+	SLEEP=30
+elif [[ $SLEEP -gt 60 || $SLEEP -lt 10 ]]; then 
+	echo echo "WireGuard watchdog ERROR: Sleep is $SLEEP but needs to be in the range of 10 - 60 seconds"
+	exit 1
+fi
+
 PINGIP="$2"
-: ${SLEEP:=30}
-: ${PINGIP:=8.8.8.8}
+if [[ -z $PINGIP ]]; then
+	PINGIP=8.8.8.8
+elif ! nslookup "$PINGIP" >/dev/null 2>&1; then
+	echo "WireGuard watchdog ERROR: could not resolve PINGIP $PINGIP"
+	exit 1
+fi
+
 activetunnel=1
 
 # get max numer of tunnels
-for i in $(seq 1 9);do 
-	#eval echo "\$$(echo WG${i})"
-	[[ -z $(eval echo "\$$(echo WG${i})") ]] && { maxtunnels=$((i - 1)); break; }
-done
+get_tunnels(){
+	echo -e -n "WireGuard watchdog: Available tunnels: "
+	for i in $(seq 1 9);do 
+		[[ -z $(eval echo "\$$(echo WG${i})") ]] && { maxtunnels=$((i - 1)); break; }
+		eval echo -n "\$$(echo WG${i})"
+		echo -n "; "
+	done
+	echo ""
+}
 
 # activate tunnel
 set_active(){
@@ -66,7 +82,6 @@ set_active(){
 	for i in $(seq 1 $maxtunnels); do
 		eval "wgi=\$$(echo WG${i})"
 		if [[ $i = "$activetunnel" ]]; then
-			#uci set network.${wgi}.disabled="0"
 			uci -q del network.${wgi}.disabled
 		else
 			uci -q set network.${wgi}.disabled="1"
@@ -113,6 +128,7 @@ watchdog(){
 
 echo "WireGuard watchdog: $0 is started, waiting for services"
 sleep 120	# on startup wait till everything is running
+get_tunnels
 search_active
 watchdog
 
