@@ -15,7 +15,7 @@ installation:
    etc., you can set up to 9 tunnels to use.
 4. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):  
    `/usr/share/owrt-wg-watchdog.sh &`  
-   Note the ampersand (&) at the end indicating that the script is executed asynchronously
+   Note the ampersand (&) at the end indicating that the script is executed asynchronously  
    Test it first from the commandline before adding it to startup and/or make sure you have a recent backup just in case  
 6. The script can take two parameters, the first the ping time in seconds default is 30, the second the ip address used for pinging,   
    default is 8.8.8.8  
