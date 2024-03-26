@@ -19,7 +19,7 @@ installation:
 5. The script can take two parameters, the first the ping time in seconds default is 30, the second the ip address used for pinging,   
    default is 8.8.8.8  
    Use a ping time between 10 and 60 seconds, do not set ping time lower than 10 or you run the risk of being banned from the server you are pinging to  
-   As IP address you want to use for pinging (default 8.8.8.8) you can set an address which resolves to multiple IP addresses,
+   Instead of an IP address you use for pinging (default 8.8.8.8) you can also set a host-name which resolves to multiple IP addresses:  
    under DHCP and DNS > Hostnames (/etc/config/dhcp, config domain) add:  
    `ping-host 8.8.8.8`  
    `ping-host 9.9.9.9`  
