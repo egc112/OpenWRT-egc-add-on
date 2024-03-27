@@ -1,5 +1,5 @@
  name: owrt-wg-watchdog.sh  
-version: 0.3, 25-mar-2024, by egc  
+version: 0.31, 26-mar-2024, by egc  
 purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in case of failure of the WireGuard tunnel the next tunnel is automatically started  
 script type: shell script  
@@ -25,7 +25,7 @@ installation:
    `ping-host 8.8.8.8`  
    `ping-host 9.9.9.9`  
    Check if the name resolves with: `nslookup ping-host`  
-   Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if one server is down e.g.:  
+   Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if one server is down e.g. start with:  
    `/usr/share/owrt-wg-watchdog.sh 10 ping-host &`  
    This will ping every `10` seconds (after a delay of 120 seconds on startup) to `ping-host` (= 8.8.8.8 and 9.9.9.9)  
 7. reboot  
