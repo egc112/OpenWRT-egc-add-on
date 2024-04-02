@@ -41,6 +41,10 @@ Example of /etc/openvpn/cl-userpass, username and password on separate line:
  `Hans`  
  `Worst@2`  
 
+References  
+Multifactor authentication: https://openvpn.net/blog/multi-factor-authentication-with-openvpn-community-edition/  
+
+  
 ## PATCHES ##  
 Unfortunately while making this I discovered a bug in OpenVPN see [#23014](https://github.com/openwrt/packages/issues/23014) .  
 In the mean time I have made pull requests to solve this bug and in 23.05 snapshot and Main builds *after* January 2024 this bug has been patched so no need to read furhter if you are using those builds.   
