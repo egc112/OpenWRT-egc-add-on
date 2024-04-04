@@ -129,7 +129,16 @@ config redirect 'dns_int'
     option dest_port '53'  
     option dest_ip '8.8.4.4'  
     option src_ip '192.168.9.224  
-```  
+```
+or for a whole interface e.g. `guest`
+```
+config redirect
+	    option name 'DNS-Guest'
+        option target 'DNAT'
+        option src 'guest'
+        option src_dport '53'
+        option dest_ip '8.8.4.4'
+```
 As the query will follow the routing of the client there is no specific need to set a route for the DNS server involved.  
 ## Stopping DNS hijacking  
 https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
