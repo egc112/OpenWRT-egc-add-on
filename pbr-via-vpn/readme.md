@@ -9,9 +9,9 @@ either with, from commandline (SSH):
 or by clicking the download icon in the upper right corner of the script  
 In the script adapt the vpn-interface you want to use and ipaddress/interface you want to route via the VPN  
 Stop default routing via the VPN do:   
-for WireGuard: disable "Route Allowed IPs" in the peer section 
-for OpenVPN: in the openvpn config add:
-       `  pull-filter ignore "redirect-gateway"`
+for WireGuard: disable "Route Allowed IPs" in the peer section  
+for OpenVPN: in the openvpn config add:  
+       `  pull-filter ignore "redirect-gateway"`  
        `  redirect-private def1`  
 Reboot or restart network (service network restart)  
 
