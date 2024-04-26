@@ -15,7 +15,8 @@
 #       redirect-private def1
 #  reboot or restart network (service network restart)
 
-# Set the name of the VPN interface you want to use between the quotes, make sure there are no space in the whole rule:
+# Set the name of the VPN interface you want to use between the quotes, make sure there are no space in the whole rule
+# The name is the name as given in the interfaces sections, for OpenVPN you have to create an interface with same name as the device name e.g. tun0:
 VPNINTERFACE="set-name-of-vpn-interface"
 
 # Enable (remove #) and set the ip adressess of clients you want to use in CIDR format and/or 
