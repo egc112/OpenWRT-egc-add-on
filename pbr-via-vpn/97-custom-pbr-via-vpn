@@ -22,7 +22,7 @@ VPNINTERFACE="set-name-of-vpn-interface"
 # Enable (remove #) and set the ip adressess of clients you want to use in CIDR format and/or 
 #  the device you want to use as shown by ifconfig, e.g. br-lan or br-guest, set between the quotes
 # Make sure there are no spaces in the rules
-#IPADDR="192.168.30.0/24"
+#IPADDR="192.168.30.10/32"
 #MYINTERFACE="br-guest"
 
 #DEBUG=; set -x; logger -t hotplug $(env); # uncomment/comment to enable/disable debug mode
