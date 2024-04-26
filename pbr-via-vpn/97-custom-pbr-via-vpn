@@ -24,15 +24,15 @@ VPNINTERFACE="set-name-of-vpn-interface"
 #IPADDR="192.168.30.0/24"
 #MYINTERFACE="br-guest"
 
-
 #DEBUG=; set -x; logger -t hotplug $(env); # uncomment/comment to enable/disable debug mode
+
 TID=102		# routing table number
 {
-
 set_routes() {
-	if [ "$INTERFACE" == "lan" ]; then
-		sleep 10
+	if [ "$INTERFACE" == "$VPNINTERFACE" ]; then
+		sleep 2
 		if [ "$ACTION" == "ifup" ]; then
+			echo "adding default route on ifup $VPNINTERFACE to table $TID"
 			# Make table with default route via the VPN
 			ip route add default dev "$VPNINTERFACE" table $TID
 			# add local routes can be enabled if needed
@@ -47,7 +47,7 @@ set_routes() {
 		if [ "$ACTION" == "ifdown" ]; then
 			while ip rule delete from 0/0 to 0/0 table $TID >/dev/null 2>&1; do true; done
 			ip route flush table $TID
-			echo "clean up"
+			echo "clean up on ifdown $VPNINTERFACE"
 		fi
 	fi
 }
