@@ -30,7 +30,7 @@ TID=102		# routing table number
 {
 
 set_routes() {
-	if [ "$INTERFACE" == "$VPNINTERFACE" ]; then
+	if [ "$INTERFACE" == "lan" ]; then
 		sleep 10
 		if [ "$ACTION" == "ifup" ]; then
 			# Make table with default route via the VPN
