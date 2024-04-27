@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name: 98-pbr-via-wan
-# Version: 04-apr-2024 by egc
+# Version: 27-apr-2024 by egc
 # Description: OpenWRT hoptlug script routing a specific sourceport or local IP address via the WAN
 # Usage: e.g. When running a concurrent VPN client and VPN server and needing to route the VPN server port via the WAN and/or
 #	when excluding some local IP addresses from using the VPN
@@ -18,16 +18,21 @@ MYINTERFACE="wg0"	#set the interface you are using for your WireGuard interface
 TID=100
 {
 # getdefault gateway
-# Alternatively on WAN interface Advanced settings "Override IPv4 routing table" set table number, a table with this number and default via the WAN is set or uci -q set network.wan.ip4table='22'
+# Alternatively on WAN interface Advanced settings "Override IPv4 routing table" set table number, a table with this number and default via the WAN is made.
+# This is also possible to do with scripting with: uci -q set network.wan.ip4table="$TID"; uci commit network
 get_gateway4() {
 		GATEWAY4="$(ifstatus wan | grep nexthop | sed 's/[^0-9.]//g')"
 		# if there is no WAN e.g. a Dumb AP
 		if [[ -z "$GATEWAY4" ]]; then
 			GATEWAY4="$(uci get network.lan.gateway)"
 		fi
+		# Alernative
+		# uci -q set network.wan.ip4table="$TID" 
+		# uci commit network
 }
 
-# Alternatively on WAN6 interface Advanced settings "Override IPv6 routing table" set table number, a table with this number and default via the WAN is set or: uci -q set network.wan.ip6table='22'
+# Alternatively on WAN6 interface Advanced settings "Override IPv6 routing table" set table number, a table with this number and default via the WAN is made
+# This is also possible to do with scripting with: uci -q set network.wan.ip6table="$TID"; uci commit network
 get_gateway6() {
 	GATEWAY6="$(ip -6 route | grep "default" | awk '{print $5;exit;}')"
 	DEV6="$(ip -6 route | grep "default" | awk '{print $7;exit;}')"
@@ -96,6 +101,8 @@ set_routes() {
 		if [ "$ACTION" == "ifdown" ]; then
 			while ip rule delete from 0/0 to 0/0 table $TID >/dev/null 2>&1; do true; done
 			ip route flush table $TID
+			#uci delete network.wan.ip4table
+			#uci commit network
 			echo "pbr: clean up"
 		fi
 	fi
