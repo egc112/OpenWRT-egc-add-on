@@ -66,7 +66,7 @@ fi
 
 activetunnel=1
 
-# get max numer of tunnels
+# get max number of tunnels
 get_tunnels(){
 	echo -e -n "WireGuard watchdog: Available tunnels: "
 	for i in $(seq 1 9);do 
