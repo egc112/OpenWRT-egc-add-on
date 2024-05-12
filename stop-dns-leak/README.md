@@ -35,7 +35,7 @@ root@DL-WRX36:~# cat /tmp/resolv.conf.d/resolv.conf.auto
 nameserver 9.9.9.9  
 nameserver 1.0.0.1  
 ```  
-When I activate my WG interface with DNS server and also weight 20, then tat will be placed at the bottom of the file. By specifying a lesser weight than the other DNS servers it will be placed at the top of the file:  
+When I activate my WG interface with DNS server and also weight 20, then that will be placed at the bottom of the file. By specifying a lesser weight than the other DNS servers it will be placed at the top of the file:  
 Weight 20 of WG (same as WAN)  
 ```  
 # Interface wan6  
