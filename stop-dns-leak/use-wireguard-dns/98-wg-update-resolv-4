@@ -1,0 +1,93 @@
+#!/bin/sh
+#DEBUG=; set -x # comment/uncomment to disable/enable debug mode
+
+# Script to set WG DNS servers exclusive to DNSMasq
+# File name: 98-wg-update-resolv-4
+# Version 14-05-24
+# Install:
+#  Copy this cript to /etc/hotplug.d/iface
+#  Make executable: chmod +x /etc/hotplug.d/iface/98-wg-update-resolv-4
+#  If you have only one WG interface it will be set automagically, otherwise add the name of the WG interface below
+# Fundamentals:
+#  On ifup of the WG interface the resolv.conf file will be replaced with a file containing only the WG DNS server(s)
+#  All WireGuard DNS servers will be explicitly routed via the tunnel usefull when using PBR
+#  On ifdown the old resolv.conf file is restored and routes deleted
+#  This is not compatible with the use of encrypted DNS or the setting of `Use Custom DNS servers`  (server=)
+# View log with: logread -e hotplug-call, debug by removing the # on the second line of this script, view with: logread | grep debug
+
+
+# user settings, set name of the WG interface
+WG_INTERFACE="set-name-of-wg-interface"
+# end user settings do not change anything below
+
+
+(
+WG_RESOLVF="/tmp/resolv.conf.wg"
+DEF_RESOLVF="/tmp/default_resolv_wg"
+
+# experimental get wg name works only when having one WG client
+if [[  "$WG_INTERFACE" = "set-name-of-wg-interface" ]]; then  
+	WG_INTERFACE=$(uci show | grep -m 1 "proto='wireguard'" | cut -d '.' -f2 | cut -d '.' -f1)
+	logger -t $(basename $0)[$$] -p user.notice "WG interface automagically set to $WG_INTERFACE"
+fi
+
+if [[ "${ACTION}" = "ifup" && ${INTERFACE} = "$WG_INTERFACE" ]]; then
+	#make sure environment is clean
+	rm -fr "$WG_RESOLVF" >/dev/null 2>&1
+	# if $DEF_RESOLVF exists when the tunnel is brought up it indicates a dirty ifdown so reset to defaults
+	[[ "$WG_RESOLVF" = "$(uci get dhcp.@dnsmasq[0].resolvfile)" ]] && { uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.d/resolv.conf.auto"; \ 
+		rm -fr "$DEF_RESOLVF" >/dev/null 2>&1; logger -t $(basename $0)[$$] -p user.notice "Dirty ifdown detected reset DNSMasq to default"; }
+	# Instead of removing the resolv file consider: uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.d/resolv.conf.auto" 
+	# Instead of setting the resolv file consider removing as it will default then: uci del dhcp.@dnsmasq[0].resolvfile 
+	# Get WG DNS servers and add to WG_RESOLVF
+	ALLDNS="$(uci get network.${WG_INTERFACE}.dns)"
+	if [[ -z "$ALLDNS" ]]; then 
+		logger -t $(basename $0)[$$] -p user.err "No WireGuard DNS servers found, using default servers!"
+		return 0
+	else
+		for wgdns in $ALLDNS; do
+			echo -e "nameserver $wgdns" >> $WG_RESOLVF
+		done
+		# Make sure DNS servers are always routed via the tunnel e.g. in case of PBR
+		if [[ -s $WG_RESOLVF ]]; then
+			while read dns; do
+				ip route add $(echo $dns | awk '{print $2}') dev $WG_INTERFACE
+			done < $WG_RESOLVF
+		fi
+		
+		# Save default resolv file
+		uci get dhcp.@dnsmasq[0].resolvfile > $DEF_RESOLVF
+		# Replace default resolv file
+		uci set dhcp.@dnsmasq[0].resolvfile=$WG_RESOLVF
+		uci commit dhcp
+		/etc/init.d/dnsmasq restart &
+		logger -t $(basename $0)[$$] -p user.notice "Exclusively using $WG_INTERFACE DNS server(s) from $WG_RESOLVF"
+	fi
+fi
+
+if [[ "${ACTION}" = "ifdown" && ${INTERFACE} = "$WG_INTERFACE" ]]; then
+	# Restore dns, deleting the resolv file path will use default
+	if [[ -s $DEF_RESOLVF ]]; then
+		uci set dhcp.@dnsmasq[0].resolvfile=$(cat $DEF_RESOLVF)
+	elif [[ -e $DEF_RESOLVF ]]; then
+		uci del dhcp.@dnsmasq[0].resolvfile
+	else	#no DNS servers present so did not run
+		logger -t $(basename $0)[$$] -p user.notice "No WireGuard DNS server(s) set anymore"
+		return 0
+	fi
+	uci commit dhcp
+	/etc/init.d/dnsmasq restart &
+	# Remove routing of DNS servers might be redundant as routes are removed when interface goes down
+	if [[ -s $WG_RESOLVF ]]; then
+	while read dns; do
+		ip route del $(echo $dns | awk '{print $2}') dev $WG_INTERFACE >/dev/null 2>&1
+	done < $WG_RESOLVF
+	fi
+	# Remove vpn resolv file
+	rm -fr "$WG_RESOLVF" >/dev/null 2>&1
+	rm -fr "$DEF_RESOLVF" >/dev/null 2>&1
+	logger -t $(basename $0)[$$] -p user.notice "$WG_INTERFACE is down, Default DNS server(s) restored"
+fi
+exit 0
+) 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
+    -t $(echo $(basename $0) | grep -Eo '^.{0,23}')[$$] &
