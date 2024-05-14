@@ -1,8 +1,8 @@
 ### Use DNS servers for WireGuard  
 
  Script to set WG DNS servers exclusive to DNSMasq  
- File name: wg-update-resolv-3  
- Version 27-07-23
+ File name: 98-wg-update-resolv-4  
+ Version 14-05-24
    
  Install: 
   Copy this cript to /etc/hotplug.d/iface  
