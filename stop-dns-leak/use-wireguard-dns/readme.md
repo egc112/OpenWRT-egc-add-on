@@ -6,7 +6,7 @@
    
  Install: 
   Copy this cript to /etc/hotplug.d/iface  
-  Make executable: `chmod +x /etc/hotplug.d/iface/wg-update-resolv-3`  
+  Make executable: `chmod +x /etc/hotplug.d/iface/98-wg-update-resolv-4`  
   If you have only one WG interface it will be set automagically, otherwise add the name of the WG interface in the script  
     
  Fundamentals:  
