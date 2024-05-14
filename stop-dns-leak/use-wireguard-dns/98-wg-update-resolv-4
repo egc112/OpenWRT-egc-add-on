@@ -28,7 +28,7 @@ DEF_RESOLVF="/tmp/default_resolv_wg"
 # experimental get wg name works only when having one WG client
 if [[  "$WG_INTERFACE" = "set-name-of-wg-interface" ]]; then  
 	WG_INTERFACE=$(uci show | grep -m 1 "proto='wireguard'" | cut -d '.' -f2 | cut -d '.' -f1)
-	logger -t $(basename $0)[$$] -p user.notice "WG interface automagically set to $WG_INTERFACE"
+	echo "WG interface automagically set to $WG_INTERFACE"
 fi
 
 if [[ "${ACTION}" = "ifup" && ${INTERFACE} = "$WG_INTERFACE" ]]; then
@@ -36,13 +36,13 @@ if [[ "${ACTION}" = "ifup" && ${INTERFACE} = "$WG_INTERFACE" ]]; then
 	rm -fr "$WG_RESOLVF" >/dev/null 2>&1
 	# if $DEF_RESOLVF exists when the tunnel is brought up it indicates a dirty ifdown so reset to defaults
 	[[ "$WG_RESOLVF" = "$(uci get dhcp.@dnsmasq[0].resolvfile)" ]] && { uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.d/resolv.conf.auto"; \ 
-		rm -fr "$DEF_RESOLVF" >/dev/null 2>&1; logger -t $(basename $0)[$$] -p user.notice "Dirty ifdown detected reset DNSMasq to default"; }
+		rm -fr "$DEF_RESOLVF" >/dev/null 2>&1; echo "Dirty ifdown detected reset DNSMasq to default"; }
 	# Instead of removing the resolv file consider: uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.d/resolv.conf.auto" 
 	# Instead of setting the resolv file consider removing as it will default then: uci del dhcp.@dnsmasq[0].resolvfile 
 	# Get WG DNS servers and add to WG_RESOLVF
 	ALLDNS="$(uci get network.${WG_INTERFACE}.dns)"
 	if [[ -z "$ALLDNS" ]]; then 
-		logger -t $(basename $0)[$$] -p user.err "No WireGuard DNS servers found, using default servers!"
+		echo "No WireGuard DNS servers found, using default servers!"
 		return 0
 	else
 		for wgdns in $ALLDNS; do
@@ -61,7 +61,7 @@ if [[ "${ACTION}" = "ifup" && ${INTERFACE} = "$WG_INTERFACE" ]]; then
 		uci set dhcp.@dnsmasq[0].resolvfile=$WG_RESOLVF
 		uci commit dhcp
 		/etc/init.d/dnsmasq restart &
-		logger -t $(basename $0)[$$] -p user.notice "Exclusively using $WG_INTERFACE DNS server(s) from $WG_RESOLVF"
+		echo "Exclusively using $WG_INTERFACE DNS server(s) from $WG_RESOLVF: $(cat $WG_RESOLVF)"
 	fi
 fi
 
@@ -72,7 +72,7 @@ if [[ "${ACTION}" = "ifdown" && ${INTERFACE} = "$WG_INTERFACE" ]]; then
 	elif [[ -e $DEF_RESOLVF ]]; then
 		uci del dhcp.@dnsmasq[0].resolvfile
 	else	#no DNS servers present so did not run
-		logger -t $(basename $0)[$$] -p user.notice "No WireGuard DNS server(s) set anymore"
+		echo "No WireGuard DNS server(s) set anymore"
 		return 0
 	fi
 	uci commit dhcp
@@ -86,7 +86,7 @@ if [[ "${ACTION}" = "ifdown" && ${INTERFACE} = "$WG_INTERFACE" ]]; then
 	# Remove vpn resolv file
 	rm -fr "$WG_RESOLVF" >/dev/null 2>&1
 	rm -fr "$DEF_RESOLVF" >/dev/null 2>&1
-	logger -t $(basename $0)[$$] -p user.notice "$WG_INTERFACE is down, Default DNS server(s) restored"
+	echo "$WG_INTERFACE is down, Default DNS server(s) restored"
 fi
 exit 0
 ) 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
