@@ -23,9 +23,8 @@
 #     but if you add this setting then you must add your own DNS servers otherwise you will not have DNS!
 #  To set your own DNS servers to use when the tunnel is up, add in the openvpn conf file: dhcp-option DNS ip-address-DNS-server
 #  To set your own search domain to use when the tunnel is up, add in the openvpn conf file: dhcp-option DOMAIN my-search-domain
+#  View log with: logread -e ovpn-update-resolv, debug by removing the # on the second line of this script, view with: logread | grep debug
 #  When something goes wrong, disable the VPN and restore DNS with: `uci del dhcp.@dnsmasq[0].resolvfile && uci commit dhcp` , and reboot
-
-# https://openwrt.org/docs/guide-user/services/vpn/openvpn/extras#network_interface 
 
 (
 VPN_RESOLVF="/tmp/resolv_conf.vpn"
@@ -58,7 +57,7 @@ up)
 	uci set dhcp.@dnsmasq[0].resolvfile=$VPN_RESOLVF
 	#uci commit dhcp
 	/etc/init.d/dnsmasq restart &
-	echo "Exclusively using openvpn DNS server(s) from $VPN_RESOLVF: $(cat $VPN_RESOLVF)"
+	echo "OpenVPN up: Exclusively using openvpn DNS server(s) from $VPN_RESOLVF: $(cat $VPN_RESOLVF)"
 	;;
 down)
 	# Restore dns, deleting the resolv file path will use default
@@ -82,7 +81,7 @@ down)
 	# Remove vpn resolv file
 	rm -fr "$VPN_RESOLVF" >/dev/null 2>&1
 	rm -fr "$DEF_RESOLVF" >/dev/null 2>&1
-	echo "Default DNS server(s) restored"
+	echo "OpenVPN down: Default DNS server(s) restored"
 	;;
 esac
 exit 0
