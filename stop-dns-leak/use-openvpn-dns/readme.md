@@ -3,7 +3,7 @@
  Filename: ovpn-update-resolv-9  
  Version: 15-may-2024  
  Before you start make a backup of your settings just in case  
- Install: 
+ Install:  
    Copy ovpn-update-resolv-9 from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-openvpn-dns/ovpn-update-resolv-9 to /etc/openvpn  
    either from commandline (SSH):  
      `curl -o /etc/openvpn/ovpn-update-resolv-9 https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-openvpn-dns/ovpn-update-resolv-9`  
