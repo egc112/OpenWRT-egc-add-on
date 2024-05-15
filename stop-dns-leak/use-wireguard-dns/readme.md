@@ -7,7 +7,7 @@
 Before you start make a backup of your settings just in case  
   
 Install:  
-  Copy 98-wg-update-resolv-4 from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-wireguard-dns/98-wg-update-resolv-4 to /etc/hotplug.d/iface  
+  Copy 98-wg-update-resolv-4 from https://github.com/egc112/OpenWRT-egc-add-on/blob/main/stop-dns-leak/use-wireguard-dns/98-wg-update-resolv-4 to /etc/hotplug.d/iface  
   either from commandline (SSH):  
     `curl -o /etc/hotplug.d/iface/98-wg-update-resolv-4 https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-wireguard-dns/98-wg-update-resolv-4`  
    or by clicking the download icon in the upper right corner of the script on github and use scp/WinSCP to transfer the file  
