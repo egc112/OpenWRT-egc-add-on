@@ -2,7 +2,9 @@
  Description: Script to grab DNS servers from the tunnel for exclusive use by DNSMasq and route those via the tunnel to prevent DNS leaks  
  Filename: ovpn-update-resolv-9  
  Version: 15-may-2024  
+   
  Before you start make a backup of your settings just in case  
+   
  Install:  
    Copy ovpn-update-resolv-9 from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-openvpn-dns/ovpn-update-resolv-9 to /etc/openvpn  
    either from commandline (SSH):  
