@@ -2,12 +2,15 @@
 
  Script to set WG DNS servers exclusive to DNSMasq  
  File name: 98-wg-update-resolv-4  
- Version 14-05-24
-   
- Install: 
-  Copy this cript to /etc/hotplug.d/iface  
-  Make executable: `chmod +x /etc/hotplug.d/iface/98-wg-update-resolv-4`  
-  If you have only one WG interface it will be set automagically, otherwise add the name of the WG interface in the script  
+ Version 15-05-24  
+  
+Install: 
+  Copy 98-wg-update-resolv-4 from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-wireguard-dns/98-wg-update-resolv-4 to /etc/hotplug.d/iface  
+  either from commandline (SSH):  
+    `curl -o /etc/hotplug.d/iface/98-wg-update-resolv-4 https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-wireguard-dns/98-wg-update-resolv-4`  
+   or by clicking the download icon in the upper right corner of the script on github and use scp/WinSCP to transfer the file  
+   Make executable: `chmod +x /etc/hotplug.d/iface/98-wg-update-resolv-4`  
+   If you have only one WG interface it will be set automagically, otherwise add the name of the WG interface in the script  
     
  Fundamentals:  
   On ifup of the WG interface the resolv.conf file will be replaced with a file containing only the WG DNS server(s)  
