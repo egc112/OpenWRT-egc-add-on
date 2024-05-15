@@ -4,7 +4,8 @@
  File name: 98-wg-update-resolv-4  
  Version 15-may-24  
 
-Before you start make a backup of your settings just in case
+Before you start make a backup of your settings just in case  
+  
 Install:  
   Copy 98-wg-update-resolv-4 from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-wireguard-dns/98-wg-update-resolv-4 to /etc/hotplug.d/iface  
   either from commandline (SSH):  
