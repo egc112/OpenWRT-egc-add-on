@@ -4,7 +4,7 @@
  File name: 98-wg-update-resolv-4  
  Version 15-05-24  
   
-Install: 
+Install:  
   Copy 98-wg-update-resolv-4 from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-wireguard-dns/98-wg-update-resolv-4 to /etc/hotplug.d/iface  
   either from commandline (SSH):  
     `curl -o /etc/hotplug.d/iface/98-wg-update-resolv-4 https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-wireguard-dns/98-wg-update-resolv-4`  
