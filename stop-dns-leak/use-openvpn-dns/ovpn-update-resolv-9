@@ -1,10 +1,12 @@
 #!/bin/sh
+#DEBUG=; set -x # comment/uncomment to disable/enable debug mode
+
 # File name: ovpn-update-resolv-9
 # Description: Script to grab DNS servers from the tunnel for exclusive use by DNSMasq and routes those via the tunnel to prevent DNS leaks
 # Version: 15-may-2024
 # Before you start make a backup of your settings just in case
 # Install:
-#  Copy ovpn-update-resolv-9 from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-openvpn-dns/ovpn-update-resolv-9 to /etc/openvpn
+#  Copy ovpn-update-resolv-9 from https://github.com/egc112/OpenWRT-egc-add-on/blob/main/stop-dns-leak/use-openvpn-dns/ovpn-update-resolv-9 to /etc/openvpn
 #    either from commandline (SSH):
 #      curl -o /etc/openvpn/ovpn-update-resolv-9 https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-dns-leak/use-openvpn-dns/ovpn-update-resolv-9
 #    or by clicking the download icon in the upper right corner of the script on github and use scp/WinSCP to transfer the file
@@ -25,7 +27,6 @@
 
 # https://openwrt.org/docs/guide-user/services/vpn/openvpn/extras#network_interface 
 
-#set -x
 (
 VPN_RESOLVF="/tmp/resolv_conf.vpn"
 DEF_RESOLVF="/tmp/default_resolv_ovpn"
@@ -34,14 +35,14 @@ case $script_type in
 up)
 	# if $DEF_RESOLVF exists when the tunnel is brought up it indicates a dirty ifdown so reset to defaults
 	[[ "$VPN_RESOLVF" = "$(uci get dhcp.@dnsmasq[0].resolvfile)" ]] && { uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.d/resolv.conf.auto"; \
-		 rm -fr "$DEF_RESOLVF" >/dev/null 2>&1; uci commit dhcp; logger -t $(basename $0)[$$] -p user.notice "Dirty ifdown detected reset DNSMasq to default"; }
+		 rm -fr "$DEF_RESOLVF" >/dev/null 2>&1; uci commit dhcp; echo "Dirty ifdown detected reset DNSMasq to default"; }
 
 	# Get DNS servers and DNS servers manually set in conf file
 	rm -fr "$VPN_RESOLVF" >/dev/null 2>&1
 	env | grep 'dhcp-option DNS' | awk '{ print "nameserver " $3 }' > $VPN_RESOLVF
 	env | grep 'dhcp-option DOMAIN' | awk '{ print "search " $3 }' >> $VPN_RESOLVF
 	if ! grep -q 'nameserver' "$VPN_RESOLVF"; then
-		logger -t $(basename $0)[$$] -p user.warning "No openvpn DNS servers found, using default servers!"
+		echo "No openvpn DNS servers found, using default servers!"
 		rm -fr "$VPN_RESOLVF" >/dev/null 2>&1
 		return 0
 	fi
@@ -57,7 +58,7 @@ up)
 	uci set dhcp.@dnsmasq[0].resolvfile=$VPN_RESOLVF
 	#uci commit dhcp
 	/etc/init.d/dnsmasq restart &
-	logger -t $(basename $0)[$$] -p user.notice "Exclusively using openvpn DNS server(s) from $VPN_RESOLVF"
+	echo "Exclusively using openvpn DNS server(s) from $VPN_RESOLVF: $(cat $VPN_RESOLVF)"
 	;;
 down)
 	# Restore dns, deleting the resolv file path will use default
@@ -66,7 +67,7 @@ down)
 	elif [[ -e $DEF_RESOLVF ]]; then
 		uci del dhcp.@dnsmasq[0].resolvfile
 	else	#no DNS servers present so did not run
-		logger -t $(basename $0)[$$] -p user.notice "No openvpn DNS server(s) set so nothing to do on ifdown"
+		echo "No openvpn DNS server(s) set so nothing to do on ifdown"
 		return 0
 	fi
 	# Instead of removing the resolv file consider: uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.d/resolv.conf.auto" 
@@ -81,8 +82,9 @@ down)
 	# Remove vpn resolv file
 	rm -fr "$VPN_RESOLVF" >/dev/null 2>&1
 	rm -fr "$DEF_RESOLVF" >/dev/null 2>&1
-	logger -t $(basename $0)[$$] -p user.notice "Default DNS server(s) restored"
+	echo "Default DNS server(s) restored"
 	;;
 esac
 exit 0
-) 2>&1 | logger -t $(basename $0)[$$] &
+) 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
+    -t $(echo $(basename $0) | grep -Eo '^.{0,23}')[$$] &
