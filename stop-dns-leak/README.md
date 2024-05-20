@@ -81,7 +81,7 @@ You can alter this with option 6 and send specific DNS server to use by your cli
 As your client now does the DNS query instead of DNSMasq the DNS query just follows the routing of the client, so if the client is routed via the VPN the DNS query will go out of the VPN.  
 Tagging options are set in `/etc/config/dhcp`  
 First you make a tag (in this case tag1) with the option and the DNS servers of choice.  
-Then you add clients (e.g. static leases) and assign a tag to these clients, Below an example of three clients.    
+Then you add clients (e.g. static leases (note: with static leases you have to disable random MAC addresses)) and assign a tag to these clients, Below an example of three clients.    
 ```  
 config tag 'tag1'  
     option dhcp_option '6,8.8.8.8,8.8.4.4'  
