@@ -90,13 +90,13 @@ config host
     option name 'client1'
     option mac '00:21:63:75:aa:17'
     option ip '10.11.12.14'
-    option tag 'tag1'  
+    list tag 'tag1'  
 
 config host  
     option name 'client2'  
     option mac '01:22:64:76:bb:18'  
     option ip '10.11.12.15'  
-    option tag 'tag1'  
+    list tag 'tag1'  
 ```  
     
 It is also possible to assign option 6 to a whole interface, e.g. add under the general options:    
