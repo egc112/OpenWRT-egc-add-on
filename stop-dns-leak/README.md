@@ -84,7 +84,7 @@ First you make a tag (in this case tag1) with the option and the DNS servers of 
 Then you add clients (e.g. static leases (note: with static leases you have to disable random MAC addresses)) and assign a tag to these clients, Below an example of three clients.    
 ```  
 config tag 'tag1'  
-    option dhcp_option '6,8.8.8.8,8.8.4.4'  
+    list dhcp_option '6,8.8.8.8,8.8.4.4'  
 
 config host  
     option name 'client1'
@@ -103,6 +103,8 @@ It is also possible to assign option 6 to a whole interface, e.g. add under the 
 ` list dhcp_option 'br-guest,6,8.8.8.8,8.8.4.4'`    
 Or under the interface option so that it only is set for that interface:    
 ` list dhcp_option '6,8.8.8.8,8.8.4.4'`  
+
+Reference: https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#dhcp_options  
     
 ### iptables/nftables  
 Iptables with redirection is also a viable option.  
