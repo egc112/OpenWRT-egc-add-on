@@ -115,8 +115,6 @@ iptables:
 iptables -t nat -I PREROUTING -p udp -s <ip-address-range> --dport 53 -j DNAT --to <ip-address-DNS-server>  
 iptables -t nat -I PREROUTING -p tcp -s <ip-address-range> --dport 53 -j DNAT --to <ip-address-DNS-server>  
 nftables:
-meta nfproto ipv4 tcp dport 53 counter dnat ip to 8.8.4.4:53 comment "!fw4: Intercept-DNS"  
-meta nfproto ipv4 udp dport 53 counter dnat ip to 8.8.4.4:53 comment "!fw4: Intercept-DNS"  
 ip saddr 192.168.9.224 tcp dport 53 counter dnat ip to 8.8.4.4:53 comment "!fw4: Intercept-DNS"  
 ip saddr 192.168.9.224 udp dport 53 counter dnat ip to 8.8.4.4:53 comment "!fw4: Intercept-DNS"  
 ```  
