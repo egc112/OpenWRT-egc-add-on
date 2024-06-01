@@ -137,7 +137,7 @@ config redirect 'dns_int'
 or for a whole interface e.g. `guest`
 ```
 config redirect
-	    option name 'DNS-Guest'
+        option name 'DNS-Guest'
         option target 'DNAT'
         option src 'guest'
         option src_dport '53'
