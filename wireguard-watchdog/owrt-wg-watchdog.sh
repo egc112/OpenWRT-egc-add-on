@@ -100,7 +100,7 @@ search_active() {
 	for i in $(seq $activetunnel $maxtunnels); do
 		eval "wgi=\$$(echo WG${i})"
 		# check if tunnel exists
-		uci show | grep "interface='$wgi'" 1>/dev/null || echo echo "WireGuard watchdog ERROR: tunnel $wgi does not exist"
+		uci -q show | grep "$wgi=interface" 1>/dev/null || echo "WireGuard watchdog ERROR: tunnel $wgi does not exist"
 		if ! [[ "$(uci -q get network.$wgi.disabled)" = "1" ]] >/dev/null 2>&1; then
 			echo "WireGuard watchdog: tunnel $wgi is enabled"
 			activetunnel=$i
