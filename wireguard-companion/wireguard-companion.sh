@@ -1,5 +1,5 @@
 #!/bin/sh
-#DEBUG=y			# comment/uncomment to disable/enable debug mode
+#DEBUG=y		# comment/uncomment to disable/enable debug mode
 #CHECKSERVER=y		# comment/uncomment to disable/enable check if the WG interface is a server by checking if a port is openend
 
 #  name: wireguard-companion.sh
