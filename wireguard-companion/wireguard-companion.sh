@@ -7,8 +7,8 @@
 #  purpose: Toggle WireGuard tunnels on/off, show status and log
 #  script type: standalone
 #  installation:
-#   1. Copy wireguard-companion.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh to /usr/share
-#      either with, from commandline (SSH): curl -o /usr/share/wireguard-companion.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh
+#   1. Copy wireguard-companion.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-companion/wireguard-companion.sh to /usr/share
+#      either with, from commandline (SSH): curl -o /usr/share/wireguard-companion.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-companion/wireguard-companion.sh
 #      or by clicking the download icon in the upper right corner of the script
 #   2. Make executable: chmod +x /usr/share/wireguard-companion.sh
 #	3. Run from command line with /usr/share/wireguard-companion.sh, most SSH clients will let you run a command on connection
