@@ -2,9 +2,11 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: owrt-wg-watchdog.sh
-# version: 0.31, 26-mar-2024, by egc
+# version: 0.32, 8-june-2024, by egc
 # purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
 #          in case of failure of the WireGuard tunnel the next tunnel is automatically started
+#          When the last tunnel has failed, the script will start again with the first tunnel.
+#          So in case you have only one tunnel this is just a watchdog which restarts the one tunnel you have.
 # script type: shell script
 # installation:
 # 1. Copy owrt-wg-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh to /usr/share
@@ -37,8 +39,8 @@
 
 
 #Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc., max 9 tunnels
-WG1="name-of-wg1-interface"
-WG2="name-of-wg2-interface"
+#WG1="name-of-wg1-interface"
+#WG2="name-of-wg2-interface"
 
 #set seconds between log message indicating running watchdog
 alive=3600
@@ -61,9 +63,6 @@ elif ! nslookup "$PINGIP" >/dev/null 2>&1; then
 	exit 1
 fi
 
-#: ${SLEEP:=30}
-#: ${PINGIP:=8.8.8.8}
-
 activetunnel=1
 
 # get max number of tunnels
@@ -84,12 +83,15 @@ set_active(){
 	for i in $(seq 1 $maxtunnels); do
 		eval "wgi=\$$(echo WG${i})"
 		if [[ $i = "$activetunnel" ]]; then
+			#uci set network.${wgi}.disabled="0"
 			uci -q del network.${wgi}.disabled
+			uci -q del network.${wgi}.auto
 		else
-			uci -q set network.${wgi}.disabled="1"
+			uci -q set network.${wgi}.disabled='1'
 		fi
 	done
 	uci -q commit network
+	#( service network restart >/dev/null 2>&1 && service firewall restart >/dev/null 2>&1 ) &
 	( service network restart >/dev/null 2>&1 ) &
 	sleep 20
 }
