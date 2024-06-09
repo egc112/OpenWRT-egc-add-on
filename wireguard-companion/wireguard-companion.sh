@@ -3,7 +3,7 @@
 #CHECKSERVER=y		# comment/uncomment to disable/enable check if the WG interface is a server by checking if a port is openend
 
 #  name: wireguard-companion.sh
-#  version: 0.92, 10-june-2024, by egc
+#  version: 0.93, 11-june-2024, by egc
 #  purpose: Toggle WireGuard tunnels on/off, show status and log
 #  script type: standalone
 #  installation:
@@ -16,8 +16,8 @@
 #   5. To skip WireGuard interfaces from the list which are a server, remove the # on the third line of this script
 #  usage:
 #	Toggle tunnels to enable/disable the WireGuard tunnel, show status, log and restart WireGuard or reboot from the command line
-#   	A full Network restart (option 7) is only necessary if you disabled all tunnels to get a the default route back
-
+#   A full Network restart (option 7) is only necessary if you disabled all tunnels to get a the default route back
+# ================================================================================================================================
 
 
 # Color  Variables
@@ -86,7 +86,7 @@ toggle_confirm(){
 		any_key
 		menu
 	else
-		[[ $2 -eq 1 ]] && { uci -q del network.$1.auto; uci -q del network.$1.disabled; } || uci -q set network.$1.disabled='1'
+		[[ $2 -eq 0 ]] && uci -q set network.$1.disabled='1' || { uci -q del network.$1.auto; uci -q del network.$1.disabled; }
 		pending=1
 		return 0
 	fi
@@ -94,7 +94,8 @@ toggle_confirm(){
 
 toggle_tunnel(){
 	local wgtn=$(eval echo "\$$(echo WG${1})")
-	dstate=$(uci -q get network.${wgtn}.disabled)
+	# if $2 = 1 then always enable tunnel
+	[[ $2 -eq 1 ]] && dstate=1 || dstate=$(uci -q get network.${wgtn}.disabled)
 	dstate=${dstate:-0}
 	if [[ $dstate -eq 1 ]]; then
 		toggle_confirm $wgtn 1
@@ -125,7 +126,7 @@ submenu_toggle(){
 		echo -e "\n  Returning to main menu"
 		return 0
 	elif [[ $tn -gt 0 && $tn -le $maxtunnels ]] ; then
-		toggle_tunnel $tn
+		toggle_tunnel $tn $1
 		if [[ "$1" -eq 1 ]]; then
 			for x in $(seq 1 $maxtunnels); do
 				[[ $x -eq $tn ]] && continue
@@ -158,7 +159,6 @@ submenu_showstatus_old(){
 		return 0
 	elif [[ $sn -gt 0 && $sn -le $maxtunnels ]] ; then
 		wgsn=$(eval echo "\$$(echo WG${sn})")
-
 		echo -e "\n  ${blue}Status of${clear} ${yellow}${wgsn}${clear}:"
 		stat=$(wireguard_state $wgsn 2>/dev/null)
 		[[ -z "$stat" ]] && stat="  No connection present for ${wgsn}"
@@ -173,12 +173,12 @@ submenu_showstatus_old(){
 search_tunnels() {
 	local i=0
 	for line in $(uci -q show | grep "proto='wireguard'" | awk -F. '{print $2}'); do 
-		#echo $(uci -q get network.${line}.listen_port)
 		if [[ ! -z ${CHECKSERVER+x} ]] && [[ ! -z $(uci -q get network.${line}.listen_port) ]] && grep -q "$(uci -q get network.${line}.listen_port)" /etc/config/firewall; then
 			echo "$line is wg server"
 		else
 			i=$((i+1))
 			eval WG$i=$line
+			#eval echo "\$$(echo WG${i})"
 		fi
 	done
 	maxtunnels=${i}
