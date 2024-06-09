@@ -138,7 +138,7 @@ submenu_toggle(){
 		service network reload
 		return 0
 	else
-		echo -e $red"\n  Wrong option, choose valid tunnel!"$clear; submenu_toggle
+		echo -e $red"\n  Wrong option, choose valid tunnel!"$clear; submenu_toggle $1
 	fi
 }
 
