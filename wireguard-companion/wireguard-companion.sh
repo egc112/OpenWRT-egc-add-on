@@ -1,9 +1,9 @@
 #!/bin/sh
-#DEBUG=y		# comment/uncomment to disable/enable debug mode
+#DEBUG=y			# comment/uncomment to disable/enable debug mode
 #CHECKSERVER=y		# comment/uncomment to disable/enable check if the WG interface is a server by checking if a port is openend
 
 #  name: wireguard-companion.sh
-#  version: 0.91, 9-june-2024, by egc
+#  version: 0.92, 10-june-2024, by egc
 #  purpose: Toggle WireGuard tunnels on/off, show status and log
 #  script type: standalone
 #  installation:
@@ -11,11 +11,12 @@
 #      either with, from commandline (SSH): curl -o /usr/share/wireguard-companion.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-companion/wireguard-companion.sh
 #      or by clicking the download icon in the upper right corner of the script
 #   2. Make executable: chmod +x /usr/share/wireguard-companion.sh
-#	3. Run from command line with /usr/share/wireguard-companion.sh, most SSH clients will let you run a command on connection
-#   4. Debug by removing the # on the second line of this script, view with: logread | grep debug
+#	3. Run from command line with /usr/share/wireguard-companion.sh, most SSH clients will let you run a command on connection, if you use a key to connect you can have an app like experience
+#   4. Debug by removing the # on the second line of this script.
 #   5. To skip WireGuard interfaces from the list which are a server, remove the # on the third line of this script
 #  usage:
 #	Toggle tunnels to enable/disable the WireGuard tunnel, show status, log and restart WireGuard or reboot from the command line
+#   A full Network restart (option 7) is only necessary if you disabled all tunnels to get a the default route back
 
 
 
@@ -43,14 +44,7 @@ ColorRed(){
 }
 ##
 
-
-# https://www.cyberciti.biz/faq/see-check-if-bash-variable-defined-in-script-on-linux-unix-macos/ 
 [[ -z ${DEBUG+x} ]] || set -x
-
-
-# https://unix.stackexchange.com/questions/452723/is-it-possible-to-print-the-content-of-the-content-of-a-variable-with-shell-script
-# https://stackoverflow.com/questions/1921279/how-to-get-a-variable-value-if-variable-name-is-stored-as-string
-#for i in $(seq 1 9);do wgi='$'"$(echo WG${i})"; echo $wgi;eval echo $wgi;done
 
 wireguard_state(){
 stat=""
@@ -62,7 +56,6 @@ fi
 }
 
 WrongCommand () {
-	#do nothing
 	menu
 }
 
@@ -82,7 +75,6 @@ show_tunnels(){
 		echo -e "  tunnel $x $state $(ColorYellow ${wgx})"
 		x=$((x+1))
 	done
-	#echo -e ""
 }
 
 toggle_confirm(){
@@ -94,13 +86,11 @@ toggle_confirm(){
 		any_key
 		menu
 	else
-		#echo -e " Toggle tunnel $1"
 		[[ $2 -eq 1 ]] && { uci -q del network.$1.auto; uci -q del network.$1.disabled; } || uci -q set network.$1.disabled='1'
 		pending=1
 		return 0
 	fi
 }
-
 
 toggle_tunnel(){
 	local wgtn=$(eval echo "\$$(echo WG${1})")
@@ -109,13 +99,13 @@ toggle_tunnel(){
 	if [[ $dstate -eq 1 ]]; then
 		toggle_confirm $wgtn 1
 		echo -e "\n  Tunnel $wgtn will be ${green}enabled${clear}"
-		echo -e "  ${yellow}To execute, Restart Network or router!${clear}"
+		echo -e "  ${yellow}Restart Network or router if you disabled all tunnels${clear}"
 		any_key
 		return 0
 	elif [[ $dstate -eq 0 ]]; then
 		toggle_confirm $wgtn 0
 		echo -e "\n  Tunnel $wgtn is ${red}disabled${clear}"
-		echo -e "  ${yellow}To execute, Restart Network or router!${clear}"
+		echo -e "  ${yellow}Restart Network or router if you disabled all tunnels${clear}"
 		any_key
 		return 0
 	else
@@ -143,6 +133,7 @@ submenu_toggle(){
 				uci -q set network.$wgtn.disabled='1'
 			done
 		fi
+		uci commit network
 		service network reload
 		return 0
 	else
@@ -186,23 +177,16 @@ search_tunnels() {
 		if [[ ! -z ${CHECKSERVER+x} ]] && [[ ! -z $(uci -q get network.${line}.listen_port) ]] && grep -q "$(uci -q get network.${line}.listen_port)" /etc/config/firewall; then
 			echo "$line is wg server"
 		else
-			#tunnels="$tunnels $line"
 			i=$((i+1))
 			eval WG$i=$line
-			#eval echo "\$$(echo WG${i})"
 		fi
 	done
 	maxtunnels=${i}
-	#echo "TUNNELS=[$tunnels]"
-
-	#for x in $(seq 1 $maxtunnels); do
-	#	eval echo "\$$(echo WG${x})"
-	#done
 }
 
 menu(){
 	clear
-	[[ $pending -eq 1 ]] && echo -e "\n  ${yellow}Pending changes, Restart Network or router!${clear}"
+	[[ $pending -eq 1 ]] && echo -e "\n  ${yellow}Restart Network if all tunnels are disabled or missing default route${clear}"
 	echo -e "\n   number   state   label"
 	show_tunnels
 	echo -e -n "
@@ -212,7 +196,7 @@ menu(){
   $(ColorGreen '3)') Enable tunnel, Disable all others
   $(ColorGreen '4)') Show WireGuard Status
   $(ColorGreen '5)') Show Log
-  $(ColorGreen '7)') Restart Network and Save Settings
+  $(ColorGreen '7)') Restart Network
   $(ColorGreen '8)') Save Settings and Reboot Router
   $(ColorGreen '0)') Exit
   $(ColorBlue 'Choose an option:') "
@@ -237,13 +221,12 @@ menu(){
 			menu
 			;;
 		5 )
-			#echo -e "  You chose main item 5, Show WireGuard Log\n"
 			logread
 			any_key
 			menu
 			;;
 		7 )
-			echo -e "\n  Saving and Restarting Network"
+			echo -e "\n  Restarting Network"
 			uci commit network
 			service network restart
 			pending=0
@@ -271,9 +254,5 @@ menu(){
 
 clear
 pending=0
-#tunnels=""
 search_tunnels
-#echo "maxtunnels = $maxtunnels"
-
 menu
-
