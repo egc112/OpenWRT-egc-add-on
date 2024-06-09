@@ -95,7 +95,7 @@ toggle_confirm(){
 		menu
 	else
 		#echo -e " Toggle tunnel $1"
-		[[ $2 -eq 1 ]] && { uci -q del network.$1.disabled; uci -q del network.$1.auto; } || uci -q set network.$1.disabled='1'
+		[[ $2 -eq 1 ]] && { uci -q del network.$1.auto; uci -q del network.$1.disabled; } || uci -q set network.$1.disabled='1'
 		pending=1
 		return 0
 	fi
