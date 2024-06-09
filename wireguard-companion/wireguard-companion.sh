@@ -16,7 +16,7 @@
 #   5. To skip WireGuard interfaces from the list which are a server, remove the # on the third line of this script
 #  usage:
 #	Toggle tunnels to enable/disable the WireGuard tunnel, show status, log and restart WireGuard or reboot from the command line
-#   A full Network restart (option 7) is only necessary if you disabled all tunnels to get a the default route back
+#   	A full Network restart (option 7) is only necessary if you disabled all tunnels to get a the default route back
 
 
 
