@@ -93,13 +93,13 @@ toggle_tunnel(){
 	if [[ $dstate -eq 1 ]]; then
 		toggle_confirm $wgtn 1
 		echo -e "\n  Tunnel $wgtn will be ${green}enabled${clear}"
-		echo -e "  ${yellow}Restart Network or router if you disabled all tunnels${clear}"
+		echo -e "  ${yellow}Restart Network if all tunnels are disabled${clear}"
 		any_key
 		return 0
 	elif [[ $dstate -eq 0 ]]; then
 		toggle_confirm $wgtn 0
 		echo -e "\n  Tunnel $wgtn is ${red}disabled${clear}"
-		echo -e "  ${yellow}Restart Network or router if you disabled all tunnels${clear}"
+		echo -e "  ${yellow}Restart Network if all tunnels are disabled${clear}"
 		any_key
 		return 0
 	else
@@ -157,7 +157,7 @@ search_tunnels() {
 
 menu(){
 	clear
-	[[ $pending -eq 1 ]] && echo -e "\n  ${yellow}Restart Network if all tunnels are disabled or missing default route${clear}"
+	[[ $pending -eq 1 ]] && echo -e "\n  ${yellow}Restart Network (option 8) if all tunnels are \n  disabled or default route is missing${clear}"
 	echo -e "\n   number   state   label"
 	show_tunnels
 	echo -e -n "
