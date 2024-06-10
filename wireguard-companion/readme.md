@@ -21,4 +21,4 @@ Shortcut install, copy by clicking the copy icon in the right corner and execute
 curl -o /usr/share/wireguard-companion.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-companion/wireguard-companion.sh && chmod +x /usr/share/wireguard-companion.sh
 ```
 
-![wireguard-companion](http://full/path/to/img.jpg "Optional title")
+![wireguard-companion](https://github.com/egc112/OpenWRT-egc-add-on/blob/main/wireguard-companion/wireguard-companion.jpg "wireguard-companion")
