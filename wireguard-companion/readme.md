@@ -14,7 +14,7 @@ Shortcut:  see below
  5. To skip WireGuard interfaces from the list which are setup as server, remove the # on the third line of this script  
 usage:  
 	Toggle tunnels to enable/disable the WireGuard tunnel, show status, log and restart WireGuard or reboot from the command line  
-	A full Network restart (option 7) is only necessary if you disabled all tunnels to get a the default route back
+	A full Network restart (option 8) is only necessary if you disabled all tunnels to get a the default route back
 
 Shortcut install, copy by clicking the copy icon in the right corner and execute on the command line:  
 ```
