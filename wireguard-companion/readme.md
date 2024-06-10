@@ -1,5 +1,5 @@
 name: wireguard-companion.sh  
-version: 0.92, 10-june-2024, by egc  
+version: 0.94, 12-june-2024, by egc  
 purpose: Toggle WireGuard tunnels on/off, show status and log  
 script type: standalone  
 installation:  
@@ -11,6 +11,6 @@ installation:
  4. Debug by removing the # on the second line of this script.  
  5. To skip WireGuard interfaces from the list which are setup as server, remove the # on the third line of this script  
 usage:  
-	Toggle tunnels to enable/disable the WireGuard tunnel, show status, log and restart WireGuard or reboot from the command line
+	Toggle tunnels to enable/disable the WireGuard tunnel, show status, log and restart WireGuard or reboot from the command line  
 	A full Network restart (option 7) is only necessary if you disabled all tunnels to get a the default route back  
 
