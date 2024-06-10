@@ -113,7 +113,7 @@ submenu_toggle(){
 	local wgtn
 	show_tunnels
 	[[ "$1" -eq 1 ]] && TOGGLE="enable, all \n  others are disabled" || TOGGLE=toggle
-	echo -ne "\n  ${yellow}Enter tunnel to $TOGGLE (1 - $nrtun, 0=Exit):${clear} "
+	echo -ne "\n  ${yellow}Enter tunnel to $TOGGLE (1 - "$maxtunnels", 0=Exit):${clear} "
 	[[ "$maxtunnels" -lt 10 ]] && read -n 1 tn || read tn # use this with more than 10 tunnels
 	if  [[ $tn -eq 0 ]] 2>/dev/null; then
 		echo -e "\n  Returning to main menu"
