@@ -16,7 +16,7 @@ usage:
 	Toggle tunnels to enable/disable the WireGuard tunnel, show status, log and restart WireGuard or reboot from the command line  
 	A full Network restart (option 7) is only necessary if you disabled all tunnels to get a the default route back
 
-Shortcut:  
+Shortcut install, copy by clicking the copy icon in the right corner and execute on the command line:  
 ```
 curl -o /usr/share/wireguard-companion.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-companion/wireguard-companion.sh && chmod +x /usr/share/wireguard-companion.sh
 ```
