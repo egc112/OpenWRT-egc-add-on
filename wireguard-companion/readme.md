@@ -1,5 +1,5 @@
 name: wireguard-companion.sh  
-version: 0.94, 12-june-2024, by egc  
+version: 0.95, 14-june-2024, by egc  
 purpose: Toggle WireGuard tunnels on/off, show status and log  
 script type: standalone  
 installation:  
