@@ -36,3 +36,9 @@ installation:
    `nft insert rule inet fw4 output ip daddr <ip-endpoint-address> counter reject`  
     do not forget to reset the firewall (service firewall restart) or remove the rule
 10. To stop a running script, do from the command line: `killall wireguard-watchdog.sh`
+
+Shortcut install commands, copy by clicking the copy icon in the right corner, paste to command line and execute, scriot is openend, set wg tunnels in script:
+```
+curl -o /usr/share/wireguard-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/wireguard-watchdog.sh &&  /
+chmod +x /usr/share/wireguard-watchdog.sh && vi /usr/share/wireguard-watchdog.sh
+```
