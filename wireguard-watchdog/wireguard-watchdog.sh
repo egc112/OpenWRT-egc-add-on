@@ -52,7 +52,7 @@ SLEEP="$1"
 if [[ -z $SLEEP ]]; then
 	SLEEP=30
 elif [[ $SLEEP -gt 60 || $SLEEP -lt 10 ]]; then 
-	echo echo "WireGuard watchdog ERROR: Sleep is $SLEEP but needs to be in the range of 10 - 60 seconds"
+	echo "WireGuard watchdog ERROR: Sleep is $SLEEP but needs to be in the range of 10 - 60 seconds"
 	exit 1
 fi
 
