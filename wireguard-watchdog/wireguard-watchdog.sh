@@ -39,8 +39,8 @@
 
 
 #Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc., max 9 tunnels
-#WG1="name-of-wg1-interface"
-#WG2="name-of-wg2-interface"
+WG1="name-of-wg1-interface"
+WG2="name-of-wg2-interface"
 
 #set seconds between log message indicating running watchdog
 alive=3600
