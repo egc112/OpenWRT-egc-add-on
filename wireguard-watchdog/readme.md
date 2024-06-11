@@ -1,22 +1,22 @@
- name: owrt-wg-watchdog.sh  
-version: 0.32, 8-june-2024, by egc  
+ name: wireguard-watchdog.sh  
+version: 0.92, 14-june-2024, by egc  
 purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in case of failure of the WireGuard tunnel the next tunnel is automatically started.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When the last tunnel has failed, the script will start again with the first tunnel.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; So in case you have only one tunnel this is just a watchdog which restarts the one tunnel you have.  
 script type: shell script  
 installation:  
-1. Copy owrt-wg-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh to /usr/share  
+1. Copy wireguard-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/wireguard-watchdog.sh to /usr/share  
    either with, from commandline (SSH):  
-   `curl -o /usr/share/owrt-wg-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/owrt-wg-watchdog.sh`  
+   `curl -o /usr/share/wireguard-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/wireguard-watchdog.sh`  
    or by clicking the download icon in the upper right corner of the script  
-2. Make executable: `chmod +x /usr/share/owrt-wg-watchdog.sh`  
+2. Make executable: `chmod +x /usr/share/wireguard-watchdog.sh`  
 3. Edit the script with vi or winscp to add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:   
    `WG1=tunnel-name`  
    `WG2=second-tunnel-name`  
    etc., you can set up to 9 tunnels to use.
 4. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):  
-   `/usr/share/owrt-wg-watchdog.sh &`  
+   `/usr/share/wireguard-watchdog.sh &`  
    Note the ampersand (&) at the end indicating that the script is executed asynchronously  
    Test it first from the commandline before adding it to startup and/or make sure you have a recent backup just in case  
 6. The script can take two parameters, the first the ping time in seconds default is 30, the second the ip address used for pinging,   
@@ -28,11 +28,11 @@ installation:
    `ping-host 9.9.9.9`  
    Check if the name resolves with: `nslookup ping-host`  
    Then use ping-host as ping address and all addresses of ping-host will be used in a round robin method, this also adds redundancy if one server is down e.g. start with:  
-   `/usr/share/owrt-wg-watchdog.sh 10 ping-host &`  
+   `/usr/share/wireguard-watchdog.sh 10 ping-host &`  
    This will ping every `10` seconds (after a delay of 120 seconds on startup) to `ping-host` (= 8.8.8.8 and 9.9.9.9)  
 7. reboot  
 8. View log with: `logread -e watchdog`, debug by removing the # on the second line of the script, view with: `logread | grep debug`  
 9. You can test the script by blocking the endpoint address of a tunnel with:  
    `nft insert rule inet fw4 output ip daddr <ip-endpoint-address> counter reject`  
     do not forget to reset the firewall (service firewall restart) or remove the rule
-10. To stop a running script, do from the command line: `killall owrt-wg-watchdog.sh`
+10. To stop a running script, do from the command line: `killall wireguard-watchdog.sh`
