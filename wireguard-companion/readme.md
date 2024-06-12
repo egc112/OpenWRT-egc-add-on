@@ -23,4 +23,4 @@ curl -o /usr/share/wireguard-companion.sh https://raw.githubusercontent.com/egc1
 
 ![wireguard-companion](https://github.com/egc112/OpenWRT-egc-add-on/blob/main/wireguard-companion/wireguard-companion.jpg "wireguard-companion")
 
-For a very *simple solution* when you have just one tunnel and want to toggle in on/off see: https://forum.openwrt.org/t/best-way-to-toggle-wireguard-on-and-off/200226/4?u=egc
+For a very **simple solution** when you have just one tunnel and want to toggle in on/off see: https://forum.openwrt.org/t/best-way-to-toggle-wireguard-on-and-off/200226/4?u=egc
