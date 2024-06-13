@@ -1,4 +1,5 @@
-name: [wireguard-companion.sh](https://forum.openwrt.org/t/wireguard-companion-script-to-administer-your-wireguard-tunnels/200866){:target="_blank"}  
+name: [wireguard-companion.sh](https://forum.openwrt.org/t/wireguard-companion-script-to-administer-your-wireguard-tunnels/200866)
+<a href="https://forum.openwrt.org/t/wireguard-companion-script-to-administer-your-wireguard-tunnels/200866" target="_blank">name: wireguard-companion.sh</a>
 version: 1.04, 14-june-2024, by egc  
 purpose: Toggle WireGuard tunnels on/off, show status and log  
 script type: standalone  
