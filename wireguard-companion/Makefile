@@ -12,7 +12,7 @@ PKG_MAINTAINER:=Erik Conijn <egc112@gmail.com
 include $(INCLUDE_DIR)/package.mk
 
 define Package/wireguard-companion
-	SECTION:=VPN
+	SECTION:=net
 	CATEGORY:=Network
 	DEPENDS:=
 	TITLE:=wireguard-companion-script
