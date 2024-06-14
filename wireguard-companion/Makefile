@@ -7,7 +7,7 @@ PKG_NAME:=wireguard-companion
 PKG_VERSION:=0.95
 PKG_RELEASE:=1
 PKG_LICENSE:=AGPL-3.0-or-later
-PKG_MAINTAINER:=Erik Conijn <egc112@gmail.com
+PKG_MAINTAINER:=Erik Conijn <egc6774@gmail.com
 
 include $(INCLUDE_DIR)/package.mk
 
