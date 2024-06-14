@@ -37,7 +37,7 @@ endef
 define Package/wireguard-companion/install
 	$(INSTALL_DIR) $(1)/usr/share
 	$(INSTALL_BIN) ./wireguard-companion.sh $(1)/usr/share/wireguard-companion.sh
-	$(SED) "s|^\(PKG_VERSION\).*|\1='$(PKG_VERSION)-$(PKG_RELEASE)'|" $(1)/usr/share/wireguard-companion
+	$(SED) "s|^\(PKG_VERSION\).*|\1='$(PKG_VERSION)-$(PKG_RELEASE)'|" $(1)/usr/share/wireguard-companion.sh
 endef
 
 define Package/wireguard-companion/postinst
