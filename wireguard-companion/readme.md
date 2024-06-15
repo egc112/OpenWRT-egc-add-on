@@ -1,5 +1,5 @@
 name: [wireguard-companion.sh](https://forum.openwrt.org/t/wireguard-companion-script-to-administer-your-wireguard-tunnels/200866)  
-version: 1.05, 15-june-2024, by egc  
+version: 1.06, 15-june-2024, by egc  
 purpose: Toggle WireGuard tunnels on/off, show status and log  
 script type: standalone  
 installation:  
