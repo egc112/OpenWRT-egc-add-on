@@ -4,7 +4,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wireguard-companion
-PKG_VERSION:=1.06
+PKG_VERSION:=1.0.6
 PKG_RELEASE:=1
 PKG_LICENSE:=AGPL-3.0-or-later
 PKG_MAINTAINER:=Erik Conijn <egc6774@gmail.com
@@ -15,7 +15,7 @@ define Package/wireguard-companion
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=VPN
-	DEPENDS:=
+	DEPENDS:=+wireguard +wireguard-tools
 	TITLE:=wireguard-companion-script
 	URL:=https://github.com/egc112/OpenWRT-egc-add-on/tree/main/wireguard-companion
 	PKGARCH:=all
