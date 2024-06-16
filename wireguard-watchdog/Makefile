@@ -1,10 +1,11 @@
 # Copyright 2024 egc
 # This is free software, licensed under AGPL-3.0-or-later.
+# Add this repo to 
 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wireguard-watchdog
-PKG_VERSION:=0.93
+PKG_VERSION:=0.9.3
 PKG_RELEASE:=1
 PKG_LICENSE:=AGPL-3.0-or-later
 PKG_MAINTAINER:=Erik Conijn <egc6774@gmail.com
