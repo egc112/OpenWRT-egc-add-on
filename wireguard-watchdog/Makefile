@@ -4,7 +4,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wireguard-watchdog
-PKG_VERSION:=0.95
+PKG_VERSION:=0.93
 PKG_RELEASE:=1
 PKG_LICENSE:=AGPL-3.0-or-later
 PKG_MAINTAINER:=Erik Conijn <egc6774@gmail.com
