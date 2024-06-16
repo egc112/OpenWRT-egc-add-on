@@ -19,7 +19,7 @@ define Package/wireguard-companion
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=VPN
-	DEPENDS:=+wireguard +wireguard-tools
+	DEPENDS:=+wireguard-tools
 	TITLE:=wireguard-companion-script
 	URL:=https://github.com/egc112/OpenWRT-egc-add-on/tree/main/wireguard-companion
 	PKGARCH:=all
