@@ -1,6 +1,8 @@
 # Copyright 2024 egc
 # This is free software, licensed under AGPL-3.0-or-later.
-# Add this repo to 
+# Add this repo `https://github.com/egc112/OpenWRT-egc-add-on.git` in `./feeds.conf.default` as:
+# `src-git egc-addon https://github.com/egc112/OpenWRT-egc-add-on.git`
+# In menu (make menuconfig), Network > VPN  enable `wireguard-watchdog`
 
 include $(TOPDIR)/rules.mk
 
