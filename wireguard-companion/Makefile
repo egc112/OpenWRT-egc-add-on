@@ -22,7 +22,7 @@ define Package/wireguard-companion
 endef
 
 define Package/wireguard-companion/description
-Shell script to toggle WireGuard tunnels on the router on/off and provide info about routing and tunnels 
+Shell script to toggle WireGuard tunnels on the router on/off and provide info about routing, tunnels and log
 endef
 
 define Package
