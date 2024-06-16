@@ -18,7 +18,7 @@ define Package/wireguard-watchdog
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=VPN
-	DEPENDS:=
+	DEPENDS:=+wireguard +wireguard-tools
 	TITLE:=wireguard-watchdog-script
 	URL:=https://github.com/egc112/OpenWRT-egc-add-on/tree/main/wireguard-watchdog
 	PKGARCH:=all
