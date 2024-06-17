@@ -169,14 +169,14 @@ https://openwrt.org/docs/guide-user/base-system/dhcp_configuration?s%5B%5D=multi
 Original script:  
 https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolver-switchout/61458/4  
 
-# Upgrade PBR
+## Upgrade PBR
 Locate the upgrade pbr and luci-pbr package from: https://github.com/stangri/repo.openwrt.melmac.net/tree/master  
 ```
-# download the two packages: pbr-iptables_1.1.5-8_all.ipk and luci-app-pbr_1.1.5-8_all.ipk to your desktp and move to the rotuers /tmp direcotry wint (Win)Scp.  
+#download the two packages: pbr-iptables_1.1.5-8_all.ipk and luci-app-pbr_1.1.5-8_all.ipk to your desktp and move to the rotuers /tmp direcotry wint (Win)Scp.  
 cd /tmp
 [comment]: <> curl -LJO https://raw.github.com/stangri/repo.openwrt.melmac.net/blob/master/pbr-iptables_1.1.5-8_all.ipk
 [comment]: <> curl -LJO https://raw.github.com/stangri/repo.openwrt.melmac.net/blob/master/luci-app-pbr_1.1.5-8_all.ipk  
-# [force upgrade](https://openwrt.org/docs/guide-user/additional-software/opkg):  
+#[force upgrade](https://openwrt.org/docs/guide-user/additional-software/opkg):  
 opkg --force-depends --force-checksum --force-reinstall --force-overwrite install /tmp/pbr-iptables_1.1.5-8_all.ipk
 opkg --force-depends --force-checksum --force-reinstall --force-overwrite install /tmp/luci-app-pbr_1.1.5-8_all.ipk
 ```
