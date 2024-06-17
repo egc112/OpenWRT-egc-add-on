@@ -143,16 +143,8 @@ config redirect
 ```
 
 As the query will follow the routing of the client there is no specific need to set a route for the DNS server involved.  
-## Stopping DNS hijacking  
-https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
-## References  
-Multiple DNS servers  
-https://forum.openwrt.org/t/22-03-0-and-multiple-dnsmasq-instances/136348  
-https://openwrt.org/docs/guide-user/base-system/dhcp_configuration?s%5B%5D=multiple&s%5B%5D=dnsmasq&s%5B%5D=instances#multiple_dhcpdns_serverforwarder_instances  
-Original script:  
-https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolver-switchout/61458/4  
 
-PBR version 1.1.8 uses this DNS redirect mechanism and incorporated that into the GUI.  
+[PBR version 1.1.8](https://docs.openwrt.melmac.net/pbr/ ) uses this DNS redirect mechanism and incorporated that into the GUI.  
 ![Alt text](img/dns-policy.jpg?raw=true "Optional Title")  
 You can enter the local LAN clients IP addresses and the VPN tunnel, the DNS address set on the tunnels interface will be used to redirect the DNS query.  
 For WireGuard you can enter the DNS address in the Interfaces >  Advanced settings > Use Custom DNS servers or add in /etc/config/network under the interface `list dns '<ip-address-of-dns>'`  
@@ -165,5 +157,12 @@ config interface 'tun1'
 	list dns '10.0.0.2'
 ```  
 This is not compatible with the regular DNS hijack rule.  
-  
 
+## Stopping DNS hijacking  
+https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
+## References  
+Multiple DNS servers  
+https://forum.openwrt.org/t/22-03-0-and-multiple-dnsmasq-instances/136348  
+https://openwrt.org/docs/guide-user/base-system/dhcp_configuration?s%5B%5D=multiple&s%5B%5D=dnsmasq&s%5B%5D=instances#multiple_dhcpdns_serverforwarder_instances  
+Original script:  
+https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolver-switchout/61458/4  
