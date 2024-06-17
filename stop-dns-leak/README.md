@@ -143,7 +143,7 @@ config redirect
 ```
 
 PBR version 1.1.8 uses this DNS redirect mechanism and incorporated that into the GUI.
-
+![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
 You can enter the local LAN clients IP addresses and the VPN tunnel, the DNS address set on the tunnels interface will be used to redirect the DNS query.
 For WireGuard you can enter the DNS address in the Interfaces >  Advanced settings > Use Custom DNS servers or add in /etc/config/network under the interface `list dns '<ip-address-of-dns>'`  
 For OpenVPN you have to make an interface and add the DNS address:  
