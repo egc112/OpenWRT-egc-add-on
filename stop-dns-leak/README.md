@@ -169,7 +169,7 @@ https://openwrt.org/docs/guide-user/base-system/dhcp_configuration?s%5B%5D=multi
 Original script:  
 https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolver-switchout/61458/4  
 
-## Upgrade PBR
+## Upgrade PBR (under construciton does not workyet reliably)
 Locate the upgrade pbr and luci-pbr package from: https://github.com/stangri/repo.openwrt.melmac.net/tree/master  
 ```
 #download the two packages: pbr-iptables_1.1.5-8_all.ipk and luci-app-pbr_1.1.5-8_all.ipk to your desktp and move to the rotuers /tmp direcotry wint (Win)Scp.  
@@ -188,5 +188,6 @@ Disable signature check in /etc/opkg.conf:
 #option check_signature
 
 Remove luci-app pbr and pbr
-
-Install update packages
+Reboot Router
+Update OPKG lists
+Install updated packages
