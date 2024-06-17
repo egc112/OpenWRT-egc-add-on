@@ -183,3 +183,10 @@ opkg --force-depends --force-checksum --force-reinstall --force-overwrite instal
 
 set as source in /etc/opkg/customfeeds.conf (or via Luci in Software > Configure OPKG)    
 `src/gz openwrt_stangri https://github.com/stangri/repo.openwrt.melmac.net/tree/master`
+
+Disable signature check in /etc/opkg.conf:  
+#option check_signature
+
+Remove luci-app pbr and pbr
+
+Install update packages
