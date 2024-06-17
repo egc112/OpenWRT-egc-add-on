@@ -180,3 +180,6 @@ cd /tmp
 opkg --force-depends --force-checksum --force-reinstall --force-overwrite install /tmp/pbr-iptables_1.1.5-8_all.ipk
 opkg --force-depends --force-checksum --force-reinstall --force-overwrite install /tmp/luci-app-pbr_1.1.5-8_all.ipk
 ```
+
+set as source in /etc/opkg/customfeeds.conf (or via Luci in Software > Configure OPKG)    
+`src/gz openwrt_stangri https://github.com/stangri/repo.openwrt.melmac.net/tree/master`
