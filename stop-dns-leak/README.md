@@ -141,6 +141,21 @@ config redirect
         option src_dport '53'
         option dest_ip '8.8.4.4'
 ```
+
+PBR version 1.1.8 uses this DNS redirect mechanism and incorporated that into the GUI.
+
+You can enter the local LAN clients IP addresses and the VPN tunnel, the DNS address set on the tunnels interface will be used to redirect the DNS query.
+For WireGuard you can enter the DNS address in the Interfaces >  Advanced settings > Use Custom DNS servers or add in /etc/config/network under the interface `list dns '<ip-address-of-dns>'`  
+For OpenVPN you have to make an interface and add the DNS address:  
+/etc/config/network
+```
+config interface 'tun1'
+	option proto 'none'
+	option device 'tun1'
+	list dns '10.0.0.2'
+```
+This is not compatible with the regular DNS hijack rule
+
 As the query will follow the routing of the client there is no specific need to set a route for the DNS server involved.  
 ## Stopping DNS hijacking  
 https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
