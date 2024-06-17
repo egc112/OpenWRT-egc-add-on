@@ -172,11 +172,11 @@ https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolve
 # Upgrade PBR
 Locate the upgrade pbr and luci-pbr package from: https://github.com/stangri/repo.openwrt.melmac.net/tree/master  
 ```
+# download the two packages: pbr-iptables_1.1.5-8_all.ipk and luci-app-pbr_1.1.5-8_all.ipk to your desktp and move to the rotuers /tmp direcotry wint (Win)Scp.  
 cd /tmp
-# download the two packages:  
-curl -O https://github.com/stangri/repo.openwrt.melmac.net/blob/master/pbr-iptables_1.1.5-8_all.ipk
-curl -O https://github.com/stangri/repo.openwrt.melmac.net/blob/master/luci-app-pbr_1.1.5-8_all.ipk  
+[comment]: <> curl -LJO https://raw.github.com/stangri/repo.openwrt.melmac.net/blob/master/pbr-iptables_1.1.5-8_all.ipk
+[comment]: <> curl -LJO https://raw.github.com/stangri/repo.openwrt.melmac.net/blob/master/luci-app-pbr_1.1.5-8_all.ipk  
 # [force upgrade](https://openwrt.org/docs/guide-user/additional-software/opkg):  
-opkg --force-depends install /tmp/pbr-iptables_1.1.5-8_all.ipk
-opkg --force-depends install /tmp/luci-app-pbr_1.1.5-8_all.ipk
+opkg --force-depends --force-checksum --force-reinstall --force-overwrite install /tmp/pbr-iptables_1.1.5-8_all.ipk
+opkg --force-depends --force-checksum --force-reinstall --force-overwrite install /tmp/luci-app-pbr_1.1.5-8_all.ipk
 ```
