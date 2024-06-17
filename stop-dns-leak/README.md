@@ -155,7 +155,9 @@ config interface 'tun1'
 	option proto 'none'
 	option device 'tun1'
 	list dns '10.0.0.2'
-```  
+```
+Important you have to make sure that the DNS server chosen is also routed via the tunnel, so to make sure make a new policy rule to route the DNS remote address via the tunnel!  
+
 This is not compatible with the regular DNS hijack rule.  
 
 ## Stopping DNS hijacking  
