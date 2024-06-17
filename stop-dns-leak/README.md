@@ -168,3 +168,15 @@ https://forum.openwrt.org/t/22-03-0-and-multiple-dnsmasq-instances/136348
 https://openwrt.org/docs/guide-user/base-system/dhcp_configuration?s%5B%5D=multiple&s%5B%5D=dnsmasq&s%5B%5D=instances#multiple_dhcpdns_serverforwarder_instances  
 Original script:  
 https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolver-switchout/61458/4  
+
+# Upgrade PBR
+Locate the upgrade pbr and luci-pbr package from: https://github.com/stangri/repo.openwrt.melmac.net/tree/master  
+```
+cd /tmp
+# download the two packages:  
+curl -O https://github.com/stangri/repo.openwrt.melmac.net/blob/master/pbr-iptables_1.1.5-8_all.ipk
+curl -O https://github.com/stangri/repo.openwrt.melmac.net/blob/master/luci-app-pbr_1.1.5-8_all.ipk  
+# [force upgrade](https://openwrt.org/docs/guide-user/additional-software/opkg):  
+opkg --force-depends install /tmp/pbr-iptables_1.1.5-8_all.ipk
+opkg --force-depends install /tmp/luci-app-pbr_1.1.5-8_all.ipk
+```
