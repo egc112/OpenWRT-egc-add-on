@@ -11,7 +11,8 @@ Shortcut:  see below
  2. Make executable: `chmod +x /usr/share/wireguard-companion.sh`  
  3. Run from command line with `/usr/share/wireguard-companion.sh`, most SSH clients will let you run a command on connection, if you use a [SSH-key to connect](https://openwrt.org/docs/guide-user/security/dropbear.public-key.auth) you can have an app like experience.  
  4. Debug by removing the # on the second line of this script.  
- 5. To skip WireGuard interfaces from the list which are setup as server, remove the # on the third line of this script  
+ 5. To automatcally skip WireGuard interfaces which are setup as server, remove the # on the third line of this script, this works by identifying a listen port.
+ 6. If you toggle a WG tunnel off the defaulte route via the WAN is not automatically reinstated, to mitigate this use as Allowed IPs `0.0.0.0/1, 128.0.0.0/1` instead of `0.0.0.0/0`
 usage:  
 	Toggle tunnels to enable/disable the WireGuard tunnel, show status, log and restart WireGuard or reboot from the command line  
 	A full Network restart (option 8) is only necessary if you disabled all tunnels to get a the default route back
