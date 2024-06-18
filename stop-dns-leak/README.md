@@ -169,22 +169,10 @@ https://openwrt.org/docs/guide-user/base-system/dhcp_configuration?s%5B%5D=multi
 Original script:  
 https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolver-switchout/61458/4  
 
-## Upgrade PBR (under construciton does not workyet reliably)
-Locate the upgrade pbr and luci-pbr package at: https://github.com/stangri/repo.openwrt.melmac.net/tree/master    
-Download the two packages: pbr-iptables_1.1.5-8_all.ipk and luci-app-pbr_1.1.5-8_all.ipk to your desktop  
-In Luci Administration > Software 'Upload Package'
+### Upgrade PBR
+Locate the pbr and luci-pbr package at: https://github.com/stangri/repo.openwrt.melmac.net/tree/master    
+Download the two packages: pbr-iptables_x.x.x-x_all.ipk and luci-app-pbr_x.x.x-x_all.ipk to your desktop  
+In Luci Administration > Software 'Upload Package' and isntall both packages  
 
 
-```
-#
-#[force upgrade](https://openwrt.org/docs/guide-user/additional-software/opkg):  
-opkg --force-depends --force-checksum --force-reinstall --force-overwrite install /tmp/pbr-iptables_1.1.5-8_all.ipk
-opkg --force-depends --force-checksum --force-reinstall --force-overwrite install /tmp/luci-app-pbr_1.1.5-8_all.ipk
-```
-
-set as source in /etc/opkg/customfeeds.conf (or via Luci in Software > Configure OPKG)    
-`src/gz openwrt_stangri https://github.com/stangri/repo.openwrt.melmac.net/tree/master`
-
-Disable signature check in /etc/opkg.conf:  
-#option check_signature
 
