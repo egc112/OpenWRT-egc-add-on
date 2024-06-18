@@ -171,7 +171,7 @@ https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolve
 
 ### Upgrade PBR
 Locate the pbr and luci-pbr package at: https://github.com/stangri/repo.openwrt.melmac.net/tree/master    
-Download the two packages: pbr-iptables_x.x.x-x_all.ipk and luci-app-pbr_x.x.x-x_all.ipk to your desktop  
+Download the two packages: pbr-iptables_x.x.x-x_all.ipk and luci-app-pbr_x.x.x-x_all.ipk to your desktop by clicking on the .ipk file and when it has openend, on the download icon in the upper right hand corner.  
 In Luci Administration > Software 'Upload Package' and isntall both packages  
 
 
