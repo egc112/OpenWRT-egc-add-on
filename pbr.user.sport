@@ -1,0 +1,26 @@
+#!/bin/sh
+# shellcheck disable=SC1091,SC3043
+# This code is based on idea of https://github.com/egc112
+
+# set all listenports as a space delimited string
+myports="51820 51821 51822"
+
+# name: pbr.user.sport
+# version: 0.1.0, by egc
+# purpose: route sourceports e.g. of VPN servers in your lan via the WAN
+# installation:
+#  copy this file to /usr/share/pbr
+#  in this script adapt'myports' to include all the sourceports you want to route via the WAN
+#  in the PBR GUI add as include file or add in /etc/config/pbr:
+#     config include
+#	       option enabled '1'
+#	       option path '/usr/share/pbr/pbr.user.sport'
+#
+# check from command line with: 'ip rule show'
+
+
+WAN_INTERFACE="wan"
+for listen_port in $myports; do
+	ip rule del sport "$listen_port" table "pbr_${WAN_INTERFACE}" >/dev/null 2>&1
+	ip rule add sport "$listen_port" table "pbr_${WAN_INTERFACE}" >/dev/null 2>&1
+done
