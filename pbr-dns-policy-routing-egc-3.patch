@@ -1,0 +1,92 @@
+--- pbr-original.bash	2024-07-12 10:58:47.219432000 +0200
++++ pbr-original-egc-3.bash	2024-07-12 17:22:31.555097000 +0200
+@@ -1246,8 +1246,11 @@
+ 			fi
+ 		done
+ 	else
+-		dest_dns4="$dest_dns"
+-		dest_dns6="$dest_dns"
++		if is_ipv6 "$dest_dns"; then
++			dest_dns6="$dest_dns"
++		else
++			dest_dns4="$dest_dns"
++		fi
+ 	fi
+ 
+ 	if [ -z "${dest_dns4}${dest_dns6}" ]; then
+@@ -1256,8 +1259,8 @@
+ 		return 1
+ 	fi
+ 
+-	dest4="dport 53 counter dnat ip to { $(inline_set "$dest_dns4") }"
+-	dest6="dport 53 counter dnat ip to { $(inline_set "$dest_dns6") }"
++	[ -n "$dest_dns4" ] && dest4="dport 53 counter dnat ip to $(inline_set "$dest_dns4") comment \"$name\" "
++	[ -n "$dest_dns6" ] && dest6="dport 53 counter dnat ip6 to $(inline_set "$dest_dns6") comment \"$name\""
+ 
+ 	if [ -n "$src_addr" ]; then
+ 		if [ "${src_addr:0:1}" = "!" ]; then
+@@ -1276,36 +1279,38 @@
+ 			param4="${param4:+$param4 }${nftIPv4Flag} saddr ${negation:+$negation }{ $(inline_set_resolve_ipv4 "$value") }"
+ 			param6="${param6:+$param6 }${nftIPv6Flag} saddr ${negation:+$negation }{ $(inline_set_resolve_ipv6 "$value") }"
+ 		else
+-			param4="${param4:+$param4 }${nftIPv4Flag} saddr ${negation:+$negation }{ $(inline_set "$value") }"
+-			param6="${param6:+$param6 }${nftIPv6Flag} saddr ${negation:+$negation }{ $(inline_set "$value") }"
++			if is_ipv4 "$value"; then
++				param4="${param4:+$param4 }${nftIPv4Flag} saddr ${negation:+$negation }{ $(inline_set "$value") }"
++			else
++				param6="${param6:+$param6 }${nftIPv6Flag} saddr ${negation:+$negation }{ $(inline_set "$value") }"
++			fi
+ 		fi
+ 	fi
+ 
+-	param4="$nftInsertOption rule inet ${nftTable} ${nftPrefix}_${chain} ${param4} ${dest4} comment \"$name\""
+-	param6="$nftInsertOption rule inet ${nftTable} ${nftPrefix}_${chain} ${param6} ${dest6} comment \"$name\""
+ 	local ipv4_error='0' ipv6_error='0'
+-	if [ "$policy_routing_nft_prev_param4" != "$param4" ]; then
+-		nft4 "$param4" || ipv4_error='1'
+-		policy_routing_nft_prev_param4="$param4"
+-	fi
+-	if [ "$policy_routing_nft_prev_param6" != "$param6" ] && \
+-		[ "$param4" != "$param6" ]; then
+-		nft6 "$param6" || ipv6_error='1'
+-		policy_routing_nft_prev_param6="$param6"
+-	fi
+-	if [ -n "$ipv6_enabled" ] && [ "$ipv4_error" -eq '1' ] && [ "$ipv6_error" -eq '1' ]; then
+-		processPolicyError='true'
+-		state add 'errorSummary' 'errorPolicyProcessInsertionFailed' "$name"
+-		state add 'errorSummary' 'errorPolicyProcessCMD' "nft $param4"
+-		state add 'errorSummary' 'errorPolicyProcessCMD' "nft $param6"
+-		logger -t "$packageName" "ERROR: nft $param4"
+-		logger -t "$packageName" "ERROR: nft $param6"
+-	elif [ -z "$ipv6_enabled" ] && [ "$ipv4_error" -eq '1' ]; then
+-		processPolicyError='true'
+-		state add 'errorSummary' 'errorPolicyProcessInsertionFailedIpv4' "$name"
+-		state add 'errorSummary' 'errorPolicyProcessCMD' "nft $param4"
+-		logger -t "$packageName" "ERROR: nft $param4"
+-	fi
++	[ -n "$param4" ] && param4="$nftInsertOption rule inet ${nftTable} ${nftPrefix}_${chain} ${param4}"
++	[ -n "$param6" ] && param6="$nftInsertOption rule inet ${nftTable} ${nftPrefix}_${chain} ${param6}"
++	for prt in $proto; do
++		if [ -n "$param4" ] && [ -n "$dest4" ]; then
++			nft4 "$param4" "$prt" "$dest4" || ipv4_error='1'
++		fi
++		if [ -n "$param6" ] && [ -n "$dest6" ]; then
++			nft6 "$param6" "$prt" "$dest6" || ipv6_error='1'
++		fi
++		if [ -n "$ipv6_enabled" ] && [ "$ipv4_error" -eq '1' ] && [ "$ipv6_error" -eq '1' ]; then
++			processPolicyError='true'
++			state add 'errorSummary' 'errorPolicyProcessInsertionFailed' "$name"
++			state add 'errorSummary' 'errorPolicyProcessCMD' "nft $param4 $dest4"
++			state add 'errorSummary' 'errorPolicyProcessCMD' "nft $param6 $dest6"
++			logger -t "$packageName" "ERROR: nft $param4 $dest4"
++			logger -t "$packageName" "ERROR: nft $param6 $dest6"
++		elif [ -z "$ipv6_enabled" ] && [ "$ipv4_error" -eq '1' ]; then
++			processPolicyError='true'
++			state add 'errorSummary' 'errorPolicyProcessInsertionFailedIpv4' "$name"
++			state add 'errorSummary' 'errorPolicyProcessCMD' "nft $param4 $dest4"
++			logger -t "$packageName" "ERROR: nft $param4 $dest4"
++		fi
++	done
+ }
+ 
+ policy_routing() {
