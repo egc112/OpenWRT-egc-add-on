@@ -170,9 +170,20 @@ Original script:
 https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolver-switchout/61458/4  
 
 ### Upgrade PBR
-Locate the pbr and luci-pbr package at: https://github.com/stangri/repo.openwrt.melmac.net/tree/master    
+Add: src/gz stangri https://dev.melmac.net/repo  to /etc/opkg/customfeeds.conf  
+Disable (comment): option check_signature  
+
+Rename on router: /etc/config/pbr to /etc/config/pbr.old  
+
+LuCi > System > Software > Configure opkg  
+  
+1.	Update OPKG Lists  
+2.	Upgrade PBR and Luci-PBR, do not overwrite  
+
+Or manually:  
+Locate the pbr and luci-pbr package at: https://dev.melmac.net/repo  
 Download the two packages: pbr-iptables_x.x.x-x_all.ipk and luci-app-pbr_x.x.x-x_all.ipk to your desktop by clicking on the .ipk file and when it has openend, on the download icon in the upper right hand corner.  
-In Luci Administration > Software 'Upload Package' and isntall both packages  
+In Luci Administration > Software 'Upload Package' and install both packages  
 
 
 
