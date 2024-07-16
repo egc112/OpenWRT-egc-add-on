@@ -1,0 +1,34 @@
+--- pbr-1.1.6-7.bash	2024-07-16 08:33:34.365009000 +0200
++++ pbr-egc-1-1.1.6-7.bash	2024-07-16 08:32:29.362373000 +0200
+@@ -1292,14 +1292,14 @@
+ 
+ 		local ipv4_error='0' ipv6_error='0'
+ 		if [ "$policy_routing_nft_prev_param4" != "$param4" ]; then
+-			if [ -n "$first_value" ] && ! is_ipv6 "$first_value" && [ -z "$inline_set_ipv4_empty_flag" ]; then
++			if [ -n "$first_value" ] && ! is_ipv6 "$first_value" && [ -z "$inline_set_ipv4_empty_flag" ] && [ -n "$dest_dns_ipv4" ]; then
+ 				nft4 "$param4" || ipv4_error='1'
+ 				policy_routing_nft_prev_param4="$param4"
+ 			fi
+ 		fi
+ 		if [ "$policy_routing_nft_prev_param6" != "$param6" ] && \
+ 			[ "$param4" != "$param6" ]; then
+-			if [ -n "$first_value" ] && ! is_ipv4 "$first_value" && [ -z "$inline_set_ipv6_empty_flag" ]; then
++			if [ -n "$first_value" ] && ! is_ipv4 "$first_value" && [ -z "$inline_set_ipv6_empty_flag" ] && [ -n "$dest_dns_ipv6" ]; then
+ 				nft6 "$param6" || ipv6_error='1'
+ 				policy_routing_nft_prev_param6="$param6"
+ 			fi
+@@ -1496,12 +1496,12 @@
+ 			param4="$nftInsertOption rule inet $nftTable ${nftPrefix}_${chain} $param4 $dest4 comment \"$name\""
+ 			param6="$nftInsertOption rule inet $nftTable ${nftPrefix}_${chain} $param6 $dest6 comment \"$name\""
+ 			local ipv4_error='0' ipv6_error='0'
+-			if [ "$policy_routing_nft_prev_param4" != "$param4" ] && [ -z "$inline_set_ipv4_empty_flag" ]; then
++			if [ "$policy_routing_nft_prev_param4" != "$param4" ] && [ -z "$inline_set_ipv4_empty_flag" ] && ! is_ipv6 "$first_value_src"; then
+ 				nft4 "$param4" || ipv4_error='1'
+ 				policy_routing_nft_prev_param4="$param4"
+ 			fi
+ 			if [ "$policy_routing_nft_prev_param6" != "$param6" ] && \
+-				[ "$param4" != "$param6" ] && [ -z "$inline_set_ipv6_empty_flag" ]; then
++				[ "$param4" != "$param6" ] && [ -z "$inline_set_ipv6_empty_flag" ] && ! is_ipv4 "$first_value_src"; then
+ 				nft6 "$param6" || ipv6_error='1'
+ 				policy_routing_nft_prev_param6="$param6"
+ 			fi
