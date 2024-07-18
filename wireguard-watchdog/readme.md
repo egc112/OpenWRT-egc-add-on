@@ -1,5 +1,5 @@
  name: [wireguard-watchdog.sh](https://forum.openwrt.org/t/wireguard-watchdog-with-fail-over/192436)  
-version: 0.93, 14-june-2024, by egc  
+version: 0.95, 14-july-2024, by egc  
 purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in case of failure of the WireGuard tunnel the next tunnel is automatically started.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When the last tunnel has failed, the script will start again with the first tunnel.  
@@ -23,13 +23,13 @@ installation:
    default is 8.8.8.8  
    Use a ping time between 10 and 60 seconds, do not set ping time lower than 10 or you run the risk of being banned from the server you are pinging to  
    Instead of an IP address you use for pinging (default 8.8.8.8) you can also set a host-name which resolves to multiple IP addresses:  
-   under DHCP and DNS > Hostnames (/etc/config/dhcp, config domain) add, **replace `yourlan` with your lan domain name** :  
-   `ping-host.yourlan 8.8.8.8`  
-   `ping-host.yourlan 9.9.9.9`  
-   Check if the name resolves with: `nslookup ping-host.yourlan`  
-   Then use ping-host.yourlan as ping address and all addresses of ping-host.yourlan will be used in a round robin method, this also adds redundancy if one server is down e.g. start with:  
-   `/usr/share/wireguard-watchdog.sh 10 ping-host.yourlan &`  
-   This will ping every `10` seconds (after a delay of 120 seconds on startup) to `ping-host.yourlan` (= 8.8.8.8 and 9.9.9.9)  
+   under DHCP and DNS > Hostnames (/etc/config/dhcp, config domain) add:  
+   `ping-host.mylan 8.8.8.8`  
+   `ping-host.mylan 9.9.9.9`  
+   Check if the name resolves with: `nslookup ping-host.mylan`  
+   Then use ping-host.mylan as ping address and all addresses of ping-host.mylan will be used in a round robin method, this also adds redundancy if one server is down e.g. start with:  
+   `/usr/share/wireguard-watchdog.sh 10 ping-host.mylan &`  
+   This will ping every `10` seconds (after a delay of 120 seconds on startup) to `ping-host.mylan` (= 8.8.8.8 and 9.9.9.9)  
 6. reboot  
 7. View log with: `logread -e watchdog`, debug by removing the # on the second line of the script, view with: `logread | grep debug`  
 8. You can test the script by blocking the endpoint address of a tunnel with:  
