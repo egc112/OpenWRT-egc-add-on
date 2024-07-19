@@ -163,6 +163,8 @@ This is not compatible with the regular DNS hijack rule.
 ## Stopping DNS hijacking  
 https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
 ## References  
+Some more explanation
+https://forum.openwrt.org/t/bypass-optus-sports-vpn/204035/9?u=egc
 Multiple DNS servers  
 https://forum.openwrt.org/t/22-03-0-and-multiple-dnsmasq-instances/136348  
 https://openwrt.org/docs/guide-user/base-system/dhcp_configuration?s%5B%5D=multiple&s%5B%5D=dnsmasq&s%5B%5D=instances#multiple_dhcpdns_serverforwarder_instances  
