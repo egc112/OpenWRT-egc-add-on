@@ -42,6 +42,6 @@ Shortcut install commands, copy by clicking the copy icon in the right corner, p
 curl -o /usr/share/wireguard-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/wireguard-watchdog.sh &&  \
 chmod +x /usr/share/wireguard-watchdog.sh && vi /usr/share/wireguard-watchdog.sh
 ```
-
-**Note:** if the only problem is that the DDNS address of the server is frequently changing you can run the built-in watchdog which can periodically re-resolves the DNS address by running as a cron job see:  
+  
+**Note:** if the only problem is that the DDNS address of the server is frequently changing you can run the built-in watchdog which periodically re-resolves the DNS address of the server by running as a cron job see:  
 https://openwrt.org/docs/guide-user/services/vpn/wireguard/extras#dynamic_address  
