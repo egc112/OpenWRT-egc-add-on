@@ -1,0 +1,49 @@
+--- pbr-1.1.6-11.bash	2024-07-21 16:37:57.371806000 +0200
++++ pbr-egc-2-1.1.6-11.bash	2024-07-21 16:58:20.314620000 +0200
+@@ -249,6 +249,13 @@
+ 				fi
+ 			done
+ 		;;
++		ipv4_netmask)
++			for i in $value; do
++				if is_ipv4_netmask "$i"; then
++					_ret="${_ret:+$_ret }$i"
++				fi
++			done
++		;;
+ 		ipv4_negative)
+ 			for i in $value; do
+ 				if is_negation "$i" && is_ipv4 "${i:1}"; then
+@@ -1507,7 +1514,7 @@
+ 			fi
+ 			if [ "$policy_routing_nft_prev_param6" != "$param6" ] && \
+ 				[ "$param4" != "$param6" ] && [ -z "$inline_set_ipv6_empty_flag" ]&& \
+-				[ "$filter_group_src_addr" != 'ipv4' ] && [ "$filter_group_src_addr" != 'ipv4_negative' ] && \
++				[ "$filter_group_src_addr" != 'ipv4' ] && [ "$filter_group_src_addr" != 'ipv4_negative' ] && [ "$filter_group_src_addr" != 'ipv4_netmask' ] && \
+ 				[ "$filter_group_dest_addr" != 'ipv4' ] && [ "$filter_group_dest_addr" != 'ipv4_negative' ]; then
+ 					nft6 "$param6" || ipv6_error='1'
+ 					policy_routing_nft_prev_param6="$param6"
+@@ -1643,7 +1650,7 @@
+ 
+ 	# TODO: if only src_addr is set add option 121 to dhcp leases?
+ 
+-	local filter_list_src_addr='phys_dev phys_dev_negative mac_address mac_address_negative domain domain_negative ipv4 ipv4_negative ipv6 ipv6_negative'
++	local filter_list_src_addr='phys_dev phys_dev_negative mac_address mac_address_negative domain domain_negative ipv4 ipv4_netmask ipv4_negative ipv6 ipv6_negative'
+ 	local filter_list_dest_addr='domain domain_negative ipv4 ipv4_negative ipv6 ipv6_negative'
+ 	local filter_group_src_addr filtered_value_src_addr filter_group_dest_addr filtered_value_dest_addr
+ 	[ -z "$src_addr" ] && filter_list_src_addr='none'
+@@ -1654,12 +1661,12 @@
+ 			for filter_group_dest_addr in $filter_list_dest_addr; do
+ 				filtered_value_dest_addr=$(filter_options "$filter_group_dest_addr" "$dest_addr")
+ 				if [ -z "$dest_addr" ] || { [ -n "$dest_addr" ] && [ -n "$filtered_value_dest_addr" ]; }; then
+-					if { [ "$filter_group_src_addr" = 'ipv4' ] || [ "$filter_group_src_addr" = 'ipv4_negative' ]; } && \
++					if { [ "$filter_group_src_addr" = 'ipv4' ] || [ "$filter_group_src_addr" = 'ipv4_negative' ] || [ "$filter_group_src_addr" = 'ipv4_netmask' ]; } && \
+ 						{ [ "$filter_group_dest_addr" = 'ipv6' ] || [ "$filter_group_dest_addr" = 'ipv6_negative' ]; }; then
+ 							continue
+ 					fi
+ 					if { [ "$filter_group_src_addr" = 'ipv6' ] || [ "$filter_group_src_addr" = 'ipv6_negative' ]; } && \
+-						{ [ "$filter_group_dest_addr" = 'ipv4' ] || [ "$filter_group_dest_addr" = 'ipv4_negative' ]; }; then
++						{ [ "$filter_group_dest_addr" = 'ipv4' ] || [ "$filter_group_dest_addr" = 'ipv4_negative' ] || [ "$filter_group_src_addr" = 'ipv4_netmask' ]; }; then
+ 							continue
+ 					fi
+ 					policy_routing "$name" "$interface" "$filtered_value_src_addr" "$src_port" "$filtered_value_dest_addr" "$dest_port" "$proto" "$chain" "$uid"
