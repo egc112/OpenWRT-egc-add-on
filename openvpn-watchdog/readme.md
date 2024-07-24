@@ -6,12 +6,12 @@ purpose: OpenVPN watchdog with fail-over, by pinging every x seconds through the
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So in case you have only one tunnel this is just a watchdog which restarts the one tunnel you have or reboot the router  
 script type: shell script  
     
-Before installing the script setup your OpenVPN tunnels you want to use for this fail over group to use each to use its own tunX
-where X is a unique number, start with 11
-Set in the OpenVPN config of each tunnel you want to use: "dev tunX" instead of "dev tun"
-Make  an interface with the same name as the OpenVPN instance, protocol unmanaged and device (custom): "tunX", corresponding with each OpenVPN instance
-Add this interface to the WAN firewall zone or to your own created VPN Client firewall zone
-Important notice: not all VPN providers support pinging through the tunnel e.g. vpnumlimited/keepsolid, so test that first!
+Before installing the script, setup your OpenVPN tunnels you want to use for this fail over group to each use its own tunX  
+where X is a unique number, start with 11  
+Set in the OpenVPN config of each tunnel you want to use: "dev tunX" instead of "dev tun"  
+Make  an interface with the same name as the OpenVPN instance, protocol unmanaged and device (custom): "tunX", corresponding with each OpenVPN instance  
+Add this interface to the WAN firewall zone or to your own created VPN Client firewall zone  
+Important notice: not all VPN providers support pinging through the tunnel e.g. vpnumlimited/keepsolid, so test that first!  
   
   installation:
   1. Copy openvpn-watchdog.sh from `https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh` to `/usr/share`
