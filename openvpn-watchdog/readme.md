@@ -1,17 +1,17 @@
 name: openvpn-watchdog.sh
-    version: 0.2, 24-july-2024, by egc
-    purpose: OpenVPN watchdog with fail-over, by pinging every x seconds through the OpenVPN interface, the OpenVPN tunnel is monitored,
-             in case of failure of the OpenVPN tunnel the next tunnel is automatically started
-             When the last tunnel has failed, the script will start again with the first tunnel.
-             So in case you have only one tunnel this is just a watchdog which restarts the one tunnel you have
-    script type: shell script
+version: 0.2, 24-july-2024, by egc
+purpose: OpenVPN watchdog with fail-over, by pinging every x seconds through the OpenVPN interface, the OpenVPN tunnel is monitored,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in case of failure of the OpenVPN tunnel the next tunnel is automatically started
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When the last tunnel has failed, the script will start again with the first tunnel.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So in case you have only one tunnel this is just a watchdog which restarts the one tunnel you have
+script type: shell script
     
-    Before installing the script setup your OpenVPN tunnels you want to use for this fail over group to use each to use its own tunX
-      where X is a unique number, start with 11
-      Set in the OpenVPN config of each tunnel you want to use: "dev tunX" instead of "dev tun"
-    Make  an interface with the same name as the OpenVPN instance, protocol unmanaged and device (custom): "tunX", corresponding with each OpenVPN instance
-    Add this interface to the WAN firewall zone or to your own created VPN Client firewall zone
-  Important notice: not all VPN providers support pinging through the tunnel e.g. vpnumlimited/keepsolid, so test that first!
+Before installing the script setup your OpenVPN tunnels you want to use for this fail over group to use each to use its own tunX
+where X is a unique number, start with 11
+Set in the OpenVPN config of each tunnel you want to use: "dev tunX" instead of "dev tun"
+Make  an interface with the same name as the OpenVPN instance, protocol unmanaged and device (custom): "tunX", corresponding with each OpenVPN instance
+Add this interface to the WAN firewall zone or to your own created VPN Client firewall zone
+Important notice: not all VPN providers support pinging through the tunnel e.g. vpnumlimited/keepsolid, so test that first!
   
   installation:
   1. Copy openvpn-watchdog.sh from `https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh` to `/usr/share`
@@ -39,4 +39,10 @@ name: openvpn-watchdog.sh
      `nft insert rule inet fw4 output ip daddr <ip-endpoint-address> counter reject`
      do not forget to reset the firewall (service firewall restart) or remove the rule
   9. To stop a running script, do from the command line: `killall openvpn-watchdog.sh`
+
+Shortcut install commands, copy by clicking the copy icon in the right corner, paste to command line and execute, scriot is openend, set wg tunnels in script:
+```
+curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh &&  \
+chmod +x /usr/share/openvpn-watchdog.sh && vi /usr/share/openvpn-watchdog.sh
+```
     
