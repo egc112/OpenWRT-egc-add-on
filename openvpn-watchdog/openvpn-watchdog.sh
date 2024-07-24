@@ -20,7 +20,7 @@
 
 # installation:
 # 1. Copy openvpn-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpng-watchdog.sh to /usr/share
-#    either with, from commandline (SSH): curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpng-watchdog.sh
+#    either with, from commandline (SSH): curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh
 #    or by clicking the download icon in the upper right corner of the script
 # 2. Make executable: chmod +x /usr/share/openvpn-watchdog.sh
 # 3. Edit the script with vi or winscp to add the names of the OpenVPN tunnels you want to **exclude** for fail over, the names are the names of the interfaces, format is:
