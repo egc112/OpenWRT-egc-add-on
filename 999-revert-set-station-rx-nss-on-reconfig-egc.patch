@@ -1,0 +1,35 @@
+From 1952cbd781db66774888746891b7ccbc376c0e8c Mon Sep 17 00:00:00 2001
+From: regae <37059068+regae@users.noreply.github.com>
+Date: Thu, 11 Jul 2024 10:01:32 +0700
+Subject: [PATCH] mac80211: fix wifi performance on ath10k
+
+after update to 6.1.97, bad performance on onhub
+maxed 250-270Mbps
+tested with iperf3 -R
+revert for now
+
+revert wifi: mac80211: set station RX-NSS on reconfig
+commit 4e5bd2287021823c10862379312648dd55e17f49
+---
+ .../999-revert-set-station-rx-nss-on-reconfig.patch   | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+ create mode 100644 package/kernel/mac80211/patches/subsys/999-revert-set-station-rx-nss-on-reconfig.patch
+
+diff --git a/package/kernel/mac80211/patches/subsys/999-revert-set-station-rx-nss-on-reconfig.patch b/package/kernel/mac80211/patches/subsys/999-revert-set-station-rx-nss-on-reconfig.patch
+new file mode 100644
+index 0000000000000..0310806c13505
+--- /dev/null
++++ b/package/kernel/mac80211/patches/subsys/999-revert-set-station-rx-nss-on-reconfig.patch
+@@ -0,0 +1,11 @@
++--- a/net/mac80211/cfg.c
+++++ b/net/mac80211/cfg.c
++@@ -1835,8 +1835,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
++ 					      params->opmode_notif,
++ 					      sband->band);
++ 	}
++-
++-	ieee80211_sta_set_rx_nss(link_sta);
++ 
++ 	return ret;
++ }
+
