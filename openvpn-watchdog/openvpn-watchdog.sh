@@ -45,10 +45,8 @@
 #    do not forget to reset the firewall (service firewall restart) or remove the rule
 # 9. To stop a running script, do from the command line: killall openvpn-watchdog.sh
 
-
 #Add the OpenVPN tunnels you do NOT want to use for fail over, separated with a space, delimeted with " " and then remove the #
 #no_vpntunnels="<no_vpntunnel_1> <no_vpntunnel_2>"
-
 
 alive=3600      # Set seconds between log message indicating running watchdog
 reboot=0        # 0 is no reboot on failure but only restart OpenVPN (with the next tunnel), 1 is reboot on failure
