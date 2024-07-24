@@ -19,7 +19,7 @@
 # Important notice: not all VPN providers support pinging through the tunnel e.g. vpnumlimited/keepsolid, so test that first!
 
 # installation:
-# 1. Copy openvpn-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpng-watchdog.sh to /usr/share
+# 1. Copy openvpn-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh to /usr/share
 #    either with, from commandline (SSH): curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh
 #    or by clicking the download icon in the upper right corner of the script
 # 2. Make executable: chmod +x /usr/share/openvpn-watchdog.sh
