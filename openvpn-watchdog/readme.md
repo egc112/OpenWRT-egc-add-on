@@ -1,10 +1,10 @@
-name: openvpn-watchdog.sh
-version: 0.2, 24-july-2024, by egc
-purpose: OpenVPN watchdog with fail-over, by pinging every x seconds through the OpenVPN interface, the OpenVPN tunnel is monitored,
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in case of failure of the OpenVPN tunnel the next tunnel is automatically started
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When the last tunnel has failed, the script will start again with the first tunnel.
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So in case you have only one tunnel this is just a watchdog which restarts the one tunnel you have
-script type: shell script
+name: openvpn-watchdog.sh  
+version: 0.2, 24-july-2024, by egc  
+purpose: OpenVPN watchdog with fail-over, by pinging every x seconds through the OpenVPN interface, the OpenVPN tunnel is monitored,  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in case of failure of the OpenVPN tunnel the next tunnel is automatically started  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When the last tunnel has failed, the script will start again with the first tunnel.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So in case you have only one tunnel this is just a watchdog which restarts the one tunnel you have  
+script type: shell script  
     
 Before installing the script setup your OpenVPN tunnels you want to use for this fail over group to use each to use its own tunX
 where X is a unique number, start with 11
