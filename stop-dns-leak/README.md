@@ -1,5 +1,5 @@
 # DNS leak  
-### under construction version 0.0.1  
+### under construction version 0.1  
 First, if your problem is that you are seeing your ISP DNS server in a DNS leak test (ipleak.net, dnsleaktest.com), then make sure you disable `Use DNS servers advertised by peer` in the Advanced settings section of the interface (` option peerdns '0'`) and set `Use custom DNS servers` if necessary/desired, or better use Secure DNS (DoT, DoH) with [SmartDNS](https://forum.openwrt.org/t/smartdns-config-with-dns-over-https/130488/20?u=egc) or [DNS over HTTPS](https://openwrt.org/docs/guide-user/services/dns/doh_dnsmasq_https-dns-proxy).    
 A DNS leak is often defined by a DNS query not going through a VPN tunnel.    
 But a stricter definition is a DNS query not going through the VPN tunnel and not using a specific DNS server (often a VPN provider pushes a DNS server (OpenVPN) or hands out a special DNS server to use for WireGuard, (those DNS servers are often only available when using the tunnel, so cannot be used for normal DNS via the WAN) .    
