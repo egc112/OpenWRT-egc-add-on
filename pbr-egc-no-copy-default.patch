@@ -1,0 +1,26 @@
+--- pbr-1.1.6-11.bash	2024-07-20 18:06:23.234929000 +0200
++++ pbr-egc-1-1.1.6-11.bash	2024-07-20 18:26:16.454478000 +0200
+@@ -1718,7 +1718,12 @@
+ 						i="$(echo "$i" | sed 's/ onlink$//')"
+ 						idev="$(echo "$i" | grep -Eso 'dev [^ ]*' | awk '{print $2}')"
+ 						if ! is_supported_iface_dev "$idev"; then
+-							try ip -4 route add $i table "$tid" >/dev/null 2>&1 || ipv4_error=1
++							if [[ ! -z "$(echo $i | grep -e '/0 \|/1 ')" && $tid -eq 256 ]]; then
++								logger -t pbr-egc "detected default route: $i; table $tid; continue"
++							else
++								try ip -4 route add $i table "$tid" >/dev/null 2>&1 || ipv4_error=1
++							fi
++							#try ip -4 route add $i table "$tid" >/dev/null 2>&1 || ipv4_error=1
+ 						fi
+ 					done << EOF
+ 					$(ip -4 route list table main)
+@@ -1741,6 +1746,9 @@
+ 								i="$(echo "$i" | sed 's/ linkdown$//')"
+ 								i="$(echo "$i" | sed 's/ onlink$//')"
+ 								# shellcheck disable=SC2086
++								# if [[ ! -z "$(echo $i | grep -e '::/0 \|::/1 \|::/2 ')" && $tid -eq 256 ]]; then
++									# try ip -6 route add $i table "$tid" >/dev/null 2>&1 || ipv6_error=1
++								# fi
+ 								try ip -6 route add $i table "$tid" >/dev/null 2>&1 || ipv6_error=1
+ 							done << EOF
+ 							$(ip -6 route list table main | grep " dev $dev6 ")

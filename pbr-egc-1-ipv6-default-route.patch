@@ -1,0 +1,11 @@
+--- pbr-1.1.6-16.bash	2024-07-27 10:40:54.899558200 +0200
++++ pbr-egc-1-1.1.6-16.bash	2024-07-27 11:00:22.698321900 +0200
+@@ -1763,7 +1763,7 @@
+ EOF
+ 						else
+ 							try ip -6 route add "$(ip -6 -o a show "$dev6" | awk '{print $4}')" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1
+-							try ip -6 route add default dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1
++							try ip -6 route add default dev "$dev6" table "$tid" metric 128 >/dev/null 2>&1 || ipv6_error=1
+ 						fi
+ 					fi
+ 					try ip -6 rule add fwmark "${mark}/${fw_mask}" table "$tid" priority "$((priority-1))" >/dev/null 2>&1 || ipv6_error=1
