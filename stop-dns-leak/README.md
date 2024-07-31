@@ -159,6 +159,28 @@ config interface 'tun1'
 Important you have to make sure that the DNS server chosen is also routed via the tunnel, so to make sure make a new policy rule to route the DNS remote address via the tunnel!  
 
 This is not compatible with the regular DNS hijack rule.  
+  
+## Different DNS servers and routing per domain  
+DNSMasq gives you the ability to use a different DNS server per domain.  
+This works by using the server directive e.g. for resolving the bbc and google domain only with 9.9.9.9:  
+`server=/bbc.com/google.com/9.9.9.9`  
+For openWRT you can use the GUI: Network > DHCP and DNS > Forwards > DNS Forewards and add: `/bbc.com/google/com/9.9.9.9`  
+or add to `/etc/config/dhcp`:  
+```
+list server '/bbc.com/google/com/9.9.9.9'
+```
+  
+Next you can use PBR to route the traffic to 9.9.9.9 via the VPN.   
+As DNSMasq sits on the router you have to use an `OUTPUT` PBR rule that targets traffic coming out of the router.
+In the PBR GUI (Services > Policy Routing) create a new rule with remote address `9.9.9.9`, Chain: output, Interface: your VPN,    
+or add in /etc/config/pbr:  
+```
+config policy
+	option name 'quadnine'
+	option chain 'output'
+	option interface 'myvpn'
+```
+
 
 ## Stopping DNS hijacking  
 https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
