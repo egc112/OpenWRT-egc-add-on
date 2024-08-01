@@ -181,6 +181,7 @@ config policy
 	option chain 'output'
 	option interface 'myvpn'
 ```
+For some discusion and explanation, see: https://forum.openwrt.org/t/wireguard-and-pbr-with-vpn-dns-leaks/205661/8?u=egc
   
 ## Stopping DNS hijacking  
 https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
