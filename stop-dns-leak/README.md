@@ -144,6 +144,7 @@ config redirect
 
 As the query will follow the routing of the client there is no specific need to set a route for the DNS server involved.  
 
+## PBR DNS Policies
 [PBR version 1.1.8](https://docs.openwrt.melmac.net/pbr/ ) uses this DNS redirect mechanism and incorporated that into the GUI.  
 ![Alt text](img/dns-policy.jpg?raw=true "Optional Title")  
 You can enter the local LAN clients IP addresses or interface (see [section 8.2.3. DNS Policy Options](https://docs.openwrt.melmac.net/pbr/#DNSPolicyOptions) ) and the VPN tunnel or remote DNS, the DNS address set on the tunnels interface will be used to redirect the DNS query.  
