@@ -20,7 +20,9 @@ Important notice: not all VPN providers support pinging through the tunnel e.g. 
   2. Make executable: `chmod +x /usr/share/openvpn-watchdog.sh`
   3. Edit the script with vi or winscp to add the names of the OpenVPN tunnels you want to **exclude** for fail over, the names are the names of the interfaces, format is:
      `no_vpntunnels="<no_vpntunnel_1> <no_vpntunnel_2>"`, see example in script
-  4. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):
+    Instead of letting the OpenVPN service restart you can reboot the whole router, by setting reboot=1. To make sure the router is not constantly rebooting  
+    There is an increasing time between reboots if the VPN is not succesful, to a maximum of 20 minutes.  
+  5. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):
      `/usr/share/openvpn-watchdog.sh &`
      Note the ampersand (&) at the end indicating that the script is executed asynchronously
   5  The script takes two parameters, the first the ping time in seconds (default is 30), the second the ip address used for pinging (default is 8.8.8.8).
