@@ -2,15 +2,16 @@
 
 # Name: 98-pbr-via-wan
 # Version: 27-apr-2024 by egc
-# Description: OpenWRT hoptlug script routing a specific sourceport, local IP address or interface etc. via the WAN
+# Description: OpenWRT hotplug script routing a specific sourceport, local IP address or interface etc. via the WAN
 # Usage: e.g. When running a concurrent VPN client and VPN server and needing to route the VPN server port via the WAN and/or
 #	when excluding some local IP addresses from using the VPN
 # Installation: 
-#  in this script adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN 
+#  in this script adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN, 
+#  to take efect remove the first # of the SPORT/IPADDR/MYINTERFACE  
 #  copy script to /etc/hotplug.d/iface
 #  reboot or restart network (service network restart)
 
-#SPORT=51820  # adapt the port number e.g 1194 for OpenVPN 51820 for WireGuard
+#SPORT=51820  # adapt the port number e.g 1194 for OpenVPN 51820 for WireGuard and remove the # at the beginning
 #IPADDR="192.168.1.2/32 192.168.1.64/26"  # list of IP address with CIDR notation, space delimited
 #MYINTERFACE="wg0"	#set the interface you are using for your VPN client interface, e.g. wg0 or tun0, 
 #             for OpenVPN the tun interface has to be defined in the network config  
