@@ -197,6 +197,7 @@ https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolve
 ### Upgrade PBR
 Add: src/gz stangri https://dev.melmac.net/repo  to /etc/opkg/customfeeds.conf  
 Disable (comment): option check_signature  
+See also: https://docs.openwrt.melmac.net/  
 
 Rename on router: /etc/config/pbr to /etc/config/pbr.old  
 
