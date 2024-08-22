@@ -195,8 +195,14 @@ Original script:
 https://forum.openwrt.org/t/need-help-writing-a-shell-script-openvpn-dns-resolver-switchout/61458/4  
 
 ### Upgrade PBR
-Add: src/gz stangri https://dev.melmac.net/repo  to /etc/opkg/customfeeds.conf  
-Disable (comment): option check_signature  
+```
+opkg update
+opkg install wget-ssl
+echo -e -n 'untrusted comment: OpenWrt usign key of Stan Grishin\nRWR//HUXxMwMVnx7fESOKO7x8XoW4/dRidJPjt91hAAU2L59mYvHy0Fa\n' > /etc/opkg/keys/7ffc7517c4cc0c56
+sed -i '/stangri_repo/d' /etc/opkg/customfeeds.conf
+echo 'src/gz stangri_repo https://repo.openwrt.melmac.net' >> /etc/opkg/customfeeds.conf
+opkg update
+```
 See also: https://docs.openwrt.melmac.net/  
 
 Rename on router: /etc/config/pbr to /etc/config/pbr.old  
