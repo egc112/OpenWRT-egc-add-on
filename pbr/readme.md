@@ -6,7 +6,7 @@ Copy the new script to `/etc/init.d/pbr`
 Make the new script executable: `chmod +x /etc/init.d/pbr`  
 Reboot the computer  
 
-Note that especailly OpenVPN is slow to setup so adding some delay is often necessary:
+Note that especially OpenVPN is slow to setup so adding some delay is often necessary:
 ```
 	option procd_boot_delay '30'
 	option procd_reload_delay '20'
