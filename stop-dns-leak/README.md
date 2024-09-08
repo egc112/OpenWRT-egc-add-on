@@ -103,7 +103,10 @@ It is also possible to assign option 6 to a whole interface, e.g. add under the 
 ` list dhcp_option 'br-guest,6,8.8.8.8,8.8.4.4'`    
 Or under the interface option so that it only is set for that interface:    
 ` list dhcp_option '6,8.8.8.8,8.8.4.4'`  
-
+  
+In Luci:  
+Network > Interfaces > Choose interface e.g. LAN > Advanced settings > DHCP options  
+  
 Reference: https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#dhcp_options  
     
 ### iptables/nftables  
