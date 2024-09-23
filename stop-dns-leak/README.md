@@ -65,7 +65,7 @@ The above example was about WireGuard which has its own interface defined, but w
 The OpenVPN clients interface is setup by OpenVPN so you cannot define a DNS server as far as I know. But an OpenVPN server e.g. from your provider can (and often does) push a DNS server to use to your client.  
 Unfortunately OpenWRT does not seem do anything by default with these pushed DNS servers.  
 If you want to use those you have to add a script.  
-There are several available [I use this one](https://github.com/egc112/OpenWRT-egc-add-on/blob/main/stop-dns-leak/ovpn-up-update-resolv-4) which sets pushed or used DNS servers from the OpenVPN client exclusively to use by DNSMasq and also always routes the DNS server via the tunnel so that you will not have a DNS leak.  
+There are several available [I use this one](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/stop-dns-leak/use-openvpn-dns) which sets pushed or used DNS servers from the OpenVPN client exclusively to use by DNSMasq and also always routes the DNS server via the tunnel so that you will not have a DNS leak.  
     
 ## Policy Based Routing  
 When using Policy Based routing it highly depends on what the default routing table has as default route as DNSMasq uses this table to route DNS.  
