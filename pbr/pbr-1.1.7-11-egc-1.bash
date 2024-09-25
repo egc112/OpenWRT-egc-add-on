@@ -13,7 +13,7 @@ USE_PROCD=1
 [ -n "${IPKG_INSTROOT}" ] && return 0
 
 readonly packageName='pbr'
-readonly PKG_VERSION='1.1.7-10-egc-1'
+readonly PKG_VERSION='1.1.7-11-egc-1'
 readonly packageCompat='7'
 readonly serviceName="$packageName $PKG_VERSION"
 readonly packageConfigFile="/etc/config/${packageName}"
