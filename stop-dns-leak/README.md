@@ -132,7 +132,7 @@ config redirect
 	option src_dport '53'
 	option dest_ip '8.8.8.8'
 	list src_mac 'D0:AB:D5:92:CC:CC'
-	option family 'ipv4'
+	option reflection '0'
 
 config redirect
 	option target 'DNAT'
@@ -140,9 +140,11 @@ config redirect
 	option src 'lan'
 	list src_mac 'D0:AB:D5:92:CC:CC'
 	option src_dport '53'
+	option reflection '0'
 	option dest_ip '2001:4860:4860::8888'
 	option family 'ipv6'
 ```
+
 or for a whole interface e.g. `guest`
 ```
 config redirect
