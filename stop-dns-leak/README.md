@@ -125,15 +125,23 @@ You can also use `Port Forwarding` to make the iptables rules:
    
 ```  
 /etc/config/firewall:  
-config redirect 'dns_int'  
-    option name 'Intercept-DNS'  
-    option src 'lan'  
-    option src_dport '53'  
-    option proto 'tcp udp'  
-    option target 'DNAT'  
-    option dest_port '53'  
-    option dest_ip '8.8.4.4'  
-    option src_ip '192.168.9.224  
+config redirect
+	option target 'DNAT'
+	option name 'DNSto8888ipv4'
+	option src 'lan'
+	option src_dport '53'
+	option dest_ip '8.8.8.8'
+	list src_mac 'D0:AB:D5:92:CC:CC'
+	option family 'ipv4'
+
+config redirect
+	option target 'DNAT'
+	option name 'DNSto8888ipv6'
+	option src 'lan'
+	list src_mac 'D0:AB:D5:92:CC:CC'
+	option src_dport '53'
+	option dest_ip '2001:4860:4860::8888'
+	option family 'ipv6'
 ```
 or for a whole interface e.g. `guest`
 ```
