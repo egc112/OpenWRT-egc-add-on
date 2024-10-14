@@ -2,15 +2,20 @@
 # shellcheck disable=SC1091,SC3043
 # This code is based on idea of https://github.com/egc112
 
-# set all listenports as a space delimited string
-myports="51820 51821 51822"
+# set all source ports as a space delimited string
+local myports="51820 51821 51822"
+
+# if you want to route only from a specific ip address replace "all" with that ip address
+local ip="all"
 
 # name: pbr.user.sport
-# version: 0.1.0, by egc
+# usage: accompanying script for PBR: https://docs.openwrt.melmac.net/pbr/ 
+# version: 0.2, by egc
 # purpose: route sourceports e.g. of VPN servers in your lan via the WAN
 # installation:
 #  copy this file to /usr/share/pbr
 #  in this script adapt'myports' to include all the sourceports you want to route via the WAN
+#  in this script change 'ip' from "all" to a specific ip address of the source
 #  in the PBR GUI add as include file or add in /etc/config/pbr:
 #     config include
 #	       option enabled '1'
@@ -18,9 +23,8 @@ myports="51820 51821 51822"
 #
 # check from command line with: 'ip rule show'
 
-
 WAN_INTERFACE="wan"
 for listen_port in $myports; do
-	ip rule del sport "$listen_port" table "pbr_${WAN_INTERFACE}" >/dev/null 2>&1
-	ip rule add sport "$listen_port" table "pbr_${WAN_INTERFACE}" >/dev/null 2>&1
+	ip rule del from "$ip" sport "$listen_port" table "pbr_${WAN_INTERFACE}" >/dev/null 2>&1
+	ip rule add  from "$ip" sport "$listen_port" table "pbr_${WAN_INTERFACE}" >/dev/null 2>&1
 done
