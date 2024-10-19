@@ -14,7 +14,7 @@ pull-filter ignore "route-ipv6 0000::/2"
 pull-filter ignore "route-ipv6 4000::/2"
 pull-filter ignore "route-ipv6 8000::/2"
 pull-filter ignore "route-ipv6 C000::/2"
-```
+
 Main table has default route via the WAN:
 IPv4
 ```
