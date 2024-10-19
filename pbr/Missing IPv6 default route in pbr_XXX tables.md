@@ -162,7 +162,7 @@ fi
   
 But it was not working because the gw6 was not correct.  
 The gw6 is correctly identified at startup but not when going processing the WAN interface, it seems because for IPv6 it is sending the WAN interface to `pbr_get_gateway6()` instead of WAN6  
-So as an ugly hack I added the following code to `pbr_get_gateway6()` [line 183[(https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L183)  
+So as an ugly hack I added the following code to `pbr_get_gateway6()` [line 183](https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L183)  
 Basically if the interface is WAN replace with WAN6 (ugly, ugly, I know but just for testing)  
   
 ```  
