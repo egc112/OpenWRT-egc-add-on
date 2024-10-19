@@ -99,7 +99,7 @@ ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1 || i
 ```  
 Note the missing `try`, I think it is missing for a reason as it will error otherwise.  
 The underlying cause is that OpenVPN and WireGuard interfaces are link scope meaning they do not need a gateway.  
-This is contrast to the WAN which is a global scope interface which really needs a gateway for the default interface.  
+This is in contrast to the WAN which is a global scope interface which really needs a gateway for the default interface.  
 For IPv4 link scope interfaces I think the gateway which is specified is just ignored but for IPv6 specifying the gateway results in an error.  
 Bottom line do not specify a gateway for these interfaces.  
 Because I am only sure about OpenVPN and Wireguard interfaces not needing a gateway you can do a simple hack like this preserving the gateway setting but if it fails set only the device:  
