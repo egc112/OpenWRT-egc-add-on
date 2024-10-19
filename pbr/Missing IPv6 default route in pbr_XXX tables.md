@@ -137,7 +137,7 @@ Note the following needs more testing but was an exercise for my understanding:
 I went a step further and wanted to look if the following could work:  
 Only if the interface is WAN then both for IPv4 and IPv6 use the gateway and in all other cases only use the device and not the gateway for the default route.  
 I tried that and that works for IPv4  
-I replaced the code in [line 1756]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1756) with:  
+I replaced the code in [line 1665]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1665) with:  
 ```  
 #else  
 # try ip -4 route add default via "$gw4" dev "$dev" table "$tid" >/dev/null 2>&1 || ipv4_error=1  
@@ -161,10 +161,10 @@ fi
 ```  
   
 But it was not working because the gw6 was not correct.  
-The gw6 is correctly identified at startup but not when going through the interfaces, it seems because for IPv6 it is sending the WAN interface to `pbr_get_gateway6()` instead of WAN6  
-So as an ugly hack I added the following code to `pbr_get_gateway6()` (line 183)  
+The gw6 is correctly identified at startup but not when going processing the WAN interface, it seems because for IPv6 it is sending the WAN interface to `pbr_get_gateway6()` instead of WAN6  
+So as an ugly hack I added the following code to `pbr_get_gateway6()` [line 183[(https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L183)  
 Basically if the interface is WAN replace with WAN6 (ugly, ugly, I know but just for testing)  
-https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L183  
+  
 ```  
 pbr_get_gateway6() {  
 local iface="$2" dev="$3" gw  
@@ -181,13 +181,13 @@ eval "$1"='$gw'
 ```  
   
 Anyway now everything came together and it sort of works.  
-But still some loose ends, when using IPv6 I am testing for `is_wan` but I should test for `is_wan6` but that does not work as the WAN interface is used instead of WAN6 which of course has a relation with also not finding the IPv6 gateway so if you decide to take this road that needs attention  
-I hope you can make sense of this and forget all the ugly hacks.  
+  
+Perhaps a bit ugly as when processing the IPv6 WAN interface we actually should process WAN6 but I hope you can extract the problem from my ramblings and possible direction for a solution
   
   
 Conclusion:  
 IPv6 pbr_XXX tables are missing default route as link scope interfaces cannot and do not have to deal with gateway addresses  
-As a workaround try this patch:  
+As a workaround have a look at this patch:  
 ```  
 --- pbr-1.1.7-25.bash	2024-10-17 14:57:20.322141800 +0200  
 +++ pbr-1.1.7-25-egc-2.bash	2024-10-17 15:32:43.051180800 +0200  
@@ -205,7 +205,7 @@ As a workaround try this patch:
  								i="$(echo "$i" | sed 's/ onlink$//')"  
 ```  
   
-But consider only using gateway for WAN as other interfaces are probabaly always link scope (needs testing)  
+But consider only using gateway for WAN as other interfaces are probably always link scope (needs testing)  
 This patch also deals with the absent gw6 when interface WAN is processed:  
 ```  
 --- pbr-1.1.7-25.bash	2024-10-17 14:57:20.322141800 +0200  
