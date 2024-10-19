@@ -1,5 +1,5 @@
 Missing IPv6 default route in pbr_XXX tables  
-Setup  
+Setup:  
 R7800 23.05.5 NSS build  
 PBR 1.1.7-25  
 OpenVPN interface mullvad_ro  
@@ -14,7 +14,8 @@ pull-filter ignore "route-ipv6 0000::/2"
 pull-filter ignore "route-ipv6 4000::/2"  
 pull-filter ignore "route-ipv6 8000::/2"  
 pull-filter ignore "route-ipv6 C000::/2"  
-```  
+```
+  
 Main table has default route via the WAN:  
 IPv4  
 ```  
@@ -30,6 +31,7 @@ default via 192.168.0.1 dev eth0.2 proto static src 192.168.0.5
 192.168.5.0/24 dev br-lan proto kernel scope link src 192.168.5.1  
 192.168.15.0/24 dev br-guest proto kernel scope link src 192.168.15.1  
 ```  
+  
 Main table IPv6:  
 ```  
 root@R7800-1:~# ip -6 route show table main  
@@ -59,6 +61,7 @@ fe80::/64 dev eth0 proto kernel metric 256 pref medium
 fe80::/64 dev phy0-ap0 proto kernel metric 256 pref medium  
 fe80::/64 dev tun11 proto kernel metric 256 pref medium  
 ```  
+  
 Table pbr_mullvad_se (WireGuard) IPv4:  
 ```  
 root@R7800-1:~# ip -4 route show table pbr_mullvad_se  
@@ -69,11 +72,13 @@ default via 10.68.89.7 dev mullvad_se
 192.168.5.0/24 dev br-lan proto kernel scope link src 192.168.5.1  
 192.168.15.0/24 dev br-guest proto kernel scope link src 192.168.15.1  
 ```  
+  
 Table pbr_mullvad_se (WireGuard) IPv6:  
 ```  
 root@R7800-1:~# ip -6 route show table pbr_mullvad_se  
 fc00:bbbb:bbbb:bb01::5:5906 dev mullvad_se proto kernel metric 256 pref medium  
 ```  
+  
 Table pbr-mullvad_ro (OpenVPN) IPv4:  
 ```  
 root@R7800-1:~# ip -4 route show table pbr_mullvad_ro  
@@ -84,6 +89,7 @@ default via 10.15.0.13 dev tun11
 192.168.5.0/24 dev br-lan proto kernel scope link src 192.168.5.1  
 192.168.15.0/24 dev br-guest proto kernel scope link src 192.168.15.1  
 ```  
+  
 Table pbr-mullvad_ro (OpenVPN) IPv6:  
 ```  
 root@R7800-1:~# ip -6 route show table pbr_mullvad_ro  
@@ -95,6 +101,7 @@ The problematic line is line 1703:
 ```  
 ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1  
 ```  
+  
 Note the missing `try`, I think it is missing for a reason as it will error otherwise.  
 The underlying cause is that OpenVPN and WireGuard interfaces are link scope meaning they do not need a gateway.  
 This is contrast to the WAN which is a global scope interface which really needs a gateway for the default interface.  
@@ -109,6 +116,7 @@ try ip -6 route add default dev "$dev6" table "$tid" metric 128 >/dev/null 2>&1 
 fi  
 ```  
 Basically try with a default gateway and if not successful just use only the device.  
+  
 When I have added this to the pbr script:  
 Table pbr_mullvad_se (WireGuard) IPv6:  
 ```  
@@ -116,6 +124,7 @@ root@R7800-1:~# ip -6 route show table pbr_mullvad_se
 fc00:bbbb:bbbb:bb01::5:5906 dev mullvad_se proto kernel metric 256 pref medium  
 default dev mullvad_se metric 128 pref medium  
 ```  
+  
 Table pbr-mullvad_ro (OpenVPN) IPv6:  
 ```  
 root@R7800-1:~# ip -6 route show table pbr_mullvad_ro  
@@ -123,6 +132,7 @@ fdda:d0d0:cafe:1301::/64 dev tun11 proto kernel metric 256 pref medium
 fe80::/64 dev tun11 proto kernel metric 256 pref medium  
 default dev tun11 metric 128 pref medium  
 ```  
+  
 The default IPv6 route for both the OpenVPN and WireGuard interfaces is now made with only the device and not the gateway.  
 I checked of course that that works so you really do not need a gateway on a scope link interface.  
 An ugly hack but it works for now  
@@ -141,6 +151,7 @@ try ip -4 route add default dev "$dev" table "$tid" >/dev/null 2>&1 || ipv4_erro
 fi  
 # shellcheck disable=SC2086  
 ```  
+  
 For IPv6 I tried the same (line 1714):  
 ```  
 #ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1  
