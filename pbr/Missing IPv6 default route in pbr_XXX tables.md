@@ -92,8 +92,8 @@ root@R7800-1:~# ip -6 route show table pbr_mullvad_ro
 fdda:d0d0:cafe:1301::/64 dev tun11 proto kernel metric 256 pref medium  
 fe80::/64 dev tun11 proto kernel metric 256 pref medium  
 ```  
-It is clear that the default route for IPv6 is missing.  
-The problematic line is line 1703:  
+It is clear that the default route for IPv6 is missing for Wireguard and OpenVPN interfaces.  
+The problematic line is [line 1703]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1692):  
 ```  
 ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1  
 ```  
