@@ -93,7 +93,7 @@ fdda:d0d0:cafe:1301::/64 dev tun11 proto kernel metric 256 pref medium
 fe80::/64 dev tun11 proto kernel metric 256 pref medium  
 ```  
 It is clear that the default route for IPv6 is missing for Wireguard and OpenVPN interfaces.  
-The problematic line is [line 1703]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1692):  
+The problematic line is [line 1692]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1692):  
 ```  
 ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1  
 ```  
@@ -103,7 +103,7 @@ This is contrast to the WAN which is a global scope interface which really needs
 For IPv4 link scope interfaces I think the gateway which is specified is just ignored but for IPv6 specifying the gateway results in an error.  
 Bottom line do not specify a gateway for these interfaces.  
 Because I am only sure about OpenVPN and Wireguard interfaces not needing a gateway you can do a simple hack like this preserving the gateway setting but if it fails set only the device:  
-Replace the ]line 1703]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1692) with this:  
+Replace the [line 1692]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1692) with this:  
 ```  
 #ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1  
 if ! ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1; then  
@@ -137,7 +137,7 @@ Note the following needs more testing but was an exercise for my understanding:
 I went a step further and wanted to look if the following could work:  
 Only if the interface is WAN then both for IPv4 and IPv6 use the gateway and in all other cases only use the device and not the gateway for the default route.  
 I tried that and that works for IPv4  
-I replaced the code in [line 1682]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1756) with:  
+I replaced the code in [line 1756]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1756) with:  
 ```  
 #else  
 # try ip -4 route add default via "$gw4" dev "$dev" table "$tid" >/dev/null 2>&1 || ipv4_error=1  
@@ -149,7 +149,7 @@ fi
 # shellcheck disable=SC2086  
 ```  
   
-For IPv6 I tried the same [line 1714]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1692):  
+For IPv6 I tried the same [line 1692]( https://github.com/stangri/pbr/blob/f86303e755f8f1cf30fa666e9842df496ff70866/files/etc/init.d/pbr#L1692):  
 ```  
 #ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1  
 if is_wan "$iface"; then  
