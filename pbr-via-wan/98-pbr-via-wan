@@ -1,40 +1,31 @@
 #!/bin/sh
 
 # Name: 98-pbr-via-wan
-# Version: 27-apr-2024 by egc
-# Description: OpenWRT hotplug script routing a specific sourceport, local IP address or interface etc. via the WAN
-# Usage: e.g. When running a concurrent VPN client and VPN server and needing to route the VPN server port via the WAN and/or
+# Version: 1.0.1 24-oct-2024 by egc
+# Description: OpenWRT hoptlug script routing a specific sourceport, local IP address or interface etc. via the WAN
+# Usage: e.g. When running a concurrent VPN client and VPN server or port forwarding via the WAN and needing to route the port via the WAN back and/or
 #	when excluding some local IP addresses from using the VPN
 # Installation: 
 #  in this script adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN, 
-#  to take efect remove the first # of the SPORT/IPADDR/MYINTERFACE  
+#  Remove the first # of the SPORT/IPADDR/ADDLOCALROUTES line to enable it  
 #  copy script to /etc/hotplug.d/iface
 #  reboot or restart network (service network restart)
 
-#SPORT=51820  # adapt the port number e.g 1194 for OpenVPN 51820 for WireGuard 
-#IPADDR="192.168.1.2/32 192.168.1.64/26"  # list of IP address with CIDR notation, space delimited
-#MYINTERFACE="wg0"	# set the interface you are using for your VPN client interface, e.g. wg0 or tun0, 
-                        # for OpenVPN the tun interface has to be defined in the network config  
+MYINTERFACE="wg0"	# set the interface you are using for your VPN client interface, e.g. wg0 or tun0,
+                    # for OpenVPN the tun interface has to be defined in the network config 
+#SPORT=51820  # adapt the port number e.g 1194 for OpenVPN 51820 for WireGuard
+#IPADDR="192.168.1.2/32 192.168.1.64/26"  # adapt list of IP address with CIDR notation, space delimited
+#ADDLOCALROUTES=  # uncomment/comment to enable/disable adding local routes to pbr table
 
 #DEBUG=; set -x; logger -t hotplug $(env); # uncomment/comment to enable/disable debug mode
 TID=100
 {
-# getdefault gateway
-# Alternatively on WAN interface Advanced settings "Override IPv4 routing table" set table number, a table with this number and default via the WAN is made.
-# This is also possible to do with scripting with: uci -q set network.wan.ip4table="$TID"; uci commit network
 get_gateway4() {
 		GATEWAY4="$(ifstatus wan | grep nexthop | sed 's/[^0-9.]//g')"
-		# if there is no WAN e.g. a Dumb AP
 		if [[ -z "$GATEWAY4" ]]; then
 			GATEWAY4="$(uci get network.lan.gateway)"
 		fi
-		# Alernative
-		# uci -q set network.wan.ip4table="$TID" 
-		# uci commit network
 }
-
-# Alternatively on WAN6 interface Advanced settings "Override IPv6 routing table" set table number, a table with this number and default via the WAN is made
-# This is also possible to do with scripting with: uci -q set network.wan.ip6table="$TID"; uci commit network
 get_gateway6() {
 	GATEWAY6="$(ip -6 route | grep "default" | awk '{print $5;exit;}')"
 	DEV6="$(ip -6 route | grep "default" | awk '{print $7;exit;}')"
@@ -47,8 +38,6 @@ valid_ipv4()
 		local mask="${addrmask#*/}"
         local N
         local OIFS
-        # only numbers and dots in the entire IP address, no empty quads, and no
-        # leading or trailing dots
         case "${addr}" in
                 *[!0-9.]* |  *..* | .* | *. ) #
                         return 1
@@ -65,8 +54,6 @@ valid_ipv4()
                 if [ "${#N}" -lt 1 -o "${#N}" -gt 3 ]; then
                         return 1
                 fi
-                # at this point, we are guaranteed it is a positive number 
-                # of reasonable length
                 if [ "$N" -gt 255 ]; then
                         return 1
                 fi
@@ -78,14 +65,14 @@ set_routes() {
 	if [ "$INTERFACE" == "$MYINTERFACE" ]; then
 		if [ "$ACTION" == "ifup" ]; then
 			get_gateway4
-			# add default route via WAN to table
 			ip route add default via $GATEWAY4 table $TID
 			echo "pbr: default route via $GATEWAY4 added to table $TID"
-			# add local routes can be enabled if needed
-			# ip route show | grep -Ev '^default |^0.0.0.0/1 |^128.0.0.0/1 ' | while read route; do
-				# ip route add $route table $TID >/dev/null 2>&1
-			# done
-			# add rule
+			if [[ ${ADDLOCALROUTES+x} ]]; then
+				echo "pbr: adding local routes to table $TID"
+				ip route show | grep -Ev '^default |^0.0.0.0/1 |^128.0.0.0/1 ' | while read route; do
+					ip route add $route table $TID >/dev/null 2>&1
+				done
+			fi
 			[[ -n $SPORT ]] && ip rule add sport $SPORT table $TID
 			echo "pbr: rule $SPORT added to table $TID"
 			if [[ -n "$IPADDR" ]]; then
@@ -99,12 +86,9 @@ set_routes() {
 				done
 			fi
 		fi
-		# remove table and rules
 		if [ "$ACTION" == "ifdown" ]; then
 			while ip rule delete from 0/0 to 0/0 table $TID >/dev/null 2>&1; do true; done
 			ip route flush table $TID
-			#uci delete network.wan.ip4table
-			#uci commit network
 			echo "pbr: clean up"
 		fi
 	fi
