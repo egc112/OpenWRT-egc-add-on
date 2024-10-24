@@ -2,7 +2,7 @@
 #https://openwrt.org/docs/guide-user/base-system/hotplug
 
 # Name: 97-custom-pbr-via-vpn
-# Version: 26-apr-2024 by egc
+# Version: 26-oct-2024 by egc
 # Description: OpenWRT hotplug script routing ipaddress/interface via the VPN
 # Usage:simple PBR to route e.g. a guest interface or subnet or specific ipaddress via the VPN
 # Installation: 
@@ -12,17 +12,17 @@
 #    for WireGuard: disable "Route Allowed IPs" in the peer section or disable "Use default gateway" in Advanced section
 #    for OpenVPN: in the openvpn config add:
 #       pull-filter ignore "redirect-gateway"
-#       redirect-private def1
+#       
 #  reboot or restart network (service network restart)
 
 # Set the name of the VPN interface you want to use between the quotes, make sure there are no space in the whole rule
-# The name is the name as given in the interfaces sections, for OpenVPN you have to create an interface with same name as the device name e.g. tun0:
-VPNINTERFACE="set-name-of-vpn-interface"
+# The name is the name as given in the interfaces sections, for OpenVPN you have to create an interface with same name as the device name e.g. tun0 or wg0:
+VPNINTERFACE="tun1"
 
 # Enable (remove #) and set the ip adressess of clients you want to use in CIDR format and/or 
 #  the device you want to use as shown by ifconfig, e.g. br-lan or br-guest, set between the quotes
 # Make sure there are no spaces in the rules
-#IPADDR="192.168.30.10/32"
+#IPADDR="192.168.9.223/32"
 #MYINTERFACE="br-guest"
 
 #DEBUG=; set -x; logger -t hotplug $(env); # uncomment/comment to enable/disable debug mode
@@ -37,9 +37,12 @@ set_routes() {
 			# Make table with default route via the VPN
 			ip route add default dev "$VPNINTERFACE" table $TID
 			# add local routes can be enabled if needed
-			# ip route show | grep -Ev '^default |^0.0.0.0/1 |^128.0.0.0/1 ' | while read route; do
-				# ip route add $route table $TID >/dev/null 2>&1
-			# done
+			ip route show | grep -Ev '^default |^0.0.0.0/1 |^128.0.0.0/1 ' | while read route; do
+				 ip route add $route table $TID >/dev/null 2>&1
+			done
+			# alternative modern way
+			#ip -4 rule add table main suppress_prefixlength 0 >/dev/null 2>&1
+			#ip -4 rule add table main suppress_prefixlength 1 >/dev/null 2>&1
 			# add rule
 			[[ ! -z "$MYINTERFACE" ]] && { ip rule add iif "$MYINTERFACE" table $TID; echo "rule $MYINTERFACE added to table $TID"; }
 			[[ ! -z "$IPADDR" ]] && { ip rule add from "$IPADDR" table $TID; echo "rule $IPADDR added to table $TID"; }
