@@ -14,7 +14,6 @@ or by clicking the download icon in the upper right corner of the script.
 Set the VPN client interface as MYINTERFACE, this interface will be used as trigger for this script  
 Remove the first # of the SPORT/IPADDR/ADDLOCALROUTES line to enable it, if desired  
 Adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN  
-Copy script to /etc/hotplug.d/iface  
 Reboot or restart network (service network restart)  
 
 ## Alternative solution
