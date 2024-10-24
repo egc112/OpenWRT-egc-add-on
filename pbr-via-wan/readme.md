@@ -1,7 +1,7 @@
 Name: 98-pbr-via-wan  
 Version: 1.0.1 24-oct-2024 by egc  
 Description: OpenWRT hoptlug script routing a specific sourceport, local IP address or interface etc. via the WAN  
-Usage: e.g. When running a concurrent VPN client and VPN server or port forwarding via the WAN and needing to route the port
+Usage: e.g. When running a concurrent VPN client and VPN server or port forwarding via the WAN and needing to route the port  
        via the WAN back and/or when excluding some local IP addresses from using the VPN  
 Installation:  
  Set the VPN client interface as MYINTERFACE, this interface will be used as trigger for this script  
