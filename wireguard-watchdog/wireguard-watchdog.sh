@@ -2,7 +2,7 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: wireguard-watchdog.sh
-# version: 0.95, 14-july-2024, by egc
+# version: 0.96, 24-oct-2024, by egc
 # purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
 #          in case of failure of the WireGuard tunnel the next tunnel is automatically started
 #          When the last tunnel has failed, the script will start again with the first tunnel.
@@ -40,8 +40,10 @@
 
 
 #Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc., max 9 tunnels
-WG1="name-of-wg1-interface"
-WG2="name-of-wg2-interface"
+WG1="wg_mullv_se"
+WG2="wgoraclecloud"
+#WG1="name-of-wg1-interface"
+#WG2="name-of-wg2-interface"
 
 #set seconds between log message indicating running watchdog
 alive=3600
@@ -74,13 +76,13 @@ get_tunnels(){
 	done
 	echo ""
 }
+
 set_active(){
 	activetunnel=$1
 	[[ $activetunnel -gt $maxtunnels ]] && { activetunnel=1; echo "WireGuard watchdog: all tunnels failed, starting over"; }
 	for i in $(seq 1 "$maxtunnels"); do
 		eval "wgi=\$$(echo WG"${i}")"
 		if [[ $i = "$activetunnel" ]]; then
-			#uci set network."${wgi}".disabled="0"
 			uci -q del network."${wgi}".disabled
 			uci -q del network."${wgi}".auto
 		else
@@ -88,6 +90,8 @@ set_active(){
 		fi
 	done
 	uci -q commit network
+	# if you only want to restart the WG interface
+	# ifup $WG1
 	( service network restart >/dev/null 2>&1 ) &
 	sleep 20
 }
@@ -121,7 +125,6 @@ watchdog(){
 		done
 	done
 }
-
 echo "WireGuard watchdog: $0 is started, waiting for services"
 sleep 120	# on startup wait till everything is running
 get_tunnels
