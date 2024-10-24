@@ -2,13 +2,13 @@ Name: 98-pbr-via-wan
 Version: 1.0.1 24-oct-2024 by egc  
 Description: OpenWRT hoptlug script routing a specific sourceport, local IP address or interface etc. via the WAN  
 Usage: e.g. When running a concurrent VPN client and VPN server or port forwarding via the WAN and needing to route the port  
-       via the WAN back and/or when excluding some local IP addresses from using the VPN  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;via the WAN back and/or when excluding some local IP addresses from using the VPN  
 Installation:  
- Set the VPN client interface as MYINTERFACE, this interface will be used as trigger for this script  
- Remove the first # of the SPORT/IPADDR/ADDLOCALROUTES line to enable it, if desired  
- Adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN  
- Copy script to /etc/hotplug.d/iface  
- Reboot or restart network (service network restart)  
+&nbsp;&nbsp;Set the VPN client interface as MYINTERFACE, this interface will be used as trigger for this script  
+&nbsp;&nbsp;Remove the first # of the SPORT/IPADDR/ADDLOCALROUTES line to enable it, if desired  
+&nbsp;&nbsp;Adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN  
+&nbsp;&nbsp;Copy script to /etc/hotplug.d/iface  
+&nbsp;&nbsp;Reboot or restart network (service network restart)  
 
 ## Alternative solution
 Add the following rules to /etc/rc.local or add via LuCI > System > Startup > Local Startup:
