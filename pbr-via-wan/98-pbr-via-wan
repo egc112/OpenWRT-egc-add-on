@@ -13,8 +13,8 @@
 
 #SPORT=51820  # adapt the port number e.g 1194 for OpenVPN 51820 for WireGuard 
 #IPADDR="192.168.1.2/32 192.168.1.64/26"  # list of IP address with CIDR notation, space delimited
-#MYINTERFACE="wg0"	#set the interface you are using for your VPN client interface, e.g. wg0 or tun0, 
-#             for OpenVPN the tun interface has to be defined in the network config  
+#MYINTERFACE="wg0"	# set the interface you are using for your VPN client interface, e.g. wg0 or tun0, 
+                        # for OpenVPN the tun interface has to be defined in the network config  
 
 #DEBUG=; set -x; logger -t hotplug $(env); # uncomment/comment to enable/disable debug mode
 TID=100
