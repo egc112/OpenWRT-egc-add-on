@@ -12,6 +12,6 @@ Stop default routing via the VPN do:
 for WireGuard: disable "Route Allowed IPs" in the peer section  
 for OpenVPN: in the openvpn config add:  
        `  pull-filter ignore "redirect-gateway"`  
-       `  redirect-private def1`  
+  
 Reboot or restart network (service network restart)  
 
