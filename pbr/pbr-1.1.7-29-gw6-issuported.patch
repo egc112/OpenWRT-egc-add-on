@@ -1,0 +1,95 @@
+--- pbr-1.1.7-29.bash	2024-10-17 14:57:20.322141800 +0200
++++ pbr-1.1.7-29.bash	2024-10-19 09:38:43.450012200 +0200
+@@ -13,7 +13,7 @@
+ [ -n "${IPKG_INSTROOT}" ] && return 0
+ 
+ readonly packageName='pbr'
+-readonly PKG_VERSION='1.1.7-29'
++readonly PKG_VERSION='1.1.7-29-egc-3'
+ readonly packageCompat='9'
+ readonly serviceName="$packageName $PKG_VERSION"
+ readonly packageConfigFile="/etc/config/${packageName}"
+@@ -182,7 +182,12 @@
+ }
+ pbr_get_gateway6() {
+ 	local iface="$2" dev="$3" gw
++	#egc
++	if [ "$iface" == "$procd_wan_interface" ]; then
++		iface="$procd_wan6_interface"
++	fi
+ 	network_get_gateway6 gw "$iface" true
++	#echo -e "iface=$iface; network_get_gateway6=$gw\n"
+ 	if [ -z "$gw" ] || [ "$gw" = '::/0' ] || [ "$gw" = '::0/0' ] || [ "$gw" = '::' ]; then
+ 		gw="$(ip -6 a list dev "$dev" 2>/dev/null | grep inet6 | grep 'scope global' | awk '{print $2}')"
+ 	fi
+@@ -333,7 +338,9 @@
+ is_supported_protocol() { grep -o '^[^#]*' /etc/protocols | grep -w -v '0' | grep . | awk '{print $1}' | grep -q "$1"; }
+ is_pptp() { local p; network_get_protocol p "$1"; [ "${p:0:4}" = "pptp" ]; }
+ is_softether() { local d; network_get_device d "$1"; [ "${d:0:4}" = "vpn_" ]; }
+-is_supported_interface() { is_lan "$1" && return 1; str_contains_word "$supported_interface" "$1" || { ! is_ignored_interface "$1" && ! is_disabled_interface "$1" && { is_wan "$1" || is_wan6 "$1" || is_tunnel "$1"; }; } || is_ignore_target "$1" || is_xray "$1"; }
++# egc
++#is_supported_interface() { is_lan "$1" && return 1; str_contains_word "$supported_interface" "$1" || { ! is_ignored_interface "$1" && ! is_disabled_interface "$1" && { is_wan "$1" || is_wan6 "$1" || is_tunnel "$1"; }; } || is_ignore_target "$1" || is_xray "$1"; }
++is_supported_interface() { { is_lan "$1" || is_disabled_interface "$1"; } && return 1; str_contains_word "$supported_interface" "$1" || { ! is_ignored_interface "$1" && { is_wan "$1" || is_wan6 "$1" || is_tunnel "$1"; }; } || is_ignore_target "$1" || is_xray "$1"; }
+ is_tailscale() { local d; network_get_device d "$1"; [ "${d:0:9}" = "tailscale" ]; }
+ is_tor() { [ "$(str_to_lower "$1")" = "tor" ]; }
+ is_tor_running() {
+@@ -1672,8 +1679,13 @@
+ 					ipv4_error=0
+ 					if [ -z "$gw4" ]; then
+ 						try ip -4 route add unreachable default table "$tid" >/dev/null 2>&1 || ipv4_error=1
+-					else
++					#egc
++					#else
++					#	try ip -4 route add default via "$gw4" dev "$dev" table "$tid" >/dev/null 2>&1 || ipv4_error=1
++					elif is_wan "$iface"; then
+ 						try ip -4 route add default via "$gw4" dev "$dev" table "$tid" >/dev/null 2>&1 || ipv4_error=1
++					else
++						try ip -4 route add default dev "$dev" table "$tid" >/dev/null 2>&1 || ipv4_error=1
+ 					fi
+ # shellcheck disable=SC2086
+ 					while read -r i; do
+@@ -1700,7 +1712,13 @@
+ 						if [ -z "$gw6" ] || [ "$gw6" = "::/0" ]; then
+ 							try ip -6 route add unreachable default table "$tid" >/dev/null 2>&1 || ipv6_error=1
+ 						elif ip -6 route list table main | grep -q " dev $dev6 "; then
+-							ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1
++							#ip -6 route add default via "$gw6" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1
++							if is_wan "$iface"; then
++								#echo -e "\negc: WAN interface=$iface; gw6=$gw6; dev6=$dev6; tid=$tid\n"
++								try ip -6 route add default via "$gw6" dev "$dev6" table "$tid" metric 128 >/dev/null 2>&1
++							else
++								try ip -6 route add default dev "$dev6" table "$tid" metric 128 >/dev/null 2>&1 || ipv6_error=1  # might need metric to override default route
++							fi
+ 							while read -r i; do
+ 								i="$(echo "$i" | sed 's/ linkdown$//')"
+ 								i="$(echo "$i" | sed 's/ onlink$//')"
+@@ -1712,6 +1730,7 @@
+ 						else
+ 							try ip -6 route add "$(ip -6 -o a show "$dev6" | awk '{print $4}')" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1
+ 							try ip -6 route add default dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1
++							#try ip -6 route add default dev "$dev6" table "$tid" metric 128 >/dev/null 2>&1 || ipv6_error=1  # might need metric to override existing default route
+ 						fi
+ 						try ip -6 rule add fwmark "${mark}/${fw_mask}" table "$tid" priority "$((priority-1))" >/dev/null 2>&1 || ipv6_error=1
+ 					fi
+@@ -1763,8 +1782,12 @@
+ 			if [ -n "$gw4" ] || [ "$strict_enforcement" -ne '0' ]; then
+ 				if [ -z "$gw4" ]; then
+ 					try ip -4 route add unreachable default table "$tid" >/dev/null 2>&1 || ipv4_error=1
+-				else
++				#else
++				#	try ip -4 route add default via "$gw4" dev "$dev" table "$tid" >/dev/null 2>&1 || ipv4_error=1
++				elif is_wan "$iface"; then
+ 					try ip -4 route add default via "$gw4" dev "$dev" table "$tid" >/dev/null 2>&1 || ipv4_error=1
++				else
++					try ip -4 route add default dev "$dev" table "$tid" >/dev/null 2>&1 || ipv4_error=1
+ 				fi
+ 				try ip rule add fwmark "${mark}/${fw_mask}" table "$tid" priority "$priority" || ipv4_error=1
+ 			fi
+@@ -1783,6 +1806,7 @@
+ 					else
+ 						try ip -6 route add "$(ip -6 -o a show "$dev6" | awk '{print $4}')" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1
+ 						try ip -6 route add default dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1
++						#try ip -6 route add default dev "$dev6" table "$tid" metric 128 >/dev/null 2>&1 || ipv6_error=1  # might need metric to override existing default route
+ 					fi
+ 				fi
+ 				try ip -6 rule add fwmark "${mark}/${fw_mask}" table "$tid" priority "$priority" || ipv6_error=1
