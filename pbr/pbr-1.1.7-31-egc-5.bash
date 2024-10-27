@@ -1655,7 +1655,7 @@ EOF
 								try ip -6 route add $i table "$tid" >/dev/null 2>&1 || ipv6_error=1
 							# remove sec from seconds expiring e.g. in ip -6 route add 2001:1c03:59c1:3305::/64 dev br-lan proto kernel metric 256 expires 6945sec pref medium table 257
 							done << EOF
-							$(ip -6 route list table main | grep -v " dev $dev_wan6 \|default \|::/0 \|::/1 \|::/2 \|::/3 \|::/4 \|fe80::" | sed "s/sec//g")
+							$(ip -6 route list table main | grep -v " dev $dev_wan6 \|default \|::/0 \|::/1 \|::/2 \|::/3 \|::/4 \|fe80::" | sed "/[0-9]sec/s/sec//g")
 EOF
 						else
 							try ip -6 route add "$(ip -6 -o a show "$dev6" | awk '{print $4}')" dev "$dev6" table "$tid" >/dev/null 2>&1 || ipv6_error=1
