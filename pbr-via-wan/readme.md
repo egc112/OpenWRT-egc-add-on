@@ -17,7 +17,7 @@ Adapt the port (e.g. your local VPN server port) and/or local IP addresses you w
 Reboot or restart network (service network restart)  
 
 ## Alternative solution
-Add the following rules to /etc/rc.local or add via LuCI > System > Startup > Local Startup:
+Add the following rules, remove/adapt the rule you need, to /etc/rc.local or add via LuCI > System > Startup > Local Startup:
 ```
 GATEWAY="$(ifstatus wan | grep nexthop | sed 's/[^0-9.]//g')"  
 ip route add default via $GATEWAY table 101  
