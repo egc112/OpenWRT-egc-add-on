@@ -53,8 +53,8 @@ uci set network.mullvad_se_rt.table="2"
 ```   
 Note if you setup a pbr_wan table the default route is gone from the main table!  
   
-I could not have netifd play nice with OpenVPN it seems like it only can deal with managed interfaces!  
-So this seems like a deal breaker to me but has to be researhed further  
+I could not have netifd play nice with OpenVPN it seems like it only can deal with managed interfaces (e.g. WireGuard)!  
+So this seems like a deal breaker to me but has to be researched further  
 
 
 <details>
