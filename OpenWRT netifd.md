@@ -52,11 +52,27 @@ this route is set:
 uci set network.mullvad_se_rt.table="2"  
 ```   
 Note if you setup a pbr_wan table the default route is gone from the main table!  
+I could not have netifd play nice with OpenVPN but the documentation mentions it should work so I have to research that further. 
   
-I could not have netifd play nice with OpenVPN it seems like it only can deal with managed interfaces (e.g. WireGuard)!  
-So this seems like a deal breaker to me but has to be researched further  
+Example Routing rules:  
+```
+uci -q delete network.src_mullvad_se${IPV%4}  
+uci set network.src_mullvad_se${IPV%4}="rule${IPV%4}"  
+uci set network.src_mullvad_se${IPV%4}.src="192.168.5.224/32"  
+uci set network.src_mullvad_se${IPV%4}.lookup="2"  
+uci set network.src_mullvad_se${IPV%4}.priority="30000" 
+```  
+  
+ /etc/config/network  
+ ```
+ config rule 'src_mullvad_se'  
+	option src '192.168.5.224/32'  
+	option lookup '2'  
+	option priority '30000' 
 
 
+ ``` 
+  
 <details>
   <summary>Routes and rules from Stan</summary>
 with netifd  
