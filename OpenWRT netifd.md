@@ -12,11 +12,11 @@ uci set network.mullvad_se.ip${IPV}table="2"
 /etc/config/network:  
 ```  
 config interface 'mullvad_se'  
-option proto 'wireguard'  
-option private_key 'YGa '  
-list addresses 'fc00:bbbb:bbbb:bb01::5:5906/128'  
-list addresses '10.68.89.7/24'  
-option ip4table '2'  <<<<<<<<<<  
+	option proto 'wireguard'  
+	option private_key 'YGa '  
+	list addresses 'fc00:bbbb:bbbb:bb01::5:5906/128'  
+	list addresses '10.68.89.7/24'  
+	option ip4table '2'  <<<<<<<<<<  
 ```  
 
 netifd removes the default route for that specific interface from the main table and  
