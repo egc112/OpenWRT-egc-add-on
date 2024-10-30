@@ -1,12 +1,12 @@
 https://openwrt.org/docs/guide-user/network/routing/basics\#policy-based_routing  
 https://openwrt.org/docs/techref/netifd  
-<https://openwrt.org/docs/guide-user/network/routing/pbr_netifd  
+https://openwrt.org/docs/guide-user/network/routing/pbr_netifd  
 https://github.com/openwrt/netifd  
   
 When setting up a routing table with netifd e.g.:  
 (for IPV in 4 6 do)  
 ```  
-uci set network.mullvad_se.ip\${IPV}table="2"  
+uci set network.mullvad_se.ip${IPV}table="2"  
 ```  
   
 /etc/config/network:  
@@ -27,9 +27,9 @@ It is no problem that there are multiple default routes as those are moved to th
 So with netifd you always let the interface set the default route.  
 Of course you can always manually set a default route:  
 ```  
-uci -q delete network.mullvad_se_rt\${IPV%4}  
-uci set network.mullvad_se_rt\${IPV%4}="route\${IPV%4}"  
-uci set network.mullvad_se_rt\${IPV%4}.interface="mullvad_se"  
+uci -q delete network.mullvad_se_rt${IPV%4}  
+uci set network.mullvad_se_rt${IPV%4}="route${IPV%4}"  
+uci set network.mullvad_se_rt${IPV%4}.interface="mullvad_se"  
 uci set network.mullvad_se_rt.target="0.0.0.0/0"  
 uci set network.mullvad_se_rt6.target="::/0"  
 uci commit  
