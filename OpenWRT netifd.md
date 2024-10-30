@@ -16,11 +16,11 @@ option proto 'wireguard'
 option private_key 'YGa '  
 list addresses 'fc00:bbbb:bbbb:bb01::5:5906/128'  
 list addresses '10.68.89.7/24'  
-**option ip4table '2'**  
+option ip4table '2'  <<<<<<<<<<  
 ```  
 
-inetid removes the default route for that specific interface from the main table and  
-sets that default route in the pbr table, in addition to the local route which  
+netifd removes the default route for that specific interface from the main table and  
+sets that default route in the pbr table, in addition to the local route (if present) which  
 is also moved from the main table to the pbr table.  
 So the interface has to set a default route in order to get one in the PBR table.  
 It is no problem that there are multiple default routes as those are moved to the pbr tables.  
@@ -36,12 +36,13 @@ uci commit
 ```  
 /etc/config/network:  
 ```  
-config route 'mullvad_se_rt'  
-option interface 'mullvad_se'  
-option target '0.0.0.0/0'  
-config route6 'mullvad_se_rt6'  
-option interface 'mullvad_se'  
-option target '::/0'  
+config route 'mullvad_se_rt'
+	option interface 'mullvad_se'
+	option target '0.0.0.0/0'
+
+config route 'mullvad_se_rt6'
+	option interface 'mullvad_se'
+	option target '::/0'
 ```  
 Option `table` does not seem necessary as this route takes effect on the table  
 of the interface (where there is a default route via this interface?) so this  
