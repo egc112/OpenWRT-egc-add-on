@@ -172,8 +172,8 @@ config interface 'tun1'
 	list dns '2001:4860:4860::8888'
 
 ```
-Note if you also have IPv6 enabled you have to make two rule, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server for the IPv6 rule you have to use an IPv6 DNS server, if you specify anb interface than the interface must have both an IPv4 and IPv6 DNS server set!
-For the clients address you have to specify the clients IPv4 address for the IPv4 rule and an IPv6 address for the IPv6 rule, as a client can have multiple aIPv6 addresses it is sometimes not clear which is the preferred one so for a sinngle client you can use the MAC address for both IPv4 and IPv6.
+Note if you also have IPv6 enabled you have to make two rule, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server for the IPv6 rule you have to use an IPv6 DNS server, if you specify an interface than the interface must have both an IPv4 and IPv6 DNS server set!
+For the clients address you have to specify the clients IPv4 address for the IPv4 rule and an IPv6 address for the IPv6 rule, as a client can have multiple aIPv6 addresses it is sometimes not clear which is the preferred one so for a single client you can use the MAC address for both IPv4 and IPv6.
 Important you have to make sure that the DNS server chosen is also routed via the tunnel if you did not already let the LAN clients use the same route, so to make sure make a new policy rule to route the DNS remote address via the tunnel!  
 
 This is not compatible with the regular DNS hijack rule or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNs proxy!.  
