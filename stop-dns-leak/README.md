@@ -159,8 +159,8 @@ As the query will follow the routing of the client there is no specific need to 
 
 ### PBR DNS Policies
 [PBR version 1.1.8](https://docs.openwrt.melmac.net/pbr/ ) uses this DNS redirect mechanism and incorporated that into the GUI.  
-![Alt text](img/dns-policy.jpg?raw=true "Optional Title")  
-You can enter the local LAN clients IP addresses or interface (see [section 8.2.3. DNS Policy Options](https://docs.openwrt.melmac.net/pbr/#DNSPolicyOptions) ) and the VPN tunnel or remote DNS, the DNS address set on the tunnels interface will be used to redirect the DNS query.  
+![Alt text](img/dns-policy-2.jpg?raw=true "Optional Title")  
+You can enter the local LAN clients MAC address, IP addresses or even a whole interface (see [section 8.2.3. DNS Policy Options](https://docs.openwrt.melmac.net/pbr/#DNSPolicyOptions) ) and the VPN tunnel or remote DNS, the DNS address set on the tunnels interface will be used to redirect the DNS query.  
 For WireGuard you can enter the DNS address in the Interfaces >  Advanced settings > Use Custom DNS servers or add in /etc/config/network under the interface `list dns '<ip-address-of-dns>'`  
 For OpenVPN you have to make an interface and add the DNS address:  
 /etc/config/network  
@@ -169,10 +169,14 @@ config interface 'tun1'
 	option proto 'none'
 	option device 'tun1'
 	list dns '10.0.0.2'
-```
-Important you have to make sure that the DNS server chosen is also routed via the tunnel, so to make sure make a new policy rule to route the DNS remote address via the tunnel!  
+	list dns '2001:4860:4860::8888'
 
-This is not compatible with the regular DNS hijack rule.  
+```
+Note if you also have IPv6 enabled you have to make two rule, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server for the IPv6 rule you have to use an IPv6 DNS server, if you specify anb interface than the interface must have both an IPv4 and IPv6 DNS server set!
+For the clients address you have to specify the clients IPv4 address for the IPv4 rule and an IPv6 address for the IPv6 rule, as a client can have multiple aIPv6 addresses it is sometimes not clear which is the preferred one so for a sinngle client you can use the MAC address for both IPv4 and IPv6.
+Important you have to make sure that the DNS server chosen is also routed via the tunnel if you did not already let the LAN clients use the same route, so to make sure make a new policy rule to route the DNS remote address via the tunnel!  
+
+This is not compatible with the regular DNS hijack rule or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNs proxy!.  
   
 ## Different DNS servers and routing per domain  
 DNSMasq gives you the ability to use a different DNS server per domain.  
