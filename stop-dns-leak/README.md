@@ -173,7 +173,7 @@ config interface 'tun1'
 
 ```
 Note:   
-If you also have IPv6 enabled you have to make two rule2, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server. For the IPv6 rule you have to use an IPv6 DNS server. If you specify an interface then the interface must have both an IPv4 and IPv6 DNS server set!
+If you also have IPv6 enabled you have to make two rules, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server. For the IPv6 rule you have to use an IPv6 DNS server. If you specify an interface then the interface must have both an IPv4 and IPv6 DNS server set!
 If both source and DNS target have IPv4 and IPv6 addresses, you can suffice with one rule, as shown in the picture, where the MAC address is IPv4 and IPv6 and the DNS target (interface) also has an IPv4 and IPv6 DNS server set.
 For the clients address you have to specify the clients IPv4 address for the IPv4 rule and an IPv6 address for the IPv6 rule, as a client can have multiple aIPv6 addresses it is sometimes not clear which is the preferred one so for a single client you can use the MAC address for both IPv4 and IPv6.  
 
