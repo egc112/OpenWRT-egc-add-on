@@ -1,3 +1,4 @@
+# OpenVPN Scramble options for OpenWRT  
 OpenVPN traffic can be discovered with [Deep Packet Inspection (DPI)](https://en.wikipedia.org/wiki/Deep_packet_inspection) by your provider or censoring authority.  
 
 As a first step to make OpenVPN traffic less suspicious use port 443.  
