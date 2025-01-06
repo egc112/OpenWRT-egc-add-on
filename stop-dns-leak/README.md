@@ -172,14 +172,16 @@ config interface 'tun1'
 	list dns '2001:4860:4860::8888'
 
 ```
-Note:   
+Note 1:   
 If you also have IPv6 enabled you have to make two rules, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server. For the IPv6 rule you have to use an IPv6 DNS server. If you specify an interface then the interface must have both an IPv4 and IPv6 DNS server set!
 If both source and DNS target have IPv4 and IPv6 addresses, you can suffice with one rule, as shown in the picture, where the MAC address is IPv4 and IPv6 and the DNS target (interface) also has an IPv4 and IPv6 DNS server set.
 For the clients address you have to specify the clients IPv4 address for the IPv4 rule and an IPv6 address for the IPv6 rule, as a client can have multiple aIPv6 addresses it is sometimes not clear which is the preferred one so for a single client you can use the MAC address for both IPv4 and IPv6.  
+ 
+Note 2:  
+When using DNS policies the DNS route is following the clients route, so you have to take care that the DNS servers you are using are indeed available via this route.  
+So you cannot use DNS server which are not publicly available if you are routing via the WAN.  
 
-If you did not let the LAN clients use the same route as the DNS server, make sure that the DNS server chosen is also routed via your preferred route.  
-
-This is not compatible with the regular DNS hijack rule or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy!.  
+PBR DNS Policies are **not compatible** with the regular DNS hijack rule or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy!.  
   
 ## Different DNS servers and routing per domain  
 DNSMasq gives you the ability to use a different DNS server per domain.  
