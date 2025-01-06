@@ -182,6 +182,16 @@ When using DNS policies the DNS route is following the clients route, so you hav
 So you cannot use DNS server which are not publicly available if you are routing via the WAN.  
 
 PBR DNS Policies are **not compatible** with the regular DNS hijack rule or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy!.  
+Experimental to work with existing DNS hijacking:  
+Move 30-pbr.nft from post chain to pre chain, to take precedence over DNS hijacking
+```
+mkdir -p /usr/share/nftables.d/chain-pre/dstnat/
+mv /usr/share/nftables.d/chain-post/dstnat/30-pbr.nft /usr/share/nftables.d/chain-pre/dstnat/
+```
+MOVE back to undo changes:
+```
+mv /usr/share/nftables.d/chain-pre/dstnat/30-pbr.nft /usr/share/nftables.d/chain-post/dstnat/
+```
   
 ## Different DNS servers and routing per domain  
 DNSMasq gives you the ability to use a different DNS server per domain.  
