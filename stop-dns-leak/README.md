@@ -74,6 +74,8 @@ To make sure the DNS queries are going via the tunnel you can use PBR to route t
 ## Split DNS  
 When using PBR you often want only your LAN clients which use the VPN tunel to have DNS queries via the tunnel and client using the WAN just query DNS via the WAN.  
 Split DNS can be accomplished in several ways all with its own pros and cons.  
+
+Important notice, nowadays a lot of clients (e.g. phone and laptop) use private DNS which nullifies any attempt for DNS redirect so you have to make sure private DNS is disabled!  
     
 ### Option 6  
 DNSMasq by default sends the routers address as DNS server to your local LAN clients.  
