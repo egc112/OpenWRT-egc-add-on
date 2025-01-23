@@ -75,7 +75,7 @@ To make sure the DNS queries are going via the tunnel you can use PBR to route t
 When using PBR you often want only your LAN clients which use the VPN tunel to have DNS queries via the tunnel and client using the WAN just query DNS via the WAN.  
 Split DNS can be accomplished in several ways all with its own pros and cons.  
 
-Important notice, nowadays a lot of clients (e.g. phone and laptop) use private DNS which nullifies any attempt for DNS redirect so you have to make sure private DNS is disabled!  
+**Important notice, nowadays a lot of clients (e.g. phone and laptop) use private DNS which nullifies any attempt for DNS redirect so you have to make sure private DNS is disabled!**  
     
 ### Option 6  
 DNSMasq by default sends the routers address as DNS server to your local LAN clients.  
@@ -174,12 +174,12 @@ config interface 'tun1'
 	list dns '2001:4860:4860::8888'
 
 ```
-Note 1:   
+**Note 1:**   
 If you also have IPv6 enabled you have to make two rules, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server. For the IPv6 rule you have to use an IPv6 DNS server. If you specify an interface (=device) then the interface must have both an IPv4 and IPv6 DNS server set!
 If both source and DNS target have IPv4 and IPv6 addresses, you can suffice with one rule, as shown in the picture, where the MAC address is IPv4 and IPv6 and the DNS target (interface) also has an IPv4 and IPv6 DNS server set.
 For the clients address you have to specify the clients IPv4 address for the IPv4 rule and an IPv6 address for the IPv6 rule, as a client can have multiple aIPv6 addresses it is sometimes not clear which is the preferred one so for a single client you can use the MAC address for both IPv4 and IPv6.  
  
-Note 2:  
+**Note 2:**  
 When using DNS policies the DNS route is following the clients route, so you have to take care that the DNS servers you are using are indeed available via this route.  
 So you cannot use DNS server which are not publicly available if you are routing via the WAN.  
 
