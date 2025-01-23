@@ -183,7 +183,7 @@ For the clients address you have to specify the clients IPv4 address for the IPv
 When using DNS policies the DNS route is following the clients route, so you have to take care that the DNS servers you are using are indeed available via this route.  
 So you cannot use DNS server which are not publicly available if you are routing via the WAN.  
 
-PBR DNS Policies are **not compatible** with the regular DNS hijack rule or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy!.  
+**PBR DNS Policies are not compatible with the regular DNS hijack rule or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy!.**  
 Experimental to work with existing DNS hijacking:  
 Move 30-pbr.nft from post chain to pre chain, to take precedence over DNS hijacking
 ```
