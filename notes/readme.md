@@ -3,3 +3,5 @@ After the file has openend, click in the upper right corner on the download symb
 The files are in PDF format.  
 
 It is a work in progress, feel free to PM me via the [Openwrt Forum](https://forum.openwrt.org/) with your remarks and suggestions for improvements, you can start a message and send to `egc`.   
+Alternatively raise an issue in this repository :)
+  
