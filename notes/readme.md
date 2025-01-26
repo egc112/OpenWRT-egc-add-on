@@ -1,4 +1,4 @@
-To download my notes click on the file you want to download. 
+To download my notes click on the file you want to download.  
 After the file has openend, click in the upper right corner on the download symbol to doewnload the raw file.   
 The files are in PDF format.  
 
