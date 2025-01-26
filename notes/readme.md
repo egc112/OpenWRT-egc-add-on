@@ -1,5 +1,5 @@
 To download my notes click on the file you want to download.  
-After the file has openend, click in the upper right corner on the download symbol to doewnload the raw file.   
+After the file has openend, click in the upper right corner on the download symbol to download the file.   
 The files are in PDF format.  
 
 It is a work in progress, feel free to PM me via the [Openwrt Forum](https://forum.openwrt.org/) with your remarks and suggestions for improvements.   
