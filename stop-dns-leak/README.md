@@ -160,7 +160,7 @@ config redirect
 As the query will follow the routing of the client there is no specific need to set a route for the DNS server involved.  
 
 ### PBR DNS Policies
-[PBR version 1.1.8](https://docs.openwrt.melmac.net/pbr/ ) uses this DNS redirect mechanism and incorporated that into the GUI.  
+[PBR version 1.1.8](https://docs.openwrt.melmac.net/pbr/ ) uses this DNS redirect mechanism, described above, and incorporated that into the GUI.  
 ![Alt text](img/dns-policy-3.jpg?raw=true "Optional Title")  
 You can enter the local LAN clients MAC address, IP addresses or even a whole interface (=device as shown by ifconfig e.g. @br-lan) (see [section 8.2.3. DNS Policy Options](https://docs.openwrt.melmac.net/pbr/#DNSPolicyOptions) ) and the VPN tunnel or remote DNS, the DNS address set on the tunnels interface will be used to redirect the DNS query.  
 For WireGuard you can enter the DNS address in the Interfaces >  Advanced settings > Use Custom DNS servers or add in /etc/config/network under the interface `list dns '<ip-address-of-dns>'`  
