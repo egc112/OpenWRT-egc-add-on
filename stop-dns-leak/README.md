@@ -223,7 +223,8 @@ Some general focus points for Domain based routing:
 - You need to have DNSMasq full installed to use nftsets (recommended) see the [PBR read.me](https://docs.openwrt.melmac.net/pbr/#Domain-BasedPolicies)).  
 - DNSMasq must be used as DNS resolver so the use of DNS hijacking needs special attention, see [PBR DNS policies above](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/stop-dns-leak#pbr-dns-policies).  
 - The domains must first be resolved by DNSMasq before they are added to the set so flush DNS cache on router **and** client or reboot both router and client.  
-- It takes about a minute after Saving and Applying before services have restarted and routing is in place so be patient!  
+- It takes about a minute after Saving and Applying before services have restarted and routing is in place so be patient!
+- Domain based PBR rules usually have to come first, so make sure those rules are on top in the GUI!
   
 ## Stopping DNS hijacking  
 https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
