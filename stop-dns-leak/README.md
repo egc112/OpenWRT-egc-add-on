@@ -196,7 +196,8 @@ MOVE back to undo changes:
 mv /usr/share/nftables.d/chain-pre/dstnat/30-pbr.nft /usr/share/nftables.d/chain-post/dstnat/
 ```
   
-## Different DNS servers and routing per domain  
+## Different DNS servers and routing per domain 
+When using destination routing for a specific, you often have to take care that the DNS resolution for that domain is also routed accordingly.  
 DNSMasq gives you the ability to use a different DNS server per domain.  
 This works by using the server directive e.g. for resolving the bbc and google domain only with 9.9.9.9:  
 `server=/bbc.com/google.com/9.9.9.9`  
@@ -216,7 +217,13 @@ config policy
 	option chain 'output'
 	option interface 'myvpn'
 ```
-For some discusion and explanation, see: https://forum.openwrt.org/t/wireguard-and-pbr-with-vpn-dns-leaks/205661/8?u=egc
+For some discusion and explanation, see: https://forum.openwrt.org/t/wireguard-and-pbr-with-vpn-dns-leaks/205661/8?u=egc  
+
+Some general focus points for Domain based routing:  
+- You need to have DNSMasq full installed to use nftsets (recommended) see the P[BR read.me](https://docs.openwrt.melmac.net/pbr/#Domain-BasedPolicies)).  
+- DNSMasq must be used as DNS resolver so the use of DNS hijacking needs special attention, see [PBR DNS policies above](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/stop-dns-leak#pbr-dns-policies).  
+- The domains must first be resolved by DNSMasq before they are added to the set so flush DNS cache on router **and** client or reboot both router and client.  
+- It takes about a minute after Saving and Applying before serverics have restarted and routing is in place so be patine with testing!  
   
 ## Stopping DNS hijacking  
 https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
