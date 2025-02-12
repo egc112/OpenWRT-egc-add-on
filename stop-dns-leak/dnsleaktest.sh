@@ -2,6 +2,8 @@
 
 # Adapted by egc from dnsleaktest.bash
 
+#installation: Copy to router and make executable: chmod +x dnsleaktest.sh
+
 #usage:   ./dnsleaktest.sh [-i interface_ip|interface_name]
 #example: ./dnsleaktest.sh -i eth1
 #         ./dnsleaktest.sh -i 10.0.0.2
