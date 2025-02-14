@@ -1,5 +1,4 @@
-### My notes are in pdf format, github only shows the first 5 pages, so to get   
-### the most out please download my notes!  
+### Github only shows the first 5 pages, so to get the most out please download my notes!  
 
 **To download my notes click on the file you want to download.  
 After the file has openend, click in the upper right corner on the download symbol to download the file.   **
