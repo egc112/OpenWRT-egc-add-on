@@ -48,7 +48,7 @@ https://openwrt.org/docs/guide-user/services/vpn/wireguard/extras#dynamic_addres
 
 ### Usage with PBR  
 You can use fail-over with PBR by doing the following:  
-Create the WG Interfaces you want to use and use `option4table '101'` and if necessary `opriton6table '101'` when the interface is brought up it will create a routing table 101 with default route via the WG tunnel.  
+Create the WG Interfaces you want to use and use `option4table '101'` and if necessary `option6table '101'`. When the interface is brought up it will create a routing table 101 with default route via the WG tunnel.   
 Next step is to make rules to use table 101 e.g.:  
 ```
 config rule
