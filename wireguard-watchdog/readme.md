@@ -45,3 +45,23 @@ chmod +x /usr/share/wireguard-watchdog.sh && vi /usr/share/wireguard-watchdog.sh
   
 **Note:** if the only problem is that the DDNS address of the server is frequently changing you can run the built-in watchdog which periodically re-resolves the DNS address of the server by running as a cron job see:  
 https://openwrt.org/docs/guide-user/services/vpn/wireguard/extras#dynamic_address  
+
+### Usage with PBR  
+You can use fail-over with PBR by doing the following:  
+Create the WG Interfaces you want to use and use `option4table '101'` and if necessary `opriton6table '101'` when the interface is brought up it will create a routing table 101 with default route via the WG tunnel.  
+Next step is to make rules to use table 101 e.g.:  
+```
+config rule
+	# for ip source:
+	#option src '192.168.30.0/24'
+	# destination e.g. from all to dest
+	#option dest '25.52.71.40/32'
+	# for interface
+	#option in 'lan'
+	# for proto
+	3option ipproto 'icmp`
+	# for source port
+	#option sport '116'
+	option lookup '101'
+```
+These are examples of rules you can use, all will use table 101 and it does not matter which WG interface is active.  
