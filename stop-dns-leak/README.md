@@ -198,7 +198,7 @@ mv /usr/share/nftables.d/chain-pre/dstnat/30-pbr.nft /usr/share/nftables.d/chain
 ```
   
 ## Different DNS servers and routing per domain 
-When using destination routing for a specific, you often have to take care that the DNS resolution for that domain is also routed accordingly.  
+When using destination routing for a specific domain, you often have to take care that the DNS resolution for that domain is also routed accordingly.  
 DNSMasq gives you the ability to use a different DNS server per domain.  
 This works by using the server directive e.g. for resolving the bbc and google domain only with 9.9.9.9:  
 `server=/bbc.com/google.com/9.9.9.9`  
