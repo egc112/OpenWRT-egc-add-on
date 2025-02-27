@@ -185,6 +185,7 @@ So you cannot use DNS server which are not publicly available if you are routing
 
 **Regular [DNS hijack rules](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns) or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy are not compatible with PBR DNS Policies!**  
 nft rules are executed top to bottom and the PBR DNS Policies are appended to the nft rules, so usually are below other DNS hijacking rules and thus will not be executed (depending on the startup of the processesse but PBR ususally starts later than most processes).  
+Starting with version 1.1.8-r10 the DNS policy is moved to the `chain-pre` so is executed earlier, although this is no guarantee. So the hack below is no longer necessary starting with 1.1.8-r10!  
 Experimental hack to work with existing DNS hijacking:  
 Move 30-pbr.nft from post chain to pre chain, to take precedence over DNS hijacking, execute the following two lines lines from the command line:  
 ```
