@@ -176,6 +176,7 @@ config interface 'tun1'
 ```
 **Note 1:**  
 DNS policies redirect DNS53 so make sure your client is not using Private DNS. Nowadays a lot of clients and browsers are using Private DNS, so check your OS and your browser that Private DNS is disabled!  
+Also check if you have not enabled VPN on the client itself.  
   
 **Note 2:**   
 If you also have IPv6 enabled you have to make two rules, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server. For the IPv6 rule you have to use an IPv6 DNS server. If you specify an interface (=device) then the interface must have both an IPv4 and IPv6 DNS server set!
