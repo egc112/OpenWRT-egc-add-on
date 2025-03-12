@@ -19,7 +19,7 @@ Reboot or restart network (service network restart)
 ## Alternative solution
 This is a permanent solution in contrast to the script but is easy to implement.  
 First create a routing table with table number 101 with default route via the wan, to create this we first need to know the address of the gateway of the WAN.  
-The gateway is revealed with, from the command line:  
+The gateway is shown by (from the command line):  
 `ifstatus wan | grep nexthop`  
 Add the routing table to /etc/config/network:  
 ```
