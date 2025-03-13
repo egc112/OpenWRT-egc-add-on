@@ -46,8 +46,8 @@ config rule
 	option lookup '101'
 ```
   
-Unfortunately this does not yet work for source port (sport), the PR for that is pending so for sourceport we have to fall back to the following:  
-Add the following rules, remove/adapt the rule you need, to /etc/rc.local or add via LuCI > System > Startup > Local Startup:
+Unfortunately this does not yet work for source port (sport), the PR for that is pending so for sourceport we have to fall back to just adding the rules to system startup.  
+Remove/adapt the rules and add to `/etc/rc.local` or add via LuCI > System > Startup > Local Startup:
 ```
 GATEWAY="$(ifstatus wan | grep nexthop | sed 's/[^0-9.]//g')"  
 ip route add default via $GATEWAY table 101  
