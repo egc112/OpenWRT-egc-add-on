@@ -11,7 +11,7 @@ either with, from commandline (SSH):
 curl -o /etc/hotplug.d/iface/98-pbr-via-wan https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/pbr-via-wan/98-pbr-via-wan
 ```
 or by clicking the download icon in the upper right corner of the script.  
-Set the VPN client interface as MYINTERFACE, this interface will be used as trigger for this script  
+Set the VPN client interface as MYINTERFACE or use the `wan` whatever works for triggering, this interface will be used as trigger for this script  
 Remove the first # of the SPORT/IPADDR/ADDLOCALROUTES line to enable it, if desired  
 Adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN  
 Reboot or restart network (service network restart)  
