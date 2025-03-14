@@ -1,22 +1,22 @@
 #!/bin/sh
 
 # Name: 98-pbr-via-wan
-# Version: 1.0.2 24-oct-2024 by egc
+# Version: 1.0.3 14-mar-2025 by egc
 # Description: OpenWRT hoptlug script routing a specific sourceport, local IP address or interface etc. via the WAN
 # Usage: e.g. When running a concurrent VPN client and VPN server or port forwarding via the WAN and needing to route the port via the WAN back and/or
 #	when excluding some local IP addresses from using the VPN
 # Installation:
-#  Set the VPN client interface as MYINTERFACE, this interface will be used as trigger for this script
+#  Set the VPN client interface as MYINTERFACE or use the wan, whatever works for tiggering, this interface will be used as trigger for this script
 #  Remove the first # of the SPORT/IPADDR/ADDLOCALROUTES line to enable it, if desired
 #  Adapt the port (e.g. your local VPN server port) and/or local IP addresses you want to route via the WAN
 #  Copy script to /etc/hotplug.d/iface/
 #  Reboot or restart network (service network restart)
 
-MYINTERFACE="wg0"	# set the interface you are using for your VPN client interface, e.g. wg0 or tun0,
+MYINTERFACE="wan"	# set the interface you are using for your VPN client interface, e.g. wg0 or tun0, or use the wan
                     # for OpenVPN the tun interface has to be defined in the network config 
 #SPORT=51820  # adapt the port number e.g 1194 for OpenVPN 51820 for WireGuard
 #IPADDR="192.168.1.2/32 192.168.1.64/26"  # adapt list of IP address with CIDR notation, space delimited
-ADDLOCALROUTES=  # uncomment/comment to enable/disable adding local routes to pbr table
+#ADDLOCALROUTES=  # uncomment/comment to enable/disable adding local routes to pbr table
 
 #DEBUG=; set -x; logger -t hotplug $(env); # uncomment/comment to enable/disable debug mode
 TID=100
