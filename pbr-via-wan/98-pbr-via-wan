@@ -13,7 +13,7 @@
 #  Reboot or restart network (service network restart)
 
 MYINTERFACE="wan"	# set the interface you are using for your VPN client interface, e.g. wg0 or tun0, or use the wan
-					# for OpenVPN the tun interface has to be defined in the network config
+			# for OpenVPN the tun interface has to be defined in the network config
 #SPORT=51820  # adapt the port number e.g 1194 for OpenVPN 51820 for WireGuard
 #IPADDR="192.168.1.2/32 192.168.1.64/26"  # adapt list of IP address with CIDR notation, space delimited
 #ADDLOCALROUTES=  # uncomment/comment to enable/disable adding local routes to pbr table
