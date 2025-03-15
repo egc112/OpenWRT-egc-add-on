@@ -2,7 +2,7 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: wireguard-watchdog.sh
-# version: 0.96, 24-oct-2024, by egc
+# version: 0.97, 15-mar-2025, by egc
 # purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
 #          in case of failure of the WireGuard tunnel the next tunnel is automatically started
 #          When the last tunnel has failed, the script will start again with the first tunnel.
@@ -46,6 +46,10 @@ WG2="name-of-wg2-interface"
 #set seconds between log message indicating running watchdog
 alive=3600
 
+# restart network instead of only starting WireGuard interface
+RESTARTNETWORK=  # uncomment/comment to enable/disable to restart the whole network instead of bringing up the new WireGuard interface
+
+
 #------Do not change below this line------------
 # shellcheck disable=SC3010,SC3037,SC2116,SC2005
 (
@@ -64,7 +68,9 @@ elif ! nslookup "$PINGIP" >/dev/null 2>&1; then
 	echo "WireGuard watchdog ERROR: could not resolve PINGIP $PINGIP"
 	exit 1
 fi
+
 activetunnel=1
+# get max number of tunnels
 get_tunnels(){
 	echo -e -n "WireGuard watchdog: Available tunnels: "
 	for i in $(seq 1 9);do 
@@ -75,27 +81,35 @@ get_tunnels(){
 	echo ""
 }
 
+# activate tunnel
 set_active(){
 	activetunnel=$1
 	[[ $activetunnel -gt $maxtunnels ]] && { activetunnel=1; echo "WireGuard watchdog: all tunnels failed, starting over"; }
 	for i in $(seq 1 "$maxtunnels"); do
 		eval "wgi=\$$(echo WG"${i}")"
 		if [[ $i = "$activetunnel" ]]; then
+			wg_activetunnel="$wgi"
 			uci -q del network."${wgi}".disabled
-			#uci -q del network."${wgi}".auto
 		else
 			uci -q set network."${wgi}".disabled='1'
 		fi
 	done
 	uci -q commit network
-	# if you only want to restart the WG interface uncomment ifup and comment service network restart
-	# ifup $WG1
-	( service network restart >/dev/null 2>&1 ) &
-	sleep 20
+	# Restart whole network or only start new WireGuard interface
+	if [[ ${RESTARTNETWORK+x} ]]; then
+		echo "WireGuard watchdog: restarting network"
+		service network restart >/dev/null 2>&1
+	else
+		echo "WireGuard watchdog: starting WireGuard interface $wg_activetunnel"
+		ifup "$wg_activetunnel"
+	fi
+	sleep 10
 }
+# search for present active tunnel
 search_active() {
 	for i in $(seq "$activetunnel" "$maxtunnels"); do
 		eval "wgi=\$$(echo WG"${i}")"
+		# check if tunnel exists
 		uci -q show | grep "$wgi=interface" 1>/dev/null || echo "WireGuard watchdog ERROR: tunnel $wgi does not exist"
 		if ! [[ "$(uci -q get network."$wgi".disabled)" = "1" ]] >/dev/null 2>&1; then
 			echo "WireGuard watchdog: tunnel $wgi is enabled"
@@ -103,9 +117,11 @@ search_active() {
 			wga="$wgi"
 			break
 		fi
+		# if no active tunnel is found then restart with first tunnel active
 		[[ $i -eq $maxtunnels ]] && set_active 1
 	done
 }
+
 watchdog(){
 	echo "WireGuard watchdog: started, pinging every $SLEEP seconds to $PINGIP on tunnel ${wga} with endpoint $(uci get network.@wireguard_"${wga}"[0].endpoint_host)"
 	while sleep "$SLEEP"; do
@@ -123,10 +139,12 @@ watchdog(){
 		done
 	done
 }
+
 echo "WireGuard watchdog: $0 is started, waiting for services"
 sleep 120	# on startup wait till everything is running
 get_tunnels
 search_active
 watchdog
+
 ) 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
     -t $(echo $(basename "$0") | grep -Eo '^.{0,23}')[$$] &
