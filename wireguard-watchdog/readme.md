@@ -59,7 +59,7 @@ config rule
 	# for interface
 	#option in 'lan'
 	# for proto
-	3option ipproto 'icmp`
+	#option ipproto 'icmp`
 	# for source port
 	#option sport '116'
 	option lookup '101'
