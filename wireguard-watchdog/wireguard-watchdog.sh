@@ -40,10 +40,8 @@
 
 
 #Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc., max 9 tunnels
-WG1="wg_mullv_se"
-WG2="wgoraclecloud"
-#WG1="name-of-wg1-interface"
-#WG2="name-of-wg2-interface"
+WG1="name-of-wg1-interface"
+WG2="name-of-wg2-interface"
 
 #set seconds between log message indicating running watchdog
 alive=3600
@@ -84,13 +82,13 @@ set_active(){
 		eval "wgi=\$$(echo WG"${i}")"
 		if [[ $i = "$activetunnel" ]]; then
 			uci -q del network."${wgi}".disabled
-			uci -q del network."${wgi}".auto
+			#uci -q del network."${wgi}".auto
 		else
 			uci -q set network."${wgi}".disabled='1'
 		fi
 	done
 	uci -q commit network
-	# if you only want to restart the WG interface
+	# if you only want to restart the WG interface uncomment ifup and comment service network restart
 	# ifup $WG1
 	( service network restart >/dev/null 2>&1 ) &
 	sleep 20
