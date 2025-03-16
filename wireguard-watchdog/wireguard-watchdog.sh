@@ -73,7 +73,7 @@ activetunnel=1
 # get max number of tunnels
 get_tunnels(){
 	echo -e -n "WireGuard watchdog: Available tunnels: "
-	for i in $(seq 1 9);do 
+	for i in $(seq 1 10);do 
 		[[ -z $(eval echo "\$$(echo WG"${i}")") ]] && { maxtunnels=$((i - 1)); break; }
 		eval echo -n "\$$(echo WG"${i}")"
 		echo -n "; "
