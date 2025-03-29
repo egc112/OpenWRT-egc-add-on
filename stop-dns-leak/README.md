@@ -159,6 +159,11 @@ config redirect
 
 As the query will follow the routing of the client there is no specific need to set a route for the DNS server involved.  
 
+### Running Multiple DNS instances  
+For Split DNS you can use a second DNSMasq instance listing on another port and then redirect port 53 from the local LAN clients using your VPN to the port the second instance of DNSMasq is listening on.  
+Set as upstream resolver on this second intance the VPN DNS server.  
+See: https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#multiple_dhcpdns_serverforwarder_instances 
+
 ### PBR DNS Policies
 [PBR version 1.1.8](https://docs.openwrt.melmac.net/pbr/ ) uses this DNS redirect mechanism, described above, and incorporated that into the GUI.  
 ![Alt text](img/dns-policy-3.jpg?raw=true "Optional Title")  
