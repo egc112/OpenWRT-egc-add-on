@@ -15,7 +15,7 @@ installation:
    `WG1=tunnel-name`  
    `WG2=second-tunnel-name`  
    etc., you can set up to 9 tunnels to use.  
-   If desired you can change the number of seconds between log messages (alive), the Restart behaviour (`RESTARTNETWORK=`): either restart the whole Network or only the WireGuard interface and the Restart behaviour of Policy Based Routing (`RESTARTPBR=`).
+   If desired you can change the number of seconds between log messages (alive), the Restart behaviour (`RESTARTNETWORK=`): either restart the whole Network or only the WireGuard interface and the Restart behaviour of Policy Based Routing (`RESTARTPBR=`).  
    If you are not sure do not change it but ask in the forum.  
 5. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):  
    `/usr/share/wireguard-watchdog.sh &`  
