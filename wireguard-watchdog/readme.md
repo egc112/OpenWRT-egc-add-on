@@ -14,7 +14,7 @@ installation:
 3. Edit the script with vi or winscp to add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:   
    `WG1=tunnel-name`  
    `WG2=second-tunnel-name`  
-   etc., you can set up to 9 tunnels to use.
+   etc., you can set up to 9 tunnels to use.  
    If desired you can change the number of seconds between log messages (alive), the Restart behaviour (`RESTARTNETWORK=`): either restart whole Network or WireGuard interface only
    and the Restart of Policy Based Routing (`RESTARTPBR=`). If you are not sure do not change it but ask in the forum.  
 5. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):  
