@@ -2,7 +2,7 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: wireguard-watchdog.sh
-# version: 0.97, 15-mar-2025, by egc
+# version: 0.98, 27-mar-2025, by egc
 # purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
 #          in case of failure of the WireGuard tunnel the next tunnel is automatically started
 #          When the last tunnel has failed, the script will start again with the first tunnel.
@@ -17,6 +17,8 @@
 #    WG1=tunnel-name
 #    WG2=second-tunnel-name
 #    etc., you can set up to 9 tunnels to use.
+#    If desired you can change the number of seconds between log messages (alive), the Restart behaviour (RESTARTNETWORK=): either restart the whole Network or only the WireGuard interface
+#    and the Restart behaviour of Policy Based Routing (RESTARTPBR=). If you are not sure do not change it but ask in the forum.
 # 4. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):
 #    /usr/share/wireguard-watchdog.sh &
 #    Note the ampersand (&) at the end indicating that the script is executed asynchronously
@@ -48,6 +50,7 @@ alive=3600
 
 # restart network instead of only starting WireGuard interface
 RESTARTNETWORK=  # uncomment/comment to enable/disable to restart the whole network instead of bringing up the new WireGuard interface
+#RESTARTPBR=  # uncomment/comment to enable/disable to restart Policy Based Routing might be necessary if you are using it
 
 
 #------Do not change below this line------------
@@ -90,6 +93,7 @@ set_active(){
 		if [[ $i = "$activetunnel" ]]; then
 			wg_activetunnel="$wgi"
 			uci -q del network."${wgi}".disabled
+			#uci -q del network."${wgi}".auto
 		else
 			uci -q set network."${wgi}".disabled='1'
 		fi
@@ -102,6 +106,9 @@ set_active(){
 	else
 		echo "WireGuard watchdog: starting WireGuard interface $wg_activetunnel"
 		ifup "$wg_activetunnel"
+		if [[ ${RESTARTPBR+x} ]]; then
+			service pbr restart
+		fi
 	fi
 	sleep 10
 }
