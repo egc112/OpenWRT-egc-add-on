@@ -3,7 +3,7 @@
 # This code is based on idea of https://github.com/egc112
 
 # set all source ports as a space delimited string
-local myports="51820 51821 51822"
+local myports="55443"
 
 # if you want to route only from a specific ip address replace "all" with that ip address
 local ip="all"
