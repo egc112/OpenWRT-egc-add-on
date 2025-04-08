@@ -51,8 +51,6 @@
 #Add the OpenVPN tunnels you do NOT want to use for fail over, separated with a space, delimeted with " " and then remove the #
 #no_vpntunnels="<no_vpntunnel_1> <no_vpntunnel_2>"
 
-no_vpntunnels="ovpntemplate ksro"
-
 alive=3600      # Set seconds between log message indicating running watchdog
 reboot=0        # 0 is no reboot on failure but only restart OpenVPN (with the next tunnel), 1 is reboot on failure
 wait_time=30    # alllow time to establish the next tunnel
