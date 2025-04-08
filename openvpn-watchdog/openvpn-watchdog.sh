@@ -56,7 +56,7 @@ reboot=0        # 0 is no reboot on failure but only restart OpenVPN (with the n
 wait_time=30    # alllow time to establish the next tunnel
 
 #---------Do not change below this line------------
-#(
+(
 activets=
 vpns=
 activeti=0
@@ -177,11 +177,11 @@ watchdog(){
 }
 
 echo "openvpn watchdog: $0 is started, waiting for services, this can take up to two minutes"
-sleep 1	# on startup wait till everything is running
+sleep 120	# on startup wait till everything is running
 search_tunnels
 remove_vpn
 search_active
 get_tun
 watchdog
-#) 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
-#    -t $(echo $(basename "$0") | grep -Eo '^.{0,23}')[$$] &
+) 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
+    -t $(echo $(basename "$0") | grep -Eo '^.{0,23}')[$$] &
