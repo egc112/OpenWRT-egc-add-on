@@ -1,5 +1,5 @@
 name: openvpn-watchdog.sh  
-version: 0.2, 24-july-2024, by egc  
+version: 0.3, 8-apr-2025, by egc  
 purpose: OpenVPN watchdog with fail-over, by pinging every x seconds through the OpenVPN interface, the OpenVPN tunnel is monitored,  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in case of failure of the OpenVPN tunnel the next tunnel is automatically started  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When the last tunnel has failed, the script will start again with the first tunnel.  
@@ -18,7 +18,7 @@ Important notice: not all VPN providers support pinging through the tunnel e.g. 
      either with, from commandline (SSH): `curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh`
      or by clicking the download icon in the upper right corner of the script
   2. Make executable: `chmod +x /usr/share/openvpn-watchdog.sh`
-  3. Edit the script with vi or winscp to add the names of the OpenVPN tunnels you want to **exclude** for fail over, the names are the names of the interfaces, format is:
+  3. Edit the script with vi or winscp to add the names of the OpenVPN tunnels you want to **exclude** for fail over, the names are the names of the OpenVPN Instances (Luci > VPN > OpenVPN), format is:
      `no_vpntunnels="<no_vpntunnel_1> <no_vpntunnel_2>"`, see example in script
     Instead of letting the OpenVPN service restart you can reboot the whole router, by setting reboot=1. To make sure the router is not constantly rebooting,
     there is an increasing time between reboots if the VPN is not succesful, to a maximum of 20 minutes.  
