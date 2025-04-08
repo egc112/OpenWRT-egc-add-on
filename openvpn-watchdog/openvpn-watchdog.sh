@@ -4,18 +4,18 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: openvpn-watchdog.sh
-# version: 0.2, 24-july-2024, by egc
+# version: 0.3, 8-apr-2025, by egc
 # purpose: OpenVPN watchdog with fail-over, by pinging every x seconds through the OpenVPN interface, the OpenVPN tunnel is monitored,
 #          in case of failure of the OpenVPN tunnel the next tunnel is automatically started
 #          When the last tunnel has failed, the script will start again with the first tunnel.
 #          So in case you have only one tunnel this is just a watchdog which restarts the one tunnel you have
 # script type: shell script
 
-# Before installing the script setup your OpenVPN tunnels you want to use for this fail over group to use each to use its own tunX
-#   where X is a unique number, start with 11
-#   Set in the OpenVPN config of each tunnel you want to use: "dev tunX" instead of "dev tun"
-# Make  an interface with the same name as the OpenVPN instance, protocol unmanaged and device (custom): "tunX", corresponding with each OpenVPN instance
-# Add this interface to the WAN firewall zone or to your own created VPN Client firewall zone
+# Before installing the script setup your OpenVPN tunnels you want to use for this fail over group to each use its own device tunX,
+#   where X is a unique number, start with 11.
+#   Set in the OpenVPN config of each tunnel you want to use: "dev tunX" instead of "dev tun".
+# Make an interface with the same name as the OpenVPN instance, protocol unmanaged and device (custom): "tunX", corresponding with each OpenVPN instance.
+# Add this interface to the WAN firewall zone or to your own created VPN Client firewall zone.
 # Important notice: not all VPN providers support pinging through the tunnel e.g. vpnumlimited/keepsolid, so test that first!
 
 # installation:
@@ -23,8 +23,10 @@
 #    either with, from commandline (SSH): curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh
 #    or by clicking the download icon in the upper right corner of the script
 # 2. Make executable: chmod +x /usr/share/openvpn-watchdog.sh
-# 3. Edit the script with vi or winscp to add the names of the OpenVPN tunnels you want to **exclude** for fail over, the names are the names of the interfaces, format is:
-#    no_vpntunnels="<no_vpntunnel_1> <no_vpntunnel_2>", see example below
+# 3. Edit the script with vi or winscp to add the names of the OpenVPN tunnels you want to **exclude** for fail over, the names are the names of the OpenVPN Instances, format is:
+#    no_vpntunnels="<no_vpntunnel_1> <no_vpntunnel_2>", see example below.
+#    Instead of letting the OpenVPN service restart you can reboot the whole router, by setting reboot=1. To make sure the router is not constantly rebooting,  
+#    there is an increasing time between reboots if the VPN is not succesful, to a maximum of 20 minutes.
 # 4. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):
 #    /usr/share/openvpn-watchdog.sh &
 #    Note the ampersand (&) at the end indicating that the script is executed asynchronously
@@ -45,15 +47,18 @@
 #    do not forget to reset the firewall (service firewall restart) or remove the rule
 # 9. To stop a running script, do from the command line: killall openvpn-watchdog.sh
 
+
 #Add the OpenVPN tunnels you do NOT want to use for fail over, separated with a space, delimeted with " " and then remove the #
 #no_vpntunnels="<no_vpntunnel_1> <no_vpntunnel_2>"
+
+no_vpntunnels="ovpntemplate ksro"
 
 alive=3600      # Set seconds between log message indicating running watchdog
 reboot=0        # 0 is no reboot on failure but only restart OpenVPN (with the next tunnel), 1 is reboot on failure
 wait_time=30    # alllow time to establish the next tunnel
 
 #---------Do not change below this line------------
-(
+#(
 activets=
 vpns=
 activeti=0
@@ -180,5 +185,5 @@ remove_vpn
 search_active
 get_tun
 watchdog
-) 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
-    -t $(echo $(basename "$0") | grep -Eo '^.{0,23}')[$$] &
+#) 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
+#    -t $(echo $(basename "$0") | grep -Eo '^.{0,23}')[$$] &
