@@ -10,7 +10,7 @@ Scramble options are not present by default in OpenWRT (they are in DDWRT) so yo
 Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds), for stable 23.05 which uses K5.15 and OpenVPN 2.5.8 use the patches from 515. For 24.10 and Main build with Kernel 6.6 and OpenVPN 2.6.12 use patches from 66 
 The patches are derived from tunnelblicks patches:   
 https://tunnelblick.net/cOpenvpn_xorpatch.html  
-https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party/sources/openvpn/openvpn-2.6.4/patches  
+https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party/sources/openvpn/openvpn-2.6.14/patches  
 https://github.com/clayface/openvpn_xorpatch  
 https://scramblevpn.wordpress.com/2017/04/16/compile-patched-openvpn-ipk-package-for-openwrtlede-router/  
   
