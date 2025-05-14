@@ -5,7 +5,8 @@ After the file has openend, click in the upper right corner on the download symb
 
 Although wireGuard is basically a peer to peer setup, different settings are necessary to let it work as a server to which you can connect to your home from outside and setup as a client to connect to a server e.g. to a commercial VPN provider.  
 So for sake of simplicity there are two guides, one for setup a WireGuard server and one for setup a WireGuard client.  
-The WireGvuard server setup guide also has a paragraph about a site-to-site setup connecting two routers.  
+  
+The WireGuard server setup guide also has a paragraph about a site-to-site setup connecting two routers.  
 
 The files are in PDF format.   
 
