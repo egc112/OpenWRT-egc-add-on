@@ -2,7 +2,7 @@
 #https://openwrt.org/docs/guide-user/base-system/hotplug
 
 # Name: 97-custom-pbr-via-vpn
-# Version: 26-oct-2024 by egc
+# Version: 26-may-2025 by egc
 # Description: OpenWRT hotplug script routing ipaddress/interface via the VPN
 # Usage:simple PBR to route e.g. a guest interface or subnet or specific ipaddress via the VPN
 # Installation: 
