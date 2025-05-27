@@ -40,12 +40,12 @@ set_routes() {
 			ip route show | grep -Ev '^default |^0.0.0.0/1 |^128.0.0.0/1 ' | while read route; do
 				 ip route add $route table $TID >/dev/null 2>&1
 			done
-			# alternative modern way
-			#ip -4 rule add table main suppress_prefixlength 0 >/dev/null 2>&1
-			#ip -4 rule add table main suppress_prefixlength 1 >/dev/null 2>&1
 			# add rule
 			[[ ! -z "$MYINTERFACE" ]] && { ip rule add iif "$MYINTERFACE" table $TID; echo "rule $MYINTERFACE added to table $TID"; }
 			[[ ! -z "$IPADDR" ]] && { ip rule add from "$IPADDR" table $TID; echo "rule $IPADDR added to table $TID"; }
+			# alternative modern way, use ip rule with lower priority:
+			#ip -4 rule add table main suppress_prefixlength 0 >/dev/null 2>&1
+			#ip -4 rule add table main suppress_prefixlength 1 >/dev/null 2>&1
 		fi
 		# remove table and rules
 		if [ "$ACTION" == "ifdown" ]; then
