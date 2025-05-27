@@ -2,12 +2,12 @@
 #https://openwrt.org/docs/guide-user/base-system/hotplug
 
 # Name: 97-custom-pbr-via-vpn
-# Version: 26-may-2025 by egc
+# Version: 1.0.2 26-may-2025 by egc
 # Description: OpenWRT hotplug script routing ipaddress/interface via the VPN
 # Usage:simple PBR to route e.g. a guest interface or subnet or specific ipaddress via the VPN
 # Installation: 
 #  in this script below adapt the ipaddress/interface you want to route via the VPN
-#  copy script to /etc/hotplug.d/iface
+#  copy script to /etc/hotplug.d/iface/
 #  to stop default routing via the VPN, 
 #    for WireGuard: disable "Route Allowed IPs" in the peer section or disable "Use default gateway" in Advanced section
 #    for OpenVPN: in the openvpn config add:
@@ -43,7 +43,7 @@ set_routes() {
 			# add rule
 			[[ ! -z "$MYINTERFACE" ]] && { ip rule add iif "$MYINTERFACE" table $TID; echo "rule $MYINTERFACE added to table $TID"; }
 			[[ ! -z "$IPADDR" ]] && { ip rule add from "$IPADDR" table $TID; echo "rule $IPADDR added to table $TID"; }
-			# alternative modern way, use ip rule with lower priority:
+			# alternative modern way, use ip rules with lower priority
 			#ip -4 rule add table main suppress_prefixlength 0 >/dev/null 2>&1
 			#ip -4 rule add table main suppress_prefixlength 1 >/dev/null 2>&1
 		fi
