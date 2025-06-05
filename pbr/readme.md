@@ -6,9 +6,14 @@ Copy the new script to `/etc/init.d/pbr`
 Make the new script executable: `chmod +x /etc/init.d/pbr`  
 Reboot the computer  
 
-Note that especially OpenVPN is slow to setup so adding some delay is often necessary:
+Note that especially Adblock and OpenVPN are slow to setup so adding some delay is often necessary:
 ```
 	option procd_boot_delay '30'
 	option procd_reload_delay '20'
 ```
-You might need different values, especially if you run Adblock and/or HTTPS-DNS-proxy you might need to increase the procd_boot_delay to 60 or more
+You might need different values, especially if you run Adblock you might need to increase the procd_boot_delay to 60 or more.
+
+Alternatively add to `/etc/rc.local` :
+```
+sleep 60 && service pbr restart
+```
