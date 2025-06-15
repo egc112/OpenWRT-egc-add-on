@@ -2228,7 +2228,7 @@ service_triggers() {
 		logger -t "$packageName" "EGC-03.2 Starting service_triggers pbr_boot_flag=$pbr_boot_flag; procd_boot_trigger_delay=$procd_boot_trigger_delay "
 		output "Setting trigger (on_boot) "
 		#procd_add_raw_trigger "interface.*.up" 5000 "/etc/init.d/${packageName}" start && output_okn || output_failn
-		procd_add_raw_trigger "interface.*.up" procd_boot_trigger_delay "/etc/init.d/${packageName}" start  && output_okn || output_failn
+		procd_add_raw_trigger "interface.*.up" $procd_boot_trigger_delay "/etc/init.d/${packageName}" start  && output_okn || output_failn
 		# unset pbr_boot_flag
 	else
 		logger -t "$packageName" "EGC-03.3 Starting service_triggers pbr_boot_flag=$pbr_boot_flag"
