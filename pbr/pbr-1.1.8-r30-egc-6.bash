@@ -480,7 +480,7 @@ load_package_config() {
 	config_get      supported_interface       'config' 'supported_interface'
 	config_get      verbosity                 'config' 'verbosity' '2'
 	config_get      procd_reload_delay        'config' 'procd_reload_delay' '0'
-	config_get		procd_boot_trigger_delay  'config' 'procd_boot_trigger_delay' '3000'
+	config_get		procd_boot_trigger_delay  'config' 'procd_boot_trigger_delay' '6000'
 	config_get      procd_lan_device          'config' 'procd_lan_device'  'br-lan'
 	config_get      procd_wan_interface       'config' 'procd_wan_interface'  'wan'
 	config_get      procd_wan6_interface      'config' 'procd_wan6_interface' 'wan6'
@@ -495,7 +495,7 @@ load_package_config() {
 	[ -n "$nft_user_set_counter" ] && [ "$nft_user_set_counter" -eq '0' ] && unset nft_user_set_counter
 	fw_maskXor="$(printf '%#x' "$((fw_mask ^ 0xffffffff))")"
 	fw_maskXor="${fw_maskXor:-0xff00ffff}"
-	is_integer "$procd_boot_trigger_delay" || procd_boot_trigger_delay='3000'
+	is_integer "$procd_boot_trigger_delay" || procd_boot_trigger_delay='6000'
 	[ "$procd_boot_trigger_delay" -lt '1000' ] && procd_boot_trigger_delay='1000'
 
 	[ "$debug_dnsmasq" != '1' ]          && unset debug_dnsmasq
@@ -2429,7 +2429,7 @@ load_validate_config() {
 		'ignored_interface:list(or(tor, uci("network", "@interface")))' \
 		'supported_interface:list(or(ignore, tor, regex("xray_.*"), uci("network", "@interface")))' \
 		'procd_reload_delay:integer:0' \
-		'procd_boot_trigger_delay:range(1000,10000):3000' \
+		'procd_boot_trigger_delay:range(1000,60000):6000' \
 		'procd_lan_device:list(or(network)):br-lan' \
 		'procd_wan_interface:network:wan' \
 		'procd_wan6_interface:network:wan6' \
