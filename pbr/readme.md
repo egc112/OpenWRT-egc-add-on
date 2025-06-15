@@ -10,7 +10,7 @@ Note that especially Adblock and OpenVPN are slow to setup so adding some delay 
 ```
 	option procd_boot_delay '30'
 	option procd_reload_delay '20'
-	option procd_boot_trigger_delay '9000'
+	option procd_boot_trigger_delay '9000'    # for build 1.1.8.-r30 and after
 ```
 You might need different values, especially if you run Adblock you might need to increase the procd_boot_delay to 60 or more.
 
