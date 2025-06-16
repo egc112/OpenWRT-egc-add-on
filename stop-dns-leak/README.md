@@ -19,7 +19,7 @@ option noresolv '1'
 This will Make dnsmasq forward all requests to your designated server(s) and disallow the use of any other available upstream DNS servers.  
 If the DNS servers are not known beforehand (often in case of OpenVPN) or are not publicly available there is a solution to this particular problem but you need to add a script to the router, if you are interested, please read on.  
 
-If you use Policy Based Routing to have some traffic go via the VPN and other traffic via the WAN then you also need to split your DNS traffic accordingly, how to do this is covered in the section about [Split DNS](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/stop-dns-leak#split-dns)
+If you use Policy Based Routing to have some traffic go via the VPN and other traffic via the WAN then you also need to split your DNS traffic accordingly, how to do this is covered in the section about [Policy Based Routing and Split DNS](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/stop-dns-leak#policy-based-routing)
 
 
 ## How DNSMasq works in OpenWRT  
