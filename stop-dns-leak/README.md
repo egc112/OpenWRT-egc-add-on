@@ -1,6 +1,10 @@
 # DNS leak  
-### under construction version 0.1  
+### version 0.2 
 First, if your problem is that you are seeing your ISP DNS server in a DNS leak test (ipleak.net, dnsleaktest.com), then make sure you disable `Use DNS servers advertised by peer` in the Advanced settings section of the interface (` option peerdns '0'`) and set `Use custom DNS servers` if necessary/desired, or better use Secure DNS (DoT, DoH) with [SmartDNS](https://forum.openwrt.org/t/smartdns-config-with-dns-over-https/130488/20?u=egc) or [DNS over HTTPS](https://openwrt.org/docs/guide-user/services/dns/doh_dnsmasq_https-dns-proxy).    
+
+A DNS leak can be defined in multiple ways, the most annoying DNS leak is if the geographical origin of DNS and IP address are different which is caused by a different route of the DNS and IP traffic.
+This geographical check is what is done by streaming services, banks, amazon etc. (among other things) to detect VPN use.
+
 A DNS leak is often defined by a DNS query not going through a VPN tunnel.    
 But a stricter definition is a DNS query not going through the VPN tunnel and not using a specific DNS server (often a VPN provider pushes a DNS server (OpenVPN) or hands out a special DNS server to use for WireGuard, (those DNS servers are often only available when using the tunnel, so cannot be used for normal DNS via the WAN) .    
 If you are only interested in sending DNS queries via the tunnel then you will have no problem if the VPN is the default route as everything will go through the VPN including DNS requests from the router.    
@@ -14,6 +18,10 @@ option noresolv '1'
 ```  
 This will Make dnsmasq forward all requests to your designated server(s) and disallow the use of any other available upstream DNS servers.  
 If the DNS servers are not known beforehand (often in case of OpenVPN) or are not publicly available there is a solution to this particular problem but you need to add a script to the router, if you are interested, please read on.  
+
+If yo use Policy Based Routing to have some traffic go via the VPN and other traffic via the WAN then you also need to split your DNS traffic accordingly, how to do this is covered in the seciotn about [Split DNS](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/stop-dns-leak#split-dns)
+
+
 ## How DNSMasq works in OpenWRT  
 This applies when using DNSMasq to do the DNS resolving by means of a resolv.conf file which contains the DNS servers set on the active interfaces.  
 There is a sorting of the DNS servers, the more weight you add the more the DNS servers will go down to the bottom of the file.  
