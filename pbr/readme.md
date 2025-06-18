@@ -12,7 +12,7 @@ Note that especially Adblock and OpenVPN are slow to setup so adding some delay 
 	option procd_reload_delay '20'
 	option procd_boot_trigger_delay '9000'    # for build 1.1.8-r30 and after
 ```
-You might need different values, especially if you run Adblock you might need to increase the procd_boot_delay to 60 or more.
+You might need different values, especially if you run Adblock or other resource intensive services you might need to increase the `procd_boot_trigger_delay` to 9000 or (a lot) more, max is 90000.
 
 Alternatively add to `/etc/rc.local` :
 ```
