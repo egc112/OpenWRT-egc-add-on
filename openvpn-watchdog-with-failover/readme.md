@@ -14,8 +14,8 @@ Add this interface to the WAN firewall zone or to your own created VPN Client fi
 Important notice: not all VPN providers support pinging through the tunnel e.g. vpnumlimited/keepsolid, so test that first!  
   
   installation:
-  1. Copy openvpn-watchdog.sh from `https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh` to `/usr/share`
-     either with, from commandline (SSH): `curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh`
+  1. Copy openvpn-watchdog.sh from `https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog-with-failover/openvpn-watchdog.sh` to `/usr/share`
+     either with, from commandline (SSH): `curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog-with-failover/openvpn-watchdog.sh`
      or by clicking the download icon in the upper right corner of the script
   2. Make executable: `chmod +x /usr/share/openvpn-watchdog.sh`
   3. Edit the script with vi or winscp to add the names of the OpenVPN tunnels you want to **exclude** for fail over, the names are the names of the OpenVPN Instances (Luci > VPN > OpenVPN), format is:
@@ -44,7 +44,7 @@ Important notice: not all VPN providers support pinging through the tunnel e.g. 
 
 Shortcut install commands, copy by clicking the copy icon in the right corner, paste to command line and execute, scriot is openend, set wg tunnels in script:
 ```
-curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog/openvpn-watchdog.sh &&  \
+curl -o /usr/share/openvpn-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/openvpn-watchdog-with-failover/openvpn-watchdog.sh &&  \
 chmod +x /usr/share/openvpn-watchdog.sh && vi /usr/share/openvpn-watchdog.sh
 ```
     
