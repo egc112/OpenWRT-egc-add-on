@@ -6,9 +6,9 @@ purpose: WireGuard watchdog with fail-over, by pinging every x seconds through t
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; So in case you have only one tunnel this is just a watchdog which restarts the one tunnel you have.  
 script type: shell script  
 installation:  
-1. Copy wireguard-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/wireguard-watchdog.sh to /usr/share  
+1. Copy wireguard-watchdog.sh from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog-with-failover/wireguard-watchdog.sh to /usr/share  
    either with, from commandline (SSH):  
-   `curl -o /usr/share/wireguard-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/wireguard-watchdog.sh`  
+   `curl -o /usr/share/wireguard-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog-with-failover/wireguard-watchdog.sh`  
    or by clicking the download icon in the upper right corner of the script  
 2. Make executable: `chmod +x /usr/share/wireguard-watchdog.sh`  
 3. Edit the script with vi or winscp to add the names of the Wireguard tunnels you want to use for fail over, the names are the names of the interfaces, format is:   
@@ -41,7 +41,7 @@ installation:
 
 Shortcut install commands, copy by clicking the copy icon in the right corner, paste to command line and execute, scriot is openend, set wg tunnels in script:
 ```
-curl -o /usr/share/wireguard-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog/wireguard-watchdog.sh &&  \
+curl -o /usr/share/wireguard-watchdog.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-watchdog-with-failover/wireguard-watchdog.sh &&  \
 chmod +x /usr/share/wireguard-watchdog.sh && vi /usr/share/wireguard-watchdog.sh
 ```
   
