@@ -19,7 +19,7 @@ define Package/openvpn-watchdog
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=VPN
-	DEPENDS:=+kmod-openvpn
+	DEPENDS:=+kmod-openvpn-openssl
 	TITLE:=openvpn-watchdog-script
 	URL:=https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-watchdog-with-failover
 	PKGARCH:=all
