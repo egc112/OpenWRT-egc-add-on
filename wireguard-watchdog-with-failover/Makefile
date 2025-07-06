@@ -15,7 +15,7 @@ PKG_MAINTAINER:=Erik Conijn <egc6774@gmail.com
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/wireguard-companion
+define Package/wireguard-watchdog
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=VPN
@@ -26,7 +26,7 @@ define Package/wireguard-companion
 endef
 
 define Package/wireguard-watchdog/description
-Shell script to toggle WireGuard tunnels on the router on/off and provide info about routing, tunnels and log
+Shell script to monitor WireGuard client tunnels and in case of a fail, the next tunnel will be started
 endef
 
 define Package
