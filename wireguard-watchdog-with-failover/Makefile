@@ -7,7 +7,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=wireguard-companion
+PKG_NAME:=wireguard-watchdog
 PKG_VERSION:=1.0.7
 PKG_RELEASE:=1
 PKG_LICENSE:=AGPL-3.0-or-later
