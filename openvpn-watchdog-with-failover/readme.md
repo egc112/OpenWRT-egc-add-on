@@ -1,5 +1,5 @@
 name: openvpn-watchdog.sh  
-version: 0.3, 8-apr-2025, by egc  
+version: 0.31, 06-jul-2025, by egc  
 purpose: OpenVPN watchdog with fail-over, by pinging every x seconds through the OpenVPN interface, the OpenVPN tunnel is monitored,  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in case of failure of the OpenVPN tunnel the next tunnel is automatically started  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When the last tunnel has failed, the script will start again with the first tunnel.  
