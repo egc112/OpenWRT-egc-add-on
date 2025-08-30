@@ -49,7 +49,7 @@ WG2="name-of-wg2-interface"
 alive=3600
 
 # restart network instead of only starting WireGuard interface
-#RESTARTNETWORK=  # uncomment/comment to enable/disable restarting the whole network instead of only bringing up the WireGuard interface
+RESTARTNETWORK=  # uncomment/comment to enable/disable restarting the whole network instead of only bringing up the WireGuard interface
 #RESTARTPBR=  # uncomment/comment to enable/disable to restart Policy Based Routing might be necessary if you are using it
 
 
