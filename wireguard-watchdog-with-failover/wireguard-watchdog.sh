@@ -63,7 +63,6 @@ elif [[ $SLEEP -gt 60 || $SLEEP -lt 10 ]]; then
 	echo "WireGuard watchdog ERROR: Sleep is $SLEEP but needs to be in the range of 10 - 60 seconds"
 	exit 1
 fi
-
 PINGIP="$2"
 if [[ -z $PINGIP ]]; then
 	PINGIP=8.8.8.8
@@ -71,9 +70,7 @@ elif ! nslookup "$PINGIP" >/dev/null 2>&1; then
 	echo "WireGuard watchdog ERROR: could not resolve PINGIP $PINGIP"
 	exit 1
 fi
-
 activetunnel=1
-
 # get max number of tunnels
 get_tunnels(){
 	echo -e -n "WireGuard watchdog: Available tunnels: "
@@ -128,7 +125,6 @@ search_active() {
 		[[ $i -eq $maxtunnels ]] && set_active 1
 	done
 }
-
 watchdog(){
 	echo "WireGuard watchdog: started, pinging every $SLEEP seconds to $PINGIP on tunnel ${wga} with endpoint $(uci get network.@wireguard_"${wga}"[0].endpoint_host)"
 	while sleep "$SLEEP"; do
@@ -146,12 +142,10 @@ watchdog(){
 		done
 	done
 }
-
 echo "WireGuard watchdog: $0 is started, waiting for services"
 sleep 120	# on startup wait till everything is running
 get_tunnels
 search_active
 watchdog
-
 ) 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
     -t $(echo $(basename "$0") | grep -Eo '^.{0,23}')[$$] &
