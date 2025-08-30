@@ -2,7 +2,7 @@
 #DEBUG=; set -x # comment/uncomment to disable/enable debug mode
 
 # name: wireguard-watchdog.sh
-# version: 1.00, 31-aug-2025, by egc
+# version: 1.01, 31-aug-2025, by egc
 # purpose: WireGuard watchdog with fail-over, by pinging every x seconds through the WireGuard interface, the WireGuard tunnel is monitored,
 #          in case of failure of the WireGuard tunnel the next tunnel is automatically started
 #          When the last tunnel has failed, the script will start again with the first tunnel.
@@ -42,14 +42,14 @@
 
 
 #Add the Wireguard tunnels you want to use for fail over as a continuous range e.g. WG1, WG2 etc., max 9 tunnels
-WG1="wg_mullv_se"
-WG2="wgoraclecloud"
+WG1="name-of-wg1-interface"
+WG2="name-of-wg2-interface"
 
 #set seconds between log message indicating running watchdog
 alive=3600
 
 # restart network instead of only starting WireGuard interface
-#RESTARTNETWORK=  # uncomment/comment to enable/disable to restart the whole network instead of bringing up the new WireGuard interface
+#RESTARTNETWORK=  # uncomment/comment to enable/disable restarting the whole network instead of only bringing up the WireGuard interface
 #RESTARTPBR=  # uncomment/comment to enable/disable to restart Policy Based Routing might be necessary if you are using it
 
 
@@ -81,7 +81,6 @@ get_tunnels(){
 	done
 	echo ""
 }
-
 # activate tunnel
 set_active(){
 	activetunnel=$1
@@ -96,15 +95,20 @@ set_active(){
 		fi
 	done
 	uci -q commit network
+	sleep 1
 	# Restart whole network or only start new WireGuard interface
 	if [[ ${RESTARTNETWORK+x} ]]; then
-		echo "WireGuard watchdog: restarting network"
+		echo "WireGuard watchdog: restarting network with active interface $wg_activetunnel"
 		service network restart >/dev/null 2>&1
+		sleep 2
+		ifup "$wg_activetunnel"
 	else
 		echo "WireGuard watchdog: starting WireGuard interface $wg_activetunnel"
 		ifup "$wg_activetunnel"
 		if [[ ${RESTARTPBR+x} ]]; then
 			service pbr restart
+			sleep 2
+			ifup "$wg_activetunnel"
 		fi
 	fi
 	sleep 10
@@ -119,6 +123,7 @@ search_active() {
 			echo "WireGuard watchdog: tunnel $wgi is enabled"
 			activetunnel=$i
 			wga="$wgi"
+			set_active "$activetunnel"
 			break
 		fi
 		# if no active tunnel is found then restart with first tunnel active
