@@ -19,6 +19,7 @@
 #    etc., you can set up to 9 tunnels to use.
 #    If desired you can change the number of seconds between log messages (alive), the Restart behaviour (RESTARTNETWORK=): either restart the whole Network or only the WireGuard interface
 #    and the Restart behaviour of Policy Based Routing (RESTARTPBR=). If you are not sure do not change it but ask in the forum.
+#    If you have an URL as endpoint which needs to be resolved first or other difficulties connecting then use as allowed IPs 128.0.0.0/1 and 0.0.0.0/1 instead of 0.0.0.0/0
 # 4. To start on startup of the router, add to System > Startup > Local Startup (/etc/rc.local):
 #    /usr/share/wireguard-watchdog.sh &
 #    Note the ampersand (&) at the end indicating that the script is executed asynchronously
