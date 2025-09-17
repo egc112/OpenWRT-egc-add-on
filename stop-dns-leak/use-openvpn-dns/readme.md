@@ -25,7 +25,8 @@
   To set your own search domain to use when the tunnel is up, add in the openvpn conf file: `dhcp-option DOMAIN my-search-domain`  
   When something goes wrong, disable the VPN and restore DNS with: `uci del dhcp.@dnsmasq[0].resolvfile && uci commit dhcp` , and reboot  
 
-  Note: this only works when your DNS server is DNSMasq which is using its resolv file!
+  Note: This script is **not** compatible with the use of `Ignore resolv file` (option noresolv), DNS Forwards ( list server=) or with the use of encrypted DNS e.g. unbound, dnscrypt    
+        and https-dns-proxy, but encrypted DNS is not needed as the DNS is already send encrypted via the VPN to a trusted DNS server.  
 
 References  
  https://openwrt.org/docs/guide-user/services/vpn/openvpn/extrasnetwork_interface 
