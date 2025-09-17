@@ -24,5 +24,8 @@ Install:
 
  When something goes wrong, disable the VPN and restore DNS with: `uci del dhcp.@dnsmasq[0].resolvfile && uci commit dhcp` , and reboot  
 
+ Note: This script is **not** compatible with the use of `Ignore resolv file` (option noresolv), DNS Forwards ( list server=) or with the use of encrypted DNS e.g. unbound, dnscrypt and https-dns-proxy, but encrypted DNS is
+  not needed as the DNS is already send encrypted via the VPN to a trusted DNS server.  
+
 
 
