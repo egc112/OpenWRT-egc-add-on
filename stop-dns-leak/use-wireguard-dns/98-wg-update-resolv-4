@@ -15,8 +15,8 @@
 #  On ifup of the WG interface the resolv.conf file will be replaced with a file containing only the WG DNS server(s)
 #  All WireGuard DNS servers will be explicitly routed via the tunnel usefull when using PBR
 #  On ifdown the old resolv.conf file is restored and routes deleted
-#  This is *not* compatible with the use of option noresolv and Custom DNS servers ( list server=) or with the use of encrypted DNS e.g. unbound, dnscrypt, https-dns-proxy, 
-#  but encrypted DNS is not needed as the DNS is already send encrypted via the VPN to a trusted DNS server  
+#  This script is *not* compatible with the use of Ignore resolv file (option noresolv), DNS Forwards ( list server=) or with the use of encrypted DNS e.g. unbound, dnscrypt,  
+#  and https-dns-proxy, but encrypted DNS is not needed as the DNS is already send encrypted via the VPN to a trusted DNS server  
 # View log with: logread -e hotplug-call, debug by removing the # on the second line of this script, view with: logread | grep debug
 # When something goes wrong, disable the VPN and restore DNS with: uci del dhcp.@dnsmasq[0].resolvfile && uci commit dhcp , and reboot
 
