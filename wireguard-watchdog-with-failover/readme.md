@@ -38,7 +38,7 @@ installation:
 9. You can test the script by blocking the endpoint address of a tunnel with:  
    `nft insert rule inet fw4 output ip daddr <ip-endpoint-address> counter reject`  
     do not forget to reset the firewall (service firewall restart) or remove the rule
-10. To stop a running script, do from the command line: `killall wireguard-watchdog.sh` or `kill -9 $(pidof wireguard-watchdog.sh)`
+10. To stop a running script, do from the command line: `killall wireguard-watchdog.sh` or `ps | grep "[w]ireguard-watchdog\.sh" | awk '{print $1}' | xargs kill -9`
 
 Shortcut install commands, copy by clicking the copy icon in the right corner, paste to command line and execute, scriot is openend, set wg tunnels in script:
 ```
