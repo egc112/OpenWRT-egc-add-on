@@ -9,7 +9,7 @@ Shortcut:  see below
     either with, from commandline (SSH): `curl -o /usr/share/wireguard-companion.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/wireguard-companion/wireguard-companion.sh` 
     or by clicking the download icon in the upper right corner of the script  
  2. Make executable: `chmod +x /usr/share/wireguard-companion.sh`  
- 3. Run from command line with `/usr/share/wireguard-companion.sh`, most SSH clients will let you run a command on connection, if you use a [SSH-key to connect](https://openwrt.org/docs/guide-user/security/dropbear.public-key.auth) you can have an app like experience e.g. from your phone running a terminal app like connectbot.  
+ 3. Run from command line with `/usr/share/wireguard-companion.sh`, most SSH clients will let you run a command on connection, if you use a [SSH-key to connect](https://openwrt.org/docs/guide-user/security/dropbear.public-key.auth) you can have an app like experience e.g. from your phone running a terminal app like connectbot. Or use Putty from your PC and under SSH > Remote comand add `sh /usr/share/wireguard-companion.sh` which will instantly open the app on your PC
  4. Debug by removing the # on the second line of this script.  
  5. To automatcally skip WireGuard interfaces which are setup as server, remove the # on the third line of this script, this works by identifying a listen port.
  6. If you toggle a WG tunnel off the defaulte route via the WAN is not automatically reinstated, to mitigate this use as Allowed IPs `0.0.0.0/1, 128.0.0.0/1` instead of `0.0.0.0/0`
