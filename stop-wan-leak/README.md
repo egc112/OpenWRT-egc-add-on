@@ -1,5 +1,5 @@
 Name: 09-stop-wan-leak  
-Version: 0.91 4-nov-2025 by egc  
+Version: 0.92 4-nov-2025 by egc  
 Description: OpenWRT hoptlug script disabling forwarding to stop a wan leak while PBR is starting  
 Operating mode: The script is triggered by the WAN interface going up this can happen multiple times but after the WAN interface is up the critical period starts  
 Usage: e.g. if you want to be sure there is no wan leak while using your VPN and PBR  
