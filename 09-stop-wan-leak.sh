@@ -1,0 +1,54 @@
+#!/bin/sh
+#DEBUG=; set -x; logger -t stop-wan-leak $(env); # uncomment/comment to enable/disable debug mode
+
+# Name: 09-stop-wan-leak.sh
+# Version: 0.91 4-nov-2025 by egc
+# Description: OpenWRT hoptlug script disabling forwarding to stop a wan leak while PBR is starting
+# Operating mode: The script is triggered by the WAN interface going up this can happen multiple times but after the WAN interface is up the critical period starts
+# Usage: e.g. if you want to be sure there is no wan leak while using your VPN and PBR
+# Note this only takes care of forwarding so blocking your lan client from accessing the wan, the router itself can still access the wan
+# Installation:
+#  Set MYWANIF to your current wan, use `ifconfig` from commandline to check
+#  Copy script to /etc/hotplug.d/iface/
+#  Reboot or restart network (service network restart)
+# Check the working with `logread -e stop-wan-leak`
+# Enable debugging by removing the # before the #DEBUG= ... on line 2, check debug output with `logread -e stop-wan-leak`
+
+MYWANIF="wan"	# set the interface you are using as wan, check form command line with `ifconfig` or `ip address show`
+
+MAXSLEEP=60		# Maximum sleep time to prevent deadlock
+PBRSLEEP=5		# Extra sleep time after PBR is enabled to make sure PBR rules are functioning
+
+#==========DO NOT ALTER BELOW THIS LINE==================
+SLEEP=0
+{
+if [ "$INTERFACE" == "$MYWANIF" ] && [ "$ACTION" == "ifup" ]; then
+	echo "stop-wan-leak: disable forwarding on ifup of $MYWANIF"
+	/sbin/sysctl -w net.ipv4.ip_forward=0
+	/sbin/sysctl -w net.ipv6.conf.all.forwarding=0
+fi
+while [ $SLEEP -le $MAXSLEEP ]; do
+	SLEEP=$((SLEEP + 1))
+	sleep 1
+	# if pbr is not enabled break
+	if ! ls /etc/rc.d/*pbr* >/dev/null 2>&1; then
+		echo "stop-wan-leak: pbr is not enabled so going to enable forwarding"
+		break
+	fi
+	#if pbr is enabled and running then also enable forwarding
+	if ubus call service list '{"name":"pbr"}' | grep -q '"running": '; then
+	 sleep $PBRSLEEP
+	 SLEEP=$((SLEEP + 5))
+	 echo "stop-wan-leak: forwarding disabled during $SLEEP sec but is now enabled after PBR is running "
+	 break
+	fi
+done
+/sbin/sysctl -w net.ipv4.ip_forward=1
+/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
+if [ $SLEEP -gt $MAXSLEEP ]; then
+	echo "stop-wan-leak: ERROR: forwarding is now enabled due to exceeding the maximum sleep time of $MAXSLEEP sec. wan leak possible !"
+else
+	echo "stop-wan-leak: forwarding is now enabled after $SLEEP sec."
+fi
+} 2>&1 | logger $([ ${DEBUG+x} ] && echo '-p user.debug') \
+    -t $(echo $(basename $0) | grep -Eo '^.{0,23}')[$$] &
