@@ -11,7 +11,7 @@ either with, from commandline (SSH):
   curl -o /etc/hotplug.d/iface/09-stop-wan-leak https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-wan-leak/09-stop-wan-leak
 ```
 or by clicking the download icon in the upper right corner of the script and using e.g. winscp to transfer the script.  
-Edit script and set MYWANIF to your current wan, use `ifconfig` from commandline to check  
+Edit script and set MYWANIF to your current name of the wan interface as defined in /etc/config/network which by default is `wan`  
 Reboot or restart network (service network restart)  
 Check the working with `logread -e stop-wan-leak`  
 Enable debugging by removing the # before the #DEBUG= ... on line 2, check debug output with `logread -e stop-wan-leak`  
