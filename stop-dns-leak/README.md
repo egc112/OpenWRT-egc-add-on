@@ -99,7 +99,7 @@ Then you add clients (e.g. static leases (note: with static leases you have to d
 config tag 'tag1'  
     list dhcp_option '6,8.8.8.8,8.8.4.4'  
     # for IPv6
-    list dhcp_option '23,[2001:4860:4860::8888],[2001:4860:4860::8844]'  
+    list dhcp_option 'option6:23,[2001:4860:4860::8888],[2001:4860:4860::8844]'  
 
 config host  
     option name 'client1'
@@ -289,6 +289,7 @@ Or manually:
 Locate the pbr and luci-pbr package at: https://dev.melmac.net/repo  
 Download the two packages: pbr-iptables_x.x.x-x_all.ipk and luci-app-pbr_x.x.x-x_all.ipk to your desktop by clicking on the .ipk file and when it has openend, on the download icon in the upper right hand corner.  
 In Luci Administration > Software 'Upload Package' and install both packages  
+
 
 
 
