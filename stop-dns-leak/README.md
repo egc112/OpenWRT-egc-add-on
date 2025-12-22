@@ -211,6 +211,7 @@ DNS requests are cached, so for testing always flush the DNS cache.  This can be
 Openwrt: `service dnsmasq restart`  
 Windows (from command line): `ipconfig /flushdns`  
 Android: `Switch to other WiFi network and back again`  
+For other systems see: https://runcloud.io/blog/flush-dns-cache 
   
 **Regular [DNS hijack rules](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns) or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy are not compatible with PBR DNS Policies!**  
 nft rules are executed top to bottom and the PBR DNS Policies are appended to the nft rules, so usually are below other DNS hijacking rules and thus will not be executed (depending on the startup of the processesse but PBR ususally starts later than most processes).  
@@ -291,6 +292,7 @@ Or manually:
 Locate the pbr and luci-pbr package at: https://dev.melmac.net/repo  
 Download the two packages: pbr-iptables_x.x.x-x_all.ipk and luci-app-pbr_x.x.x-x_all.ipk to your desktop by clicking on the .ipk file and when it has openend, on the download icon in the upper right hand corner.  
 In Luci Administration > Software 'Upload Package' and install both packages  
+
 
 
 
