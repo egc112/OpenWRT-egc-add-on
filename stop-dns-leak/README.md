@@ -255,6 +255,8 @@ Some general focus points for Domain based routing:
 - The domains must first be resolved by DNSMasq before they are added to the set so flush DNS cache on router **and** client or reboot both router and client.  
 - It takes about a minute after Saving and Applying before services have restarted and routing is in place so be patient!
 - Domain based PBR rules usually have to come first, so make sure those rules are on top in the GUI!
+- Make sure your webbrowser is not using its Private DNS server as that will defy the DNS routing  
+- Make sure other browser related tracking mechanisms are taking care of, disable WEbRTC and use in private/incognito browsing  
   
 ## Stopping DNS hijacking  
 https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns  
@@ -289,6 +291,7 @@ Or manually:
 Locate the pbr and luci-pbr package at: https://dev.melmac.net/repo  
 Download the two packages: pbr-iptables_x.x.x-x_all.ipk and luci-app-pbr_x.x.x-x_all.ipk to your desktop by clicking on the .ipk file and when it has openend, on the download icon in the upper right hand corner.  
 In Luci Administration > Software 'Upload Package' and install both packages  
+
 
 
 
