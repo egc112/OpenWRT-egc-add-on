@@ -180,7 +180,7 @@ See: https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#multiple
 ### PBR DNS Policies
 [PBR version 1.1.8](https://docs.openwrt.melmac.net/pbr/ ) uses this DNS redirect mechanism, described above, and incorporated that into the GUI.  
 ![Alt text](img/dns-policy-3.jpg?raw=true "Optional Title")  
-You can enter the local LAN clients MAC address, IP addresses or even a whole interface (=device as shown by ifconfig e.g. @br-lan) (see [section 8.2.3. DNS Policy Options](https://docs.openwrt.melmac.net/pbr/#DNSPolicyOptions) ) and the VPN tunnel or remote DNS, the DNS address set on the tunnels interface will be used to redirect the DNS query.  
+You can enter the local LAN clients MAC address, IP addresses or even a whole interface (=device as shown by ifconfig e.g. @br-lan) (see [section 8.2.3. DNS Policy Options](https://docs.openwrt.melmac.net/pbr/#DNSPolicyOptions) ), if you have cURL installed and starting with 1.2.1-47, you can use a file with IP addresses or MAC addresses as source with `file://` and as DNS server the VPN tunnel, the DNS addresses (IPv4 and IPv6) set on the tunnels interface will be used to redirect the DNS query but you can also enter an IP address of a DNS server you want to use.  
 For WireGuard you can enter the DNS address in the Interfaces >  Advanced settings > Use Custom DNS servers or add in /etc/config/network under the interface `list dns '<ip-address-of-dns>'`  
 For OpenVPN you have to make an interface and add the DNS address:  
 /etc/config/network  
@@ -292,6 +292,7 @@ Or manually:
 Locate the pbr and luci-pbr package at: https://dev.melmac.net/repo  
 Download the two packages: pbr-iptables_x.x.x-x_all.ipk and luci-app-pbr_x.x.x-x_all.ipk to your desktop by clicking on the .ipk file and when it has openend, on the download icon in the upper right hand corner.  
 In Luci Administration > Software 'Upload Package' and install both packages  
+
 
 
 
