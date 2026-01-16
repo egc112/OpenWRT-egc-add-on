@@ -26,6 +26,14 @@ Install:
 
  Note: This script is **not** compatible with the use of `Ignore resolv file` (option noresolv), DNS Forwards ( list server=) or with the use of encrypted DNS e.g. unbound, dnscrypt and https-dns-proxy, but encrypted DNS is
   not needed as the DNS is already send encrypted via the VPN to a trusted DNS server.  
+  Furthermore make sure you enable the use of DNSMAsq by the router itself with in /etc/config/dhcp: `option localuse '1'` or:  
+```
+service dnsmasq stop
+uci set dhcp.@dnsmasq[0].localuse="1"
+uci commit dhcp
+service dnsmasq start
+```
+ 
 
 
 
