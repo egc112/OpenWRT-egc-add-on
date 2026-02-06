@@ -5,7 +5,7 @@ On your router, rename the original `/etc/init.d/pbr` script to `/etc/init.d/pbr
 Copy the new script to `/etc/init.d/pbr`  
 Make the new script executable: `chmod +x /etc/init.d/pbr`  
 To stop wan leakage while PBR restarts add to the PBR config: `option stop_wan_leak '1'`
-To stop wan leakage while the router (re)boots you can use a hotplug script: `https://github.com/egc112/OpenWRT-egc-add-on/tree/main/stop-wan-leak-pbr`
+To stop wan leakage while the router (re)boots you can use a hotplug script: `https://github.com/egc112/OpenWRT-egc-add-on/tree/main/stop-wan-leak-pbr`  
 Reboot the router  
 
 If you encounter problels starting up, especially when using Adblock and OpenVPN which are slow to setup, adding some delay is often necessary:
