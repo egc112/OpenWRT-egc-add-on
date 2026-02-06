@@ -2633,8 +2633,8 @@ start_service() {
 	local resolverStoredHash resolverNewHash reloadedIface
 	local i k
 
-	stop_forward
 	load_package_config "$param"
+	stop_forward
 	[ "$param" = 'on_boot' ] && pbrBootFlag=1 && return 0
 	json init
 	load_environment "${param:-on_start}" "$(load_validate_config)" || return 1
@@ -2896,6 +2896,7 @@ stop_service() {
 }
 
 restart() {
+	load_package_config "$param"
 	stop_forward
 	stop_service
 	start_service
