@@ -1,12 +1,14 @@
 This directory contains a test version for PBR.  
 Before you start make a backup of your settings and make sure you have a copy of your firmware, you should not need it but better safe then sorry.  
-Download the test version: open `pbr-1.2.1-85-stop-wan-leak-egc-2.bash` and click the download icon in the upper right hand corner.  
+Download the test version: open `pbr-1.2.1-91-stop-wan-leak-egc-1.bash` and click the download icon in the upper right hand corner.  
 On your router, rename the original `/etc/init.d/pbr` script to `/etc/init.d/pbr-org`, and/or copy it to your Desktop  
 Copy the new script to `/etc/init.d/pbr`  
 Make the new script executable: `chmod +x /etc/init.d/pbr`  
-Reboot the computer  
+To stop wan leakage while PBR restarts add to the PBR config: `option stop_wan_leak '1'`
+To stop wan leakage while the router (re)boots you can use a hotplug script: `https://github.com/egc112/OpenWRT-egc-add-on/tree/main/stop-wan-leak-pbr`
+Reboot the router  
 
-If you encounter probelms starting up, especially when using Adblock and OpenVPN which are slow to setup, adding some delay is often necessary:
+If you encounter problels starting up, especially when using Adblock and OpenVPN which are slow to setup, adding some delay is often necessary:
 ```
 	option procd_boot_delay '30'
 	option procd_reload_delay '20'
