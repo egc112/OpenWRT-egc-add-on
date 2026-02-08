@@ -46,14 +46,4 @@ config rule
 	option lookup '101'
 ```
   
-Unfortunately this does not yet work for source port (sport), the PR for that is pending so for sourceport we have to fall back to just adding the rules to system startup.  
-Remove/adapt the rules and add to `/etc/rc.local` or add via LuCI > System > Startup > Local Startup:
-```
-sleep 20  # sleep some time so that the routing is done
-GATEWAY="$(ifstatus wan | grep nexthop | sed 's/[^0-9.]//g')"  
-ip route add default via $GATEWAY table 101  
-ip rule add sport 1194 table 101
-ip rule add from 192.168.1.64/26 table 101
-```
-Reboot router to take effect
-*Although this is persistent between reboots this is not persistent between network restarts, if the network is restarted either by yourself (`service network restart`) or by a process, the changes are gone, so the script option is the better one*  
+
