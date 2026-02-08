@@ -13,7 +13,7 @@ When doing a reboot of the router or on your router doing things like `service b
 Automatically:  
 I have created a `monitor-ip.sh` script which continuously checks your external IP address, it is designed to run on Linux but it will probably also run under WSL on Windows.  
 Download the script to your home directory and make executable, while in your home directory: `chmod +x ./monitor-ip.sh`.  
-To execute the script from your home directory: `./monitor-ip.sh`, sto the script form running with `CTRL + C`  
+To execute the script from your home directory: `./monitor-ip.sh`, stop the script with `CTRL + C`  
 
 If you encounter problels starting up, especially when using Adblock and OpenVPN which are slow to setup, adding some delay is often necessary:  
 ```
