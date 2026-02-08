@@ -8,15 +8,15 @@ Copy the new script to `/etc/init.d/pbr`
 Reboot the router  
 
 How to check if you do not have a leakage via the wan:  
-Manually: 
+Manually:  
 If you have setup PBR to use a VPN for your PC/workstation then you can view the external IP address if you go to `ipleak.net` in your webbrowser.  
-When doing a reboot of the router or on your router doing things like `service br start` or `ifup wan` or `ifup < wg_interface >` you can check on your PC/workstation by repeatedly refreshing your webbrowser with `ipleak.net`
-automatically:  
+When doing a reboot of the router or on your router doing things like `service br start` or `ifup wan` or `ifup < wg_interface >` you can check on your PC/workstation by repeatedly refreshing your webbrowser with `ipleak.net`  
+Automatically:  
 I have created a `monitor-ip.sh` script which continuously checks your external IP address it is designed to run on Linux it will probably also run under WSL on Linux.  
 Download the script to your home directory and make executable, while in your home directory: `chmod +x ./monitor-ip.sh`.  
 To execute the script from your home directory: `./monitor-ip.sh`, sto the script form running with `CTRL + C`  
 
-If you encounter problels starting up, especially when using Adblock and OpenVPN which are slow to setup, adding some delay is often necessary:
+If you encounter problels starting up, especially when using Adblock and OpenVPN which are slow to setup, adding some delay is often necessary:  
 ```
 	option procd_boot_delay '30'
 	option procd_reload_delay '20'
