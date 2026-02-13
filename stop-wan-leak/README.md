@@ -29,7 +29,7 @@ Download the script to your home directory and make executable, while in your ho
 To execute the script from your home directory: `./monitor-ip.sh`, stop the script with CTRL + C  
   
 ### How to test for possible leakage ###  
-While you monitor external IP from your LAN client e.g. with the `monitor-ip.sh script`, you can perform the followoing actions from your routers command line:  
+While you monitor external IP from your LAN client e.g. with the `monitor-ip.sh script`, you can perform the following actions from your routers command line:  
 `service pbr restart`  
 `service pbr start`  
 `service pbr reload`  
