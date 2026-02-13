@@ -1,4 +1,4 @@
-### WAN leak while using a VPN
+## WAN leak while using a VPN ##
 When using a VPN you do not want to leak traffic via the WAN.  
 
 This directory contains scripts to monitor and stop wan-leakage  
@@ -19,7 +19,7 @@ Copy `pbr-1.2.1-97-stop-wan-leak-1.bash`from your desktop to `/etc/init.d/pbr` o
 To stop wan leakage while using PBR **add to the PBR config**: `option stop_wan_leak '1'`  
 Reboot the router  
 
-How to check if you do not have a leakage via the wan:  
+### How to check if you do not have a leakage via the wan ###  
 Manually:  
 If you have setup PBR to use a VPN for your PC/workstation then you can view the external IP address if you go to `ipleak.net` in your webbrowser.  
 When doing a reboot of the router or on your router doing things like service br start or ifup wan or ifup < wg_interface > you can check on your PC/workstation by repeatedly refreshing your webbrowser with `ipleak.net`  
@@ -28,13 +28,13 @@ I have created a monitor-ip.sh script which continuously checks your external IP
 Download the script to your home directory and make executable, while in your home directory: `chmod +x ./monitor-ip.sh`   
 To execute the script from your home directory: `./monitor-ip.sh`, stop the script with CTRL + C  
   
-How to test for possible leakage  
+### How to test for possible leakage ###  
 While you monitor external IP from your LAN client e.g. with the `monitor-ip.sh script`, you can perform the followoing actions from your routers command line:  
 `service pbr restart`  
 `service pbr start`  
 `service pbr reload`  
 `ifup wan`  
-`ifup < vpn interface > `
+`ifup < vpn interface > `  
 `service network restart`  
 `service firewall restart`  
 `reboot`  
