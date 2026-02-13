@@ -19,7 +19,7 @@ Copy `pbr-1.2.1-97-stop-wan-leak-1.bash`from your desktop to `/etc/init.d/pbr` o
 To stop wan leakage while using PBR **add to the PBR config**: `option stop_wan_leak '1'`  
 Reboot the router  
 
-### How to check if you do not have a leakage via the wan ###  
+### How to check if you do not have leakage via the wan ###  
 Manually:  
 If you have setup PBR to use a VPN for your PC/workstation then you can view the external IP address if you go to `ipleak.net` in your webbrowser.  
 When doing a reboot of the router or on your router doing things like service br start or ifup wan or ifup < wg_interface > you can check on your PC/workstation by repeatedly refreshing your webbrowser with `ipleak.net`  
