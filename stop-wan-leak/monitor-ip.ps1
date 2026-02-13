@@ -5,7 +5,7 @@
 # Usage: e.g. if you want to be sure there is no WAN leak while using your VPN and PBR
 # Installation:
 #   Save this file as monitor-ip.ps1
-#   If needed, allow script execution with: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+#   If needed, once in an **admin** PowerShell, allow script execution frome with: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 #   Run with: .\monitor-ip.ps1
 
 # Initialize variables
@@ -15,7 +15,8 @@ $lastOutputTime = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
 while ($true) {
     # Get current external IP address
     try {
-        $currentIp = (Invoke-WebRequest -Uri "https://ifconfig.me/ip" -UseBasicParsing -TimeoutSec 5).Content.Trim()
+        # $currentIp = (Invoke-WebRequest -Uri "https://ifconfig.me/ip" -UseBasicParsing -TimeoutSec 5).Content.Trim()
+		$currentIp = (Invoke-WebRequest -Uri "https://api4.ipify.org" -UseBasicParsing -TimeoutSec 5).Content.Trim()
     } catch {
         $currentIp = ""
     }
