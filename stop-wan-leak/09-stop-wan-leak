@@ -17,8 +17,6 @@
 # Enable debugging by removing the # before the #DEBUG= ... on line 2, check debug output with `logread -e stop-wan-leak`
 # To preserve the script between upgrades add to /etc/sysupgrade.conf: `/etc/hotplug.d/iface/09-stop-wan-leak`
 
-# https://forum.openwrt.org/t/pbr-wg-bootup-leak-bootup-killswitch-scripts/241991/7
-
 MYWANIF="wan"		# set the logical interface you are using as wan as shown in Networks > Interfaces
 MYVPNIF="wireguard"	# set the name of the VPN interface name as shown in Networks > Interfaces
 
