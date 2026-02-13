@@ -27,3 +27,14 @@ Automatically:
 I have created a monitor-ip.sh script which continuously checks your external IP address, it is designed to run on Linux but it will probably also run under WSL on Windows.  
 Download the script to your home directory and make executable, while in your home directory: `chmod +x ./monitor-ip.sh`   
 To execute the script from your home directory: `./monitor-ip.sh`, stop the script with CTRL + C  
+  
+How to test for possible leakage  
+While you monitor external IP from your LAN client e.g. with the `monitor-ip.sh script`, you can perform the followoing actions from your routers command line:  
+'service pbr restart`  
+`service pbr start`  
+`service pbr reload`  
+`ifup wan`  
+`ifup < vpn interface > `
+`service network restart`  
+`service firewall restart`  
+`reboot`  
