@@ -2,7 +2,7 @@
 When using a VPN you do not want to leak traffic via the WAN.  
 
 This directory contains scripts to monitor and stop wan-leakage  
-`monitor-ip.sh` is a simple script to continuously check your external IP address from a LAN client to check if ther is leakage of trffic via the wan.  
+`monitor-ip.sh` is a simple script to continuously check your external IP address from a LAN client to check if there is leakage of traffic via the wan.  
 Instalation and usage instructions can be found in the script.  
    
 
