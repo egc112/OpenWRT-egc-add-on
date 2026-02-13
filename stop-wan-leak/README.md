@@ -16,7 +16,7 @@ open `pbr-1.2.1-97-stop-wan-leak-1.bash` and click the download icon in the uppe
 On your router:  
 rename the original `/etc/init.d/pbr` script to `/etc/init.d/pbr-org`, and/or copy it to your desktop.  
 Copy `pbr-1.2.1-97-stop-wan-leak-1.bash`from your desktop to `/etc/init.d/pbr` on your router, efectively replacing the old `/etc/init.d/pbr` with this new pbr script.  
-To stop wan leakage while using PBR add to the PBR config: `option stop_wan_leak '1'`  
+To stop wan leakage while using PBR **add to the PBR config**: `option stop_wan_leak '1'`  
 Reboot the router  
 
 How to check if you do not have a leakage via the wan:  
