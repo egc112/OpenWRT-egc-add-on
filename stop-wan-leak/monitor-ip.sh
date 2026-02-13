@@ -8,7 +8,7 @@
 # Usage: e.g. if you want to be sure there is no wan leak while using your VPN and PBR
 # Installation:
 #  Copy script from https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-wan-leak/09-stop-wan-leak to your home directory of your Linux PC
-#     with, from commandline (SSH): curl -o /~/ip-moitor.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-wan-leak/monitor-ip.sh
+#     with, from commandline (SSH): curl -o /~/ip-monitor.sh https://raw.githubusercontent.com/egc112/OpenWRT-egc-add-on/main/stop-wan-leak/monitor-ip.sh
 #     or by clicking the download icon in the upper right corner of the script and using e.g. winscp to transfer the script.
 #  start script with: `cd ~ && ./monitor-ip.sh`
 # Enable debugging by removing the # before the #DEBUG= ... on line 2, check debug output with `logread -e stop-wan-leak
