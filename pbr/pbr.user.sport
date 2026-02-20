@@ -4,17 +4,19 @@
 
 # set all source ports as a space delimited string
 local myports="55443"
+local myinterface="wan"
 
 # if you want to route only from a specific ip address replace "all" with that ip address
 local ip="all"
 
 # name: pbr.user.sport
 # usage: accompanying script for PBR: https://docs.openwrt.melmac.net/pbr/ 
-# version: 0.2, by egc
-# purpose: route sourceports e.g. of VPN servers in your lan via the WAN
+# version: 0.3, by egc
+# purpose: route sourceports e.g. of VPN servers in your lan via the interface of choice
 # installation:
 #  copy this file to /usr/share/pbr
-#  in this script adapt'myports' to include all the sourceports you want to route via the WAN
+#  in this script adapt 'myinterface' to be the interface you want to route your sourceport  
+#  in this script adapt'myports' to include all the sourceports you want to route via the interface of choice
 #  in this script change 'ip' from "all" to a specific ip address of the source
 #  in the PBR GUI add as include file or add in /etc/config/pbr:
 #     config include
@@ -23,8 +25,7 @@ local ip="all"
 #
 # check from command line with: 'ip rule show'
 
-WAN_INTERFACE="wan"
 for listen_port in $myports; do
-	ip rule del from "$ip" sport "$listen_port" table "pbr_${WAN_INTERFACE}" >/dev/null 2>&1
-	ip rule add  from "$ip" sport "$listen_port" table "pbr_${WAN_INTERFACE}" >/dev/null 2>&1
+	ip rule del from "$ip" sport "$listen_port" table "pbr_${myinterface}" >/dev/null 2>&1
+	ip rule add  from "$ip" sport "$listen_port" table "pbr_${myinterface}" >/dev/null 2>&1
 done
