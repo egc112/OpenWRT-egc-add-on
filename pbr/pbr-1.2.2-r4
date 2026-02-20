@@ -35,7 +35,7 @@ else
 fi
 
 readonly packageName='pbr'
-readonly PKG_VERSION='1.2.2-r5'
+readonly PKG_VERSION='1.2.2-r4'
 readonly packageCompat='25'
 readonly serviceName="$packageName $PKG_VERSION"
 readonly packageConfigFile="/etc/config/${packageName}"
