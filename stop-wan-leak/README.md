@@ -1,5 +1,6 @@
 ## WAN leak while using a VPN ##
 When using a VPN you do not want to leak traffic via the WAN.  
+This can happen if your default route is via the WAN and you use PBR to route traffic via the VPN.  
 
 This directory contains scripts to monitor and stop wan-leakage  
 `monitor-ip.sh` is a simple script to continuously check your external IP address from a LAN client to check if there is leakage of traffic via the wan.  
