@@ -7,16 +7,16 @@ This directory contains scripts to monitor and stop wan-leakage
 Instalation and usage instructions can be found in the script.  
 For Windows users I have also added a powershell verion of the script.  
   
-`09-stop-wan-leak` is a hotplug script which can be used to stop forwarding while the router boots or interfaces go up/down this can be useful e.g. if you are using the [PBR app](https://docs.openwrt.melmac.ca/pbr/1.2.1/).  
+`09-stop-wan-leak` is a hotplug script which can be used to stop forwarding while the router boots or interfaces go up/down this can be useful e.g. if you are using the [PBR app](https://docs.openwrt.melmac.ca/pbr/1.2.2/).  
 Instalation and usage instructions can be found in the script.  
   
-`pbr-1.2.1-97-stop-wan-leak-1.bash` is a replacement for your pbr script which is pbr-1.2.1-97 with some extra code which will stop forwarding during (re)start/reload or when interfaces go up and down so this should be the best way to stop wan leakage while using the [PBR app](https://docs.openwrt.melmac.ca/pbr/1.2.1/).  
+`pbr-1.2.2-r7-stop-wan-leak.bash` is a replacement for your pbr script with some extra code which will stop forwarding during (re)start/reload or when interfaces go up and down so this should be the best way to stop wan leakage while using the [PBR app](https://docs.openwrt.melmac.ca/pbr/1.2.1/).  
 Before you start make a backup of your settings and make sure you have a copy of your firmware, you should not need it but better safe then sorry.  
 Download the test version:  
-open `pbr-1.2.1-97-stop-wan-leak-1.bash` and click the download icon in the upper right hand corner to download the file to your desktop.  
+open `pbr-1.2.2-r7-stop-wan-leak.bash` and click the download icon in the upper right hand corner to download the file to your desktop.  
 On your router:  
 rename the original `/etc/init.d/pbr` script to `/etc/init.d/pbr-org`, and/or copy it to your desktop.  
-Copy `pbr-1.2.1-97-stop-wan-leak-1.bash`from your desktop to `/etc/init.d/pbr` on your router, efectively replacing the old `/etc/init.d/pbr` with this new pbr script.  
+Copy `pbr-1.2.2-r7-stop-wan-leak.bash` from your desktop to `/etc/init.d/pbr` on your router, efectively replacing the old `/etc/init.d/pbr` with this new pbr script.  
 To stop wan leakage while using PBR **add to the PBR config**: `option stop_wan_leak '1'`  
 Reboot the router  
 
