@@ -7,7 +7,7 @@ The next step to escape censoring is to obfuscate/scramble your OpenVPN traffic.
 Scramble options are supported by a number of OpenVPN providers e.g. TorGuard, [StrongVPN](https://support.strongvpn.com/hc/en-us/articles/360034090394-About-the-Scramble-feature-in-StrongVPN), IPvanish etc. and also by DDWRT, Android and Windows (see below).  
 
 Scramble options are not present by default in OpenWRT (they are in DDWRT) so you have to add those yourself and make a build with it.  
-Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds), for stable 23.05 which uses K5.15 and OpenVPN 2.5.8 use the patches from 515. For 24.10 and Main build with Kernel 6.6 or 6.12 and OpenVPN 2.6.12 use patches from 66 
+Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds/66), For 24.10, 25.12 and Main builds with Kernel 6.6 or 6.12 and OpenVPN 2.6.14 use patches from `66`  
 The patches are derived from tunnelblicks patches:   
 https://tunnelblick.net/cOpenvpn_xorpatch.html  
 https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party/sources/openvpn/openvpn-2.6.14/patches  
@@ -71,5 +71,6 @@ https://forums.openvpn.net/viewtopic.php?t=12605
 https://github.com/clayface/openvpn_xorpatch/blob/master/openvpn_xor.patch   
 https://svn.dd-wrt.com/changeset/47850   
   
+
 
 
