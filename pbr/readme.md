@@ -12,7 +12,7 @@ In case PBR will get in a limbo state `Forwarding` can be left in a disabled sta
 How to check if you do not have a leakage via the wan:  
 Manually:  
 If you have setup PBR to use a VPN for your PC/workstation then you can view the external IP address if you go to `ipleak.net` in your webbrowser.  
-When doing a reboot of the router or on your router doing things like `service br start` or `ifup wan` or `ifup < wg_interface >` you can check on your PC/workstation by repeatedly refreshing your webbrowser with `ipleak.net`  
+When doing a reboot of the router or on your router doing things like `service pbr restart`, or `ifup wan` or `ifup < wg_interface >` you can check on your PC/workstation by repeatedly refreshing your webbrowser with `ipleak.net`  
 Automatically:  
 I have created a `monitor-ip.sh` script which continuously checks your external IP address, it is designed to run on Linux but it will probably also run under WSL on Windows.  
 Download the script to your home directory and make executable, while in your home directory: `chmod +x ./monitor-ip.sh`.  
