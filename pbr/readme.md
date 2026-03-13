@@ -5,7 +5,7 @@ On your router, rename the original `/etc/init.d/pbr` script to `/etc/init.d/pbr
 Copy the new script to `/etc/init.d/pbr`
 Reboot the router  
 
-PBR revisions starting with 1.2.2-r10 have wan leak protection which is enabled if you have enabled `Strict Enforcement` enabled   
+PBR revisions starting with 1.2.2-r10 have wan leak protection which is enabled if you have enabled `Strict Enforcement`   
 This will stop Forwarding of LAN clients while PBR (re)-starts.
 In case PBR will get in a limbo state `Forwarding` can be left in a disabled state, by executing from the commanline: `service pbr enable_forward` Forwarding is restored.  
   
