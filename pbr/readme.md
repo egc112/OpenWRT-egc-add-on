@@ -1,6 +1,6 @@
 This directory contains a test version for PBR.  
 Before you start make a backup of your settings and make sure you have a copy of your firmware, you should not need it but better safe then sorry.  
-Download the test version: open `pbr-1.2.2-r10-egc-1.bash` and click the download icon in the upper right hand corner.  
+Download the test version: open `pbr-1.2.2-r12-egc-1.bash` and click the download icon in the upper right hand corner.  
 On your router, rename the original `/etc/init.d/pbr` script to `/etc/init.d/pbr-org`, and/or copy it to your Desktop.  
 Copy the new script to `/etc/init.d/pbr`
 Reboot the router  
@@ -14,7 +14,7 @@ I have created a `monitor-ip.sh` script which continuously checks your external 
 Download the script to your home directory and make executable, while in your home directory: `chmod +x ./monitor-ip.sh`.  
 To execute the script from your home directory: `./monitor-ip.sh`, stop the script with `CTRL + C`  
 
-If you encounter problels starting up, especially when using Adblock and OpenVPN which are slow to setup, adding some delay is often necessary:  
+If you encounter problems starting up, especially when using Adblock and OpenVPN which are slow to setup, adding some delay is often necessary:  
 ```
 	option procd_boot_delay '30'
 	option procd_reload_delay '20'
