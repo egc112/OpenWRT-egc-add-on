@@ -125,7 +125,8 @@ Network > Interfaces > Choose interface e.g. LAN > Advanced settings > DHCP opti
 Reference: https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#dhcp_options  
     
 ### iptables/nftables  
-You can use `Port Forwarding` to make the iptables rules, see [DNS Hijacking](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns):  
+You can use `Port Forwarding` to make the iptables rules, see [DNS Hijacking](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns): 
+this rule use a MAC address which is the easiset also for IPv6, you can also use an IPSET
    
 ```  
 /etc/config/firewall:  
@@ -148,7 +149,12 @@ config redirect
 	option dest_ip '2001:4860:4860::8888'
 	option family 'ipv6'
 ```
-
+  
+If you redirect to a DNS server in your LAN you have to exempt that IP address from being hijacked by making an exempt fo \r that address:  
+```
+	option src_ip '!192.168.1.2'  # the ! makes an exempt for 192.168.1.2 as that is the DNS server address
+```
+  
 or for a whole interface e.g. `guest`
 ```
 config redirect
