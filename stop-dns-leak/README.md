@@ -1,5 +1,5 @@
 # DNS leak  
-### version 0.2  
+### version 0.3  
 
 The most annoying of a DNS leak is that the geographical origin of DNS and IP address are different which is caused by a different route of the DNS and IP traffic.
 This geographical check is what is done by streaming services, banks, amazon etc. (among other things) to detect VPN use so a DNS leak will cause some sites not to work.   
@@ -125,18 +125,7 @@ Network > Interfaces > Choose interface e.g. LAN > Advanced settings > DHCP opti
 Reference: https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#dhcp_options  
     
 ### iptables/nftables  
-Iptables with redirection is also a viable option.  
-You intercept port 53 from the LAN clients of choice and redirect that to a DNS server of choice.  
-For iptables use :  
-```
-iptables:
-iptables -t nat -I PREROUTING -p udp -s <ip-address-range> --dport 53 -j DNAT --to <ip-address-DNS-server>  
-iptables -t nat -I PREROUTING -p tcp -s <ip-address-range> --dport 53 -j DNAT --to <ip-address-DNS-server>  
-nftables:
-ip saddr 192.168.9.224 tcp dport 53 counter dnat ip to 8.8.4.4:53 comment "!fw4: Intercept-DNS"  
-ip saddr 192.168.9.224 udp dport 53 counter dnat ip to 8.8.4.4:53 comment "!fw4: Intercept-DNS"  
-```  
-You can also use `Port Forwarding` to make the iptables rules:  
+You can use `Port Forwarding` to make the iptables rules, see [DNS Hijacking](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns):  
    
 ```  
 /etc/config/firewall:  
@@ -171,6 +160,18 @@ config redirect
 ```
 
 As the query will follow the routing of the client there is no specific need to set a route for the DNS server involved.  
+  
+For older builds using iptables you can use Iptables with redirection.  
+You intercept port 53 from the LAN clients of choice and redirect that to a DNS server of choice.  
+For iptables use :  
+```
+iptables:
+iptables -t nat -I PREROUTING -p udp -s <ip-address-range> --dport 53 -j DNAT --to <ip-address-DNS-server>  
+iptables -t nat -I PREROUTING -p tcp -s <ip-address-range> --dport 53 -j DNAT --to <ip-address-DNS-server>  
+nftables:
+ip saddr 192.168.9.224 tcp dport 53 counter dnat ip to 8.8.4.4:53 comment "!fw4: Intercept-DNS"  
+ip saddr 192.168.9.224 udp dport 53 counter dnat ip to 8.8.4.4:53 comment "!fw4: Intercept-DNS"  
+```  
 
 ### Running Multiple DNS instances  
 For Split DNS you can use a second DNSMasq instance listing on another port and then redirect port 53 from the local LAN clients using your VPN to the port the second instance of DNSMasq is listening on.  
