@@ -215,7 +215,7 @@ So you cannot use DNS server which are not publicly available if you are routing
 
 **Note 4**
 DNS requests are cached, so for testing always flush the DNS cache.  This can be done by rebooting the router and the Client you are testing with or:
-Openwrt: `service dnsmasq restart`  
+Openwrt: `service dnsmasq restart` or only flushing DNSMasq: `for p in  $(pidof /usr/sbin/dnsmasq); do kill -HUP "$p"; done`  
 Windows (from command line): `ipconfig /flushdns`  
 Android: `Switch to other WiFi network and back again`  
 For other systems see: https://runcloud.io/blog/flush-dns-cache 
