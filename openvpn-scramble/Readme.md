@@ -7,7 +7,8 @@ The next step to escape censoring is to obfuscate/scramble your OpenVPN traffic.
 Scramble options are supported by a number of OpenVPN providers e.g. TorGuard, [StrongVPN](https://support.strongvpn.com/hc/en-us/articles/360034090394-About-the-Scramble-feature-in-StrongVPN), IPvanish etc. and also by DDWRT, Android and Windows (see below).  
 
 Scramble options are not present by default in OpenWRT (they are in DDWRT) so you have to add those yourself and make a build with it.  
-Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds/66), For 24.10, 25.12 and Main builds with Kernel 6.6 or 6.12 and OpenVPN 2.6.14 use patches from `feeds/66` for Kernel 6.18  and OpenBPM 2.7 use pathce from [feeds/618](https://github.com/egc112/)  OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds/618
+Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds/66), For 24.10, 25.12 and Main builds with Kernel 6.6 or 6.12 and OpenVPN 2.6.14 use patches from `feeds/66`.  
+For Kernel 6.18 and OpenVPN 2.7 use patches from [feeds/618](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds/618)  
 The patches are derived from tunnelblicks patches:   
 https://tunnelblick.net/cOpenvpn_xorpatch.html   
 https://github.com/Tunnelblick/Tunnelblick/tree/main/third_party/sources/openvpn/  
