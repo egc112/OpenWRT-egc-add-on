@@ -9,8 +9,8 @@ Scramble options are supported by a number of OpenVPN providers e.g. TorGuard, [
 Scramble options are not present by default in OpenWRT (they are in DDWRT) so you have to add those yourself and make a build with it.  
 Get the necessary patches for compiling [here](https://github.com/egc112/OpenWRT-egc-add-on/tree/main/openvpn-scramble/feeds/66), For 24.10, 25.12 and Main builds with Kernel 6.6 or 6.12 and OpenVPN 2.6.14 use patches from `feeds/66`  
 The patches are derived from tunnelblicks patches:   
-https://tunnelblick.net/cOpenvpn_xorpatch.html  
-https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party/sources/openvpn/openvpn-2.6.14/patches  
+https://tunnelblick.net/cOpenvpn_xorpatch.html   
+https://github.com/Tunnelblick/Tunnelblick/tree/main/third_party/sources/openvpn/  
 https://github.com/clayface/openvpn_xorpatch  
 https://scramblevpn.wordpress.com/2017/04/16/compile-patched-openvpn-ipk-package-for-openwrtlede-router/  
   
