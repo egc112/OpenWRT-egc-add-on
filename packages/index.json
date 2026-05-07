@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "architecture": "x86_64",
+  "packages": {
+    "openvpn-watchdog": "1.0.7-r1",
+    "wireguard-companion": "1.0.7-r1",
+    "wireguard-watchdog": "1.0.7-r1"
+  }
+}
