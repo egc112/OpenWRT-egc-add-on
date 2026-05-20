@@ -1,0 +1,253 @@
+#!/bin/sh
+# ovpn2uci.sh — Convert an OpenVPN config file to OpenWrt UCI commands
+#
+# Usage:  ./ovpn2uci.sh <config_file> [interface_name] > /tmp/openvpn-uci-setup.sh
+#	the `interface_name` bust be less than 15 characters and cannot contain a hyphen! 
+# 	inspect the output script and execute if OK
+#	restart network: `service network restart`
+# Output: UCI shell commands printed to stdout; redirect to a file or pipe to sh
+# Version: 20-may-2026 
+# Authored by: egc112 and Claude
+# 
+# Notes:
+#   • ash/busybox compatible — no bash-specific features
+#   • Inline blocks (<ca>, <cert>, <key>, <tls-crypt>, …) are written to
+#     temp files during processing, then emitted as heredocs pointing to
+#     INLINE_DIR at runtime.
+#   • Options that appear more than once are emitted with `uci add_list`.
+#   • The OpenVPN `proto` option is stored as `vpn_proto` to avoid clashing
+#     with the netifd `proto=openvpn` key.
+#   • Unknown / unsupported options are emitted as comments so nothing is
+#     silently dropped.
+
+set -e
+
+# ─── Configuration ───────────────────────────────────────────────────────────
+CONFIG_FILE="${1:-}"
+NAME="${2:-ovpn}"
+OPTIONS_FILE="/usr/share/openvpn/openvpn.options"
+INLINE_DIR="/etc/openvpn"
+TMPDIR="/tmp/ovpn2uci_$$"
+
+# ─── Cleanup on exit ─────────────────────────────────────────────────────────
+trap 'rm -rf "$TMPDIR"' EXIT
+mkdir -p "$TMPDIR"
+
+# ─── Argument validation ─────────────────────────────────────────────────────
+if [ -z "$CONFIG_FILE" ]; then
+    echo "Usage: $0 <config_file> [interface_name]" >&2
+    exit 1
+fi
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "Error: config file '$CONFIG_FILE' not found" >&2
+    exit 1
+fi
+
+# ─── Load the option type lists ──────────────────────────────────────────────
+OPENVPN_PARAMS=""
+OPENVPN_PARAMS_STRING=""
+OPENVPN_UINTS=""
+OPENVPN_BOOLS=""
+OPENVPN_LIST=""
+if [ -f "$OPTIONS_FILE" ]; then
+    # shellcheck disable=SC1090
+    . "$OPTIONS_FILE"
+    # Merge all parameter-taking variants into one list
+    OPENVPN_PARAMS="$OPENVPN_LIST
+$OPENVPN_PARAMS_STRING
+$OPENVPN_UINTS"
+else
+    echo "# WARNING: '$OPTIONS_FILE' not found — option validation disabled" >&2
+fi
+
+# ─── Helper functions ────────────────────────────────────────────────────────
+
+# Normalise an option name: hyphens → underscores, lower-case
+normalize() { printf '%s' "$1" | tr '-' '_' | tr 'A-Z' 'a-z'; }
+
+# Return true (0) when $1 exactly matches a word in newline-separated list $2
+in_set() { printf '%s' "$2" | grep -qw "$1"; }
+
+# Extract opening inline tag name from a line like <tls-crypt>; empty if no match
+open_tag() { printf '%s' "$1" | sed -n 's/^<\([a-zA-Z][a-zA-Z0-9_-]*\)>$/\1/p'; }
+
+# Extract closing inline tag name from a line like </tls-crypt>; empty if no match
+close_tag() { printf '%s' "$1" | sed -n 's/^<\/\([a-zA-Z][a-zA-Z0-9_-]*\)>$/\1/p'; }
+
+# Return option count stored in a temp file (default 0)
+opt_count() {
+    _safe=$(normalize "$1" | tr -c 'a-zA-Z0-9_' '_')
+    _cf="$TMPDIR/count_$_safe"
+    [ -f "$_cf" ] && cat "$_cf" || printf '0'
+}
+
+# ─── PASS 1 — collect inline blocks into temp files ──────────────────────────
+INLINE_TAGS=""   # space-separated list of tag names seen
+in_block=0
+cur_tag=""
+
+while IFS= read -r line || [ -n "$line" ]; do
+    otag=$(open_tag "$line")
+    ctag=$(close_tag "$line")
+
+    if [ -n "$otag" ]; then
+        in_block=1
+        cur_tag="$otag"
+        : > "$TMPDIR/inline_$cur_tag"    # create / truncate
+        continue
+    fi
+
+    if [ -n "$ctag" ] && [ "$in_block" = "1" ]; then
+        in_block=0
+        INLINE_TAGS="$INLINE_TAGS $cur_tag"
+        cur_tag=""
+        continue
+    fi
+
+    [ "$in_block" = "1" ] && printf '%s\n' "$line" >> "$TMPDIR/inline_$cur_tag"
+done < "$CONFIG_FILE"
+
+# ─── PASS 2 — count occurrences of each option (to detect repeats) ───────────
+in_block=0
+
+while IFS= read -r line || [ -n "$line" ]; do
+    # skip blank lines and comments
+    case "$line" in ''|'#'*) continue ;; esac
+    # also skip lines that are only whitespace
+    stripped=$(printf '%s' "$line" | tr -d '[:space:]')
+    [ -z "$stripped" ] && continue
+
+    otag=$(open_tag "$line")
+    if [ -n "$otag" ]; then in_block=1; continue; fi
+    ctag=$(close_tag "$line")
+    if [ -n "$ctag" ]; then in_block=0; continue; fi
+    if [ "$in_block" = "1" ]; then continue; fi
+
+    raw=$(printf '%s' "$line" | awk '{print $1}')
+    norm=$(normalize "$raw")
+    # Sanitize: replace chars not valid in a filename (e.g. / in base64) with _
+    safe=$(printf '%s' "$norm" | tr -c 'a-zA-Z0-9_' '_')
+    cf="$TMPDIR/count_$safe"
+    if [ -f "$cf" ]; then
+        c=$(cat "$cf")
+        printf '%d' "$((c + 1))" > "$cf"
+    else
+        printf '1' > "$cf"
+    fi
+done < "$CONFIG_FILE"
+
+# ─── Build skip list from inline tags ────────────────────────────────────────
+SKIP_OPT=""
+for tag in $INLINE_TAGS; do
+    SKIP_OPT="$SKIP_OPT $(normalize "$tag")"
+done
+
+# ─── Emit UCI header ─────────────────────────────────────────────────────────
+printf '#!/bin/sh\n'
+printf '# Generated by ovpn2uci.sh from: %s\n\n' "$CONFIG_FILE"
+
+printf "name='%s'\n\n" "$NAME"
+printf "uci set network.\${name}='interface'\n"
+printf "uci set network.\${name}.proto='openvpn'\n"
+
+# ─── Emit inline blocks ──────────────────────────────────────────────────────
+if [ -n "$INLINE_TAGS" ]; then
+    printf '\n# -- Inline certificate / key blocks ----------------------------------\n'
+    for tag in $INLINE_TAGS; do
+        norm=$(normalize "$tag")
+        case "$tag" in
+            ca|cert|extra_certs) ext="crt" ;;
+            key)                 ext="key" ;;
+            *)                   ext="pem" ;;
+        esac
+        fpath="${INLINE_DIR}/${NAME}_${norm}.${ext}"
+        printf "\ncat > '%s' << 'OVPN_INLINE_EOF'\n" "$fpath"
+        cat "$TMPDIR/inline_$tag"
+        printf 'OVPN_INLINE_EOF\n'
+        printf "uci set network.\${name}.%s='%s'\n" "$norm" "$fpath"
+    done
+fi
+
+# ─── PASS 3 — emit UCI for every regular option ──────────────────────────────
+printf '\n# -- OpenVPN options ---------------------------------------------------\n'
+in_block=0
+
+while IFS= read -r line || [ -n "$line" ]; do
+
+    # Skip blank lines and full-line comments
+    case "$line" in ''|'#'*) continue ;; esac
+    stripped=$(printf '%s' "$line" | tr -d '[:space:]')
+    [ -z "$stripped" ] && continue
+
+    # Track inline blocks
+    otag=$(open_tag "$line")
+    if [ -n "$otag" ]; then in_block=1; continue; fi
+    ctag=$(close_tag "$line")
+    if [ -n "$ctag" ]; then in_block=0; continue; fi
+    if [ "$in_block" = "1" ]; then continue; fi
+
+    # Split keyword and value
+    raw=$(printf '%s' "$line" | awk '{print $1}')
+    norm=$(normalize "$raw")
+    # Value = everything after keyword, left-trimmed
+    value=$(printf '%s' "$line" | sed "s/^${raw}//" | sed 's/^[[:space:]]*//')
+
+    # Skip options already covered by an inline block
+    case " $SKIP_OPT " in
+        *" $norm "*)
+            printf '# Skipped (%s set by inline block above)\n' "$raw"
+            continue
+            ;;
+    esac
+
+    # Special case: `proto` clashes with netifd proto=openvpn
+    if [ "$norm" = "proto" ]; then
+        printf '# NOTE: openvpn proto stored as vpn_proto to avoid netifd conflict\n'
+        printf "uci set network.\${name}.vpn_proto='%s'\n" "$value"
+        continue
+    fi
+
+    # Special case: `remote [host] [port]`
+    # With one parameter it is the remote host; with two the second is the port.
+	# might need to remove this
+    if [ "$norm" = "remote" ]; then
+        r_host=$(printf '%s' "$value" | awk '{print $1}')
+        r_port=$(printf '%s' "$value" | awk '{print $2}')
+        c=$(opt_count "$norm")
+        if [ "$c" -gt 1 ]; then
+            printf "uci add_list network.\${name}.remote='%s'\n" "$r_host"
+        else
+            printf "uci set network.\${name}.remote='%s'\n" "$r_host"
+        fi
+        if [ -n "$r_port" ]; then
+            printf "uci set network.\${name}.port='%s'\n" "$r_port"
+        fi
+        continue
+    fi
+
+    # Classify and emit
+    if in_set "$norm" "$OPENVPN_BOOLS"; then
+        # Boolean flag — presence means true
+        printf "uci set network.\${name}.%s='1'\n" "$norm"
+
+    elif in_set "$norm" "$OPENVPN_LIST"; then
+        # List type (e.g. data_ciphers) — one add_list per occurrence
+        printf "uci add_list network.\${name}.%s='%s'\n" "$norm" "$value"
+
+    elif in_set "$norm" "$OPENVPN_PARAMS"; then
+        # Regular param — use add_list if option appears more than once
+        c=$(opt_count "$norm")
+        if [ "$c" -gt 1 ]; then
+            printf "uci add_list network.\${name}.%s='%s'\n" "$norm" "$value"
+        else
+            printf "uci set network.\${name}.%s='%s'\n" "$norm" "$value"
+        fi
+
+    else
+        # Unknown — preserve as comment so nothing is silently lost
+        printf '# Unknown/unsupported option (skipped): %s\n' "$line"
+    fi
+
+done < "$CONFIG_FILE"
+
+printf '\nuci commit network\n'
