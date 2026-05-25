@@ -187,7 +187,7 @@ See: https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#multiple
 ### PBR DNS Policies
 [PBR version 1.1.8](https://docs.openwrt.melmac.net/pbr/ ) uses this DNS redirect mechanism, described above, and incorporated that into the GUI.  
 ![Alt text](img/PBR-DNS-4.jpg?raw=true "Optional Title")  
-You can enter the local LAN clients MAC address, IP addresses or even a whole interface (=device as shown by ifconfig e.g. @br-lan) (see [section 8.2.3. DNS Policy Options](https://docs.openwrt.melmac.net/pbr/#DNSPolicyOptions) ), if you have cURL installed and starting with 1.2.1-47, you can use a file with IP addresses or MAC addresses as source with `file://` and as DNS server the VPN tunnel, the DNS addresses (IPv4 and IPv6) set on the tunnels interface will be used to redirect the DNS query but you can also enter an IP address of a DNS server you want to use.  
+You can enter the local LAN clients MAC address, IPv4 or IPv6 addresses or even a whole interface (=device as shown by ifconfig e.g. @br-lan) (see [section 8.2.3. DNS Policy Options](https://docs.openwrt.melmac.net/pbr/#DNSPolicyOptions) ), if you have cURL installed and starting with 1.2.1-47, you can use a file with IP addresses or MAC addresses as source with `file://` and as Remote DNS server the VPN tunnel, the DNS addresses (IPv4 and IPv6) set on the tunnels interface will be used to redirect the DNS query but you can also enter an IP address of a DNS server you want to use.    
 For WireGuard you can enter the DNS address in the Interfaces >  Advanced settings > Use Custom DNS servers or add in /etc/config/network under the interface `list dns '<ip-address-of-dns>'`  
 For OpenVPN you have to make an interface and add the DNS address:  
 /etc/config/network  
@@ -199,6 +199,8 @@ config interface 'tun1'
 	list dns '2001:4860:4860::8888'
 
 ```
+If you use IP addresses as remote DNS then take care that you use an IPv4 and/or IPv6 address corresponding to the source. MAC and interfacce (=device) source can work with both IPv4 and IPv6, so if you have IPv6 impelentend add both a remote DNS IPv4 server and an IPv6 server.  
+
 **Note 1:**  
 DNS policies redirect DNS53 so make sure your client is not using Private DNS. Nowadays a lot of clients and browsers are using Private DNS, so check your OS and your browser that Private DNS is disabled!  
 Also check if you have not enabled VPN on the client itself.  
