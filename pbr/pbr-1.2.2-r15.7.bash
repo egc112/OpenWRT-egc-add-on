@@ -2105,8 +2105,7 @@ dns_policy_process() {
 
 	[ "$enabled" = '1' ] || return 0
 
-	echo -e "\n src_addr=$src_addr \n"
-
+	#echo -e "\n src_addr=$src_addr \n"
 
 	src_addr="$(str_extras_to_space "$src_addr")"
 	dest_dns="$(str_extras_to_space "$dest_dns")"
@@ -2131,10 +2130,10 @@ dns_policy_process() {
 				if ! is_family_mismatch "$s" "$d"; then
 					if is_ipv4 "$d"; then
 						dest_dns_ipv4="${dest_dns_ipv4:-${d}}"
-						echo -e "\n dest_dns_ipv4=$dest_dns_ipv4 \n"
+						#echo -e "\n dest_dns_ipv4=$dest_dns_ipv4 \n"
 					elif is_ipv6 "$d"; then
 						dest_dns_ipv6="${dest_dns_ipv6:-${d}}"
-						echo -e "\n dest_dns_ipv6=$dest_dns_ipv6 \n"
+						#echo -e "\n dest_dns_ipv6=$dest_dns_ipv6 \n"
 					fi
 				fi
 			done
