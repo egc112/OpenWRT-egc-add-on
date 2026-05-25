@@ -273,6 +273,7 @@ pbr_get_gateway4() {
 	eval "$1"='$gw'
 }
 pbr_get_gateway6() {
+	[ -z "$ipv6_enabled" ] && return 0
 	local iface="$2" dev="$3" gw
 	is_uplink4 "$iface" && iface="$uplink_interface6"
 	network_get_gateway6 gw "$iface" true
@@ -349,13 +350,6 @@ is_list() { str_contains "$1" ',' || str_contains "$1" ' '; }
 is_lan() { local d; network_get_device d "$1"; str_contains "$lan_device" "$d"; }
 is_l2tp() { local p; network_get_protocol p "$1"; [ "${p:0:4}" = "l2tp" ]; }
 is_mac_address() { echo "$1" | grep -qE '^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$'; }
-are_mac_addresses() {
-    local mac
-    for mac in $1; do
-        is_mac_address "$mac" || return 1
-    done
-    return 0
-}
 is_mac_address_bad_notation() { echo "$1" | grep -qE '^([0-9A-Fa-f]{2}-){5}([0-9A-Fa-f]{2})$'; }
 is_negated() { [ "${1:0:1}" = '!' ]; }
 is_netifd_table() { grep -q "ip.table.*$1" /etc/config/network; }
@@ -2105,8 +2099,6 @@ dns_policy_process() {
 
 	[ "$enabled" = '1' ] || return 0
 
-	#echo -e "\n src_addr=$src_addr \n"
-
 	src_addr="$(str_extras_to_space "$src_addr")"
 	dest_dns="$(str_extras_to_space "$dest_dns")"
 
@@ -2130,10 +2122,8 @@ dns_policy_process() {
 				if ! is_family_mismatch "$s" "$d"; then
 					if is_ipv4 "$d"; then
 						dest_dns_ipv4="${dest_dns_ipv4:-${d}}"
-						#echo -e "\n dest_dns_ipv4=$dest_dns_ipv4 \n"
 					elif is_ipv6 "$d"; then
 						dest_dns_ipv6="${dest_dns_ipv6:-${d}}"
-						#echo -e "\n dest_dns_ipv6=$dest_dns_ipv6 \n"
 					fi
 				fi
 			done
