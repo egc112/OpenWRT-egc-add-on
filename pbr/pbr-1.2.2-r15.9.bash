@@ -2112,7 +2112,7 @@ policy_routing() {
 }
 
 dns_policy_process() {
-	local i j s uid="$1"
+	local i j uid="$1"
 
 	[ "$enabled" = '1' ] || return 0
 
@@ -2133,7 +2133,7 @@ dns_policy_process() {
 	dest_dns_ipv4="$(str_first_value_ipv4 "$dest_dns")"
 	dest_dns_ipv6="$(str_first_value_ipv6 "$dest_dns")"
 	if is_supported_interface "$dest_dns_interface"; then
-		local d
+		local d s
 		for d in $(uci -q get network."$dest_dns_interface".dns); do
 			for s in $src_addr; do
 				if ! is_family_mismatch "$s" "$d"; then
