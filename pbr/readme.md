@@ -2,7 +2,8 @@ This directory contains a test version for PBR.
 Before you start make a backup of your settings and make sure you have a copy of your firmware, you should not need it but better safe then sorry.  
 Download the test version: open `pbr-1.2.2-r21.bash` and click the download icon in the upper right hand corner.  
 On your router, rename the original `/etc/init.d/pbr` script to `/etc/init.d/pbr-org`, and/or copy it to your Desktop.  
-Copy the new script to `/etc/init.d/pbr`
+Copy the new script to `/etc/init.d/pbr`  
+The script has to be made executable, from the command line: `chmod +x /etc/init.d/pbr`  
 Reboot the router  
 
 PBR revisions starting with 1.2.2-r10 have wan leak protection which is enabled if you have enabled `Strict Enforcement`   
