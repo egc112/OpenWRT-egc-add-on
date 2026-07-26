@@ -202,8 +202,18 @@ config interface 'tun1'
 If you use IP addresses as remote DNS then take care that you use an IPv4 and/or IPv6 address corresponding to the source. MAC and interfacce (=device) source can work with both IPv4 and IPv6, so if you have IPv6 impelentend add both a remote DNS IPv4 server and an IPv6 server.  
 
 **Note 1:**  
-DNS policies redirect DNS53 so make sure your client is not using Private DNS. Nowadays a lot of clients and browsers are using Private DNS, so check your OS and your browser that Private DNS is disabled!  
-Also check if you have not enabled VPN on the client itself.  
+To make use of Domain Policies and nftsets with PBR your client must use DNSMasq of the router.
+this could be blocked by:
+* Use of Private DNS on your client or in your browser
+* The use of DHCP option 6 in DNSMasq
+* The use of  Addresses (list address) or DNS Forwards (list server) in DNSMasq
+* DNS hijacking rules and IPSET
+* DNS requests are cached so even if you have setup everything correct DNS is still resolved form the cache so you have to flush your DNS after setup (or wait some time until the cache has expired).
+This can be done by rebooting the router and the Client you are testing with or:
+Openwrt: `service dnsmasq restart`
+Windows (from command line): `ipconfig /flushdns`
+Android: `Switch to other WiFi network and back again 
+For other systems see: https://runcloud.io/blog/flush-dns-cache
   
 **Note 2:**   
 If you also have IPv6 enabled you have to make two rules, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server. For the IPv6 rule you have to use an IPv6 DNS server. If you specify an interface (=device) then the interface must have both an IPv4 and IPv6 DNS server set!
@@ -214,16 +224,8 @@ Important use only **one** Local address/device and **one** Remote DNS per rule!
 **Note 3:**  
 When using DNS policies the DNS route is following the clients route, so you have to take care that the DNS servers you are using are indeed available via this route.  
 So you cannot use DNS server which are not publicly available if you are routing via the WAN.  
-
-**Note 4**
-DNS requests are cached, so for testing always flush the DNS cache.  
-This can be done by rebooting the router and the Client you are testing for Openwrt:  
-`service dnsmasq restart` or only flushing DNSMasq: `for p in  $(pidof /usr/sbin/dnsmasq); do kill -HUP "$p"; done`  
-Windows (from command line): `ipconfig /flushdns`  
-Android: `Switch to other WiFi network and back again`  
-For other systems see: https://runcloud.io/blog/flush-dns-cache 
   
-**Note 5**
+**Note 4**
 When using Policies (including DNS Policies) the order of the rules matter. The first rule which is hit will take precedence!
   
 **Regular [DNS hijack rules](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns) or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy are not compatible with PBR DNS Policies!**  
