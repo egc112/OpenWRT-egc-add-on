@@ -262,6 +262,7 @@ or add in /etc/config/pbr:
 ```
 config policy
 	option name 'quadnine'
+	option dest_addr '9.9.9.9'
 	option chain 'output'
 	option interface 'myvpn'
 ```
