@@ -242,7 +242,7 @@ A DNS policy on its own only rewrites the destination — it does not change
 routing. The rewritten packet still follows whatever routing policy matched
 it, which on most setups is a catch-all such as `br-lan → VPN`.
 
-### Do not select DNS traffic by destination address
+#### Do not select DNS traffic by destination address
 It is tempting to pair a DNS policy (say, redirecting a client to `8.8.8.8`)
 with a routing policy whose `dest_addr` is `8.8.8.8`. **This never matches.**
 
@@ -259,14 +259,13 @@ The same applies to any destination rewritten by a fw4 redirect.
 > packet at mangle priority — source address, source MAC, input interface,
 > and the original ports. Never on a destination that something else rewrites.
 
-### Use a prerouting policy matching port 53
+#### Use a prerouting policy matching port 53
 Select the traffic by its source and its destination *port* instead:
 config policy
 option name 'phone dns via wan'
 option interface 'wan'
 option src_addr '98:B8:BC:BC:22:A4'
 option dest_port '53'
-
 
 Both the source MAC and destination port 53 are intact at mangle priority,
 so this matches, marks the packet for `wan`, and the DNS policy's DNAT then
@@ -276,13 +275,13 @@ applies to a packet already bound for the correct interface.
 interface name. Leaving `proto` empty while `dest_port` is set makes pbr
 generate both TCP and UDP rules automatically.
 
-### Policy order matters
+#### Policy order matters
 Policies are evaluated in the order they appear in `/etc/config/pbr` (top to
 bottom in the Web UI). A specific DNS policy must be listed **above** any
 broader policy that would also match the client — for example a
 `br-lan → VPN` catch-all.
 
-### Verifying
+#### Verifying
 ```
 /etc/init.d/pbr reload
 nft list chain inet fw4 pbr_prerouting
