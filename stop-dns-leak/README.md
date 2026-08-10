@@ -227,6 +227,74 @@ So you cannot use DNS server which are not publicly available if you are routing
   
 **Note 4**
 When using Policies (including DNS Policies) the order of the rules matter. The first rule which is hit will take precedence!
+
+**Note 5** Routing DNS traffic through a specific interface
+
+A **DNS policy** and a **routing policy** do two different jobs, and DNS
+traffic usually needs both:
+
+| | Decides | Implemented as |
+|---|---|---|
+| DNS policy | *which resolver* a client talks to | DNAT in the `pbr_dstnat` chain |
+| Routing policy | *which interface* the traffic leaves by | mark + `ip rule` in `pbr_prerouting` |
+
+A DNS policy on its own only rewrites the destination — it does not change
+routing. The rewritten packet still follows whatever routing policy matched
+it, which on most setups is a catch-all such as `br-lan → VPN`.
+
+### Do not select DNS traffic by destination address
+It is tempting to pair a DNS policy (say, redirecting a client to `8.8.8.8`)
+with a routing policy whose `dest_addr` is `8.8.8.8`. **This never matches.**
+
+pbr's marking chain is attached to fw4's `mangle_prerouting`
+(hook priority `mangle`, -150), while its DNAT chain is attached to fw4's
+`dstnat` (hook priority `dstnat`, -100). The marking decision is therefore
+made *before* the DNS destination is rewritten. At that point the packet is
+still addressed to whatever resolver the client originally asked for, so a
+`dest_addr` matching the DNS policy's target sees zero packets.
+
+The same applies to any destination rewritten by a fw4 redirect.
+
+> **Rule of thumb:** a routing policy can only select on what is true of the
+> packet at mangle priority — source address, source MAC, input interface,
+> and the original ports. Never on a destination that something else rewrites.
+
+### Use a prerouting policy matching port 53
+Select the traffic by its source and its destination *port* instead:
+config policy
+option name 'phone dns via wan'
+option interface 'wan'
+option src_addr '98:B8:BC:BC:22:A4'
+option dest_port '53'
+
+
+Both the source MAC and destination port 53 are intact at mangle priority,
+so this matches, marks the packet for `wan`, and the DNS policy's DNAT then
+applies to a packet already bound for the correct interface.
+
+`src_addr` accepts an IP address, a CIDR range, a MAC address, or an
+interface name. Leaving `proto` empty while `dest_port` is set makes pbr
+generate both TCP and UDP rules automatically.
+
+### Policy order matters
+Policies are evaluated in the order they appear in `/etc/config/pbr` (top to
+bottom in the Web UI). A specific DNS policy must be listed **above** any
+broader policy that would also match the client — for example a
+`br-lan → VPN` catch-all.
+
+### Verifying
+```
+/etc/init.d/pbr reload
+nft list chain inet fw4 pbr_prerouting
+```
+The counter on your new rule should increase as the client resolves names.
+A routing policy stuck at packets 0 while its matching DNAT rule counts up
+is the signature of the hook-ordering problem described above.
+
+Limitations
+This only covers plaintext DNS on port 53. Clients using DNS over TLS (853)
+or DNS over HTTPS (443) are not matched by either policy type and will
+resolve through whichever policy governs their general traffic.
   
 **Regular [DNS hijack rules](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns) or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy are not compatible with PBR DNS Policies!**  
 nft rules are executed top to bottom and the PBR DNS Policies are appended to the nft rules, so usually are below other DNS hijacking rules and thus will not be executed (depending on the startup of the processesse but PBR ususally starts later than most processes).  
