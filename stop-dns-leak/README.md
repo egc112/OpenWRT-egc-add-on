@@ -207,7 +207,7 @@ this could be blocked by:
 * Use of Private DNS on your client or in your browser
 * The use of DHCP option 6 in DNSMasq
 * The use of  Addresses (list address) or DNS Forwards (list server) in DNSMasq
-* DNS hijacking rules and IPSET
+* DNS hijacking rules and IPSET including PBR's own DNS policies as those are bypassing DNSMasq
 * DNS requests are cached so even if you have setup everything correct DNS is still resolved form the cache so you have to flush your DNS after setup (or wait some time until the cache has expired).
 This can be done by rebooting the router and the Client you are testing with or:
 Openwrt: `service dnsmasq restart`
