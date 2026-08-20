@@ -1,5 +1,5 @@
 # DNS leak  
-### version 0.3  
+### version 0.4  
 
 The most annoying of a DNS leak is that the geographical origin of DNS and IP address are different which is caused by a different route of the DNS and IP traffic.
 This geographical check is what is done by streaming services, banks, amazon etc. (among other things) to detect VPN use so a DNS leak will cause some sites not to work.   
