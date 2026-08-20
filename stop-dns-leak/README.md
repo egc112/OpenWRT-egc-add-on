@@ -214,6 +214,7 @@ Openwrt: `service dnsmasq restart`
 Windows (from command line): `ipconfig /flushdns`
 Android: `Switch to other WiFi network and back again 
 For other systems see: https://runcloud.io/blog/flush-dns-cache
+If for some reason you cannot use DNSMasq it is possible to prefill the sets with the included `pbr.user.dnsprefetch` script.  
   
 **Note 2:**   
 If you also have IPv6 enabled you have to make two rules, one for IPv4 and one for IPv6, the IPv4 rule is IPv4 only so you have to use an IPv4 DNS server. For the IPv6 rule you have to use an IPv6 DNS server. If you specify an interface (=device) then the interface must have both an IPv4 and IPv6 DNS server set!
