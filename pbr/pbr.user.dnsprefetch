@@ -6,11 +6,17 @@
 # on the shell implementation (1.2.2 and earlier), which ships its own copy of
 # this file -- use that one there.
 #
-# WHEN IT RUNS: once per full pbr run -- start, restart, reload, and every
-# interface reload trigger, so a flapping uplink prefetches once per flap.
-# Not on the on_boot pass, not on a start deferred because the uplink is down,
-# and not on stop. Overlapping runs are harmless: each detached copy makes its
-# own $$-suffixed fifo.
+# WHEN IT RUNS: once per full pbr run -- start, restart and reload. Not on the
+# on_boot pass, not on a start deferred because the uplink is down, and not on
+# stop. Overlapping runs are harmless: each detached copy makes its own
+# $$-suffixed fifo.
+#
+# An interface event (a wan flap) does NOT run it. That path reloads the
+# interfaces and returns; user files, the ruleset rewrite and the resolver step
+# all sit in the branch it skips. It only prefetches when pbr promotes the event
+# to a full start, which it does when its ruleset is not installed, when procd
+# reports no gateways, or when the last run recorded errors. So the sets are
+# refilled after the reload that follows a flap, not by the flap itself.
 #
 # There is no timer. Nothing re-resolves a name once its TTL expires and
 # dnsmasq drops it from the cache, so a set keeps the addresses it got until
@@ -38,8 +44,16 @@
 _dnsprefetch_self='/usr/share/pbr/pbr.user.dnsprefetch'
 
 if [ -z "$PBR_DNSPREFETCH_CHILD" ]; then
-	[ -f "$_dnsprefetch_self" ] &&
+	if [ -f "$_dnsprefetch_self" ]; then
 		PBR_DNSPREFETCH_CHILD=1 setsid /bin/sh "$_dnsprefetch_self" </dev/null >/dev/null 2>&1 &
+	else
+		# The only failure this script cannot report from the detached copy,
+		# since there is nothing to detach. pbr logs that it ran the file but
+		# never what the file did, so without this line a prefetch that was
+		# installed somewhere else is skipped in silence -- which is exactly
+		# how this script used to fail.
+		logger -t "pbr [$$]" "WARNING: $_dnsprefetch_self not found, domain names in policies not resolved [✗]"
+	fi
 else
 	packageName='pbr'
 	packageDnsmasqFile="/var/run/${packageName}.dnsmasq"
@@ -56,6 +70,13 @@ else
 		logger -t "$packageName [$$]" "$(printf '%b' "$msg")"
 	}
 
+	# Every timeout below is an iteration count, not a wall-clock second: each
+	# turn costs its own work plus the 1s sleep, so a failing nslookup makes a
+	# turn cost several seconds. They are sized for the slowest router that
+	# might run this, and being generous is free -- each loop returns the
+	# moment its condition is met, so a fast router never spends the budget.
+	# Only a genuine failure waits it out, and then the abort is logged.
+	#
 	# Modification time of the ruleset pbr installs, or the empty string before
 	# the first one exists.
 	nft_stamp() {
@@ -71,7 +92,7 @@ else
 	# only restarts dnsmasq when /var/run/pbr.dnsmasq changed, and takes the
 	# quieter SIGHUP cache flush otherwise.
 	nft_file_installed() {
-		local timeout_nft_file='60'
+		local timeout_nft_file='180'
 		local stamp_before="$1"
 
 		while [ "$(nft_stamp)" = "$stamp_before" ]; do
@@ -81,7 +102,7 @@ else
 	}
 
 	nft_ready() {
-		local timeout_nft='10'
+		local timeout_nft='30'
 
 		while ! /usr/sbin/nft list sets 'inet' | grep -q "pbr"; do
 			[ "$timeout_nft" -eq '0' ] && {
@@ -95,8 +116,16 @@ else
 	# that is the default action for the signal -- and pbr may still be
 	# restarting it when we get here. Answering a query proves it is past
 	# initialisation and safe to signal.
+	#
+	# The budget has to cover a boot, not a reload. On a boot pbr can spend
+	# tens of seconds between installing the ruleset (which releases the wait
+	# below) and restarting dnsmasq last of all -- a policy that fetches a URL
+	# is enough to do it. One observed boot spent 33s of a 30-iteration budget
+	# here and only got through because a failing nslookup costs more than the
+	# 1s sleep. Waiting longer is free: the loop exits as soon as dnsmasq
+	# answers, and nothing else is waiting on it.
 	dnsmasq_ready() {
-		local timeout_dnsmasq='30'
+		local timeout_dnsmasq='90'
 
 		while ! nslookup 'localhost' 127.0.0.1 >/dev/null 2>&1; do
 			[ "$timeout_dnsmasq" -eq '0' ] && return 1
@@ -126,7 +155,7 @@ else
 
 	main() {
 		local msg_abort='domain names in policies not resolved'
-		local settle='5'
+		local settle='15'
 		local stamp_before domain
 		local rc='0'
 
@@ -150,6 +179,11 @@ else
 		# Give pbr the rest of its run: it reaps orphaned sets and drops
 		# addresses for domains whose policy changed just after installing the
 		# ruleset, and either of those would discard what we resolve here.
+		# Both are a handful of nft calls issued right after the ruleset goes
+		# in, so this does not have to cover pbr's slow work -- the two long
+		# waits either side of it do. It is padded for a slow router all the
+		# same, and costs nothing on a fast one: it runs in the detached copy,
+		# never in the reload.
 		[ "$rc" -eq '0' ] && sleep "$settle"
 		[ "$rc" -eq '0' ] && [ ! -f "$packageDnsmasqFile" ] && {
 			output "File $packageDnsmasqFile not found, $msg_abort $__FAIL__"
