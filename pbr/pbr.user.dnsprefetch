@@ -124,10 +124,23 @@ else
 	# here and only got through because a failing nslookup costs more than the
 	# 1s sleep. Waiting longer is free: the loop exits as soon as dnsmasq
 	# answers, and nothing else is waiting on it.
+	#
+	# Any reply proves that, including a negative one -- so do not test the exit
+	# status. busybox nslookup returns 1 for NXDOMAIN exactly as it does for a
+	# resolver that never answered, and 'localhost' comes from /etc/hosts, which
+	# dnsmasq does not read when its nohosts option is set. Waiting for rc=0
+	# would then never succeed and the prefetch would abort against a perfectly
+	# healthy resolver. A DNS response code in the output means dnsmasq is
+	# serving; a resolver that is not there prints 'Connection refused' and
+	# 'connection timed out' instead, with no response code, so the match stays
+	# case-sensitive.
 	dnsmasq_ready() {
 		local timeout_dnsmasq='90'
+		local reply
 
-		while ! nslookup 'localhost' 127.0.0.1 >/dev/null 2>&1; do
+		while :; do
+			reply="$(nslookup 'localhost' 127.0.0.1 2>&1)" && return 0
+			printf '%s' "$reply" | grep -qE 'NXDOMAIN|SERVFAIL|REFUSED' && return 0
 			[ "$timeout_dnsmasq" -eq '0' ] && return 1
 			sleep '1' && timeout_dnsmasq="$((timeout_dnsmasq - 1))"
 		done
