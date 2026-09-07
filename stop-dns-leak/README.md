@@ -209,6 +209,7 @@ this could be blocked by:
 * The use of  Addresses (list address) or DNS Forwards (list server) in DNSMasq
 * DNS hijacking rules and IPSET including PBR's own DNS policies as those are bypassing DNSMasq
 * DNS requests are cached so even if you have setup everything correct DNS is still resolved form the cache so you have to flush your DNS after setup (or wait some time until the cache has expired).
+* To prefill the Domains see the use of the use of the `pbr.user.dnsprefetch` script in the [pbr read.me](https://docs.openwrt.melmac.ca/pbr/1.2.3/)  
 This can be done by rebooting the router and the Client you are testing with or:
 Openwrt: `service dnsmasq restart`
 Windows (from command line): `ipconfig /flushdns`
@@ -350,6 +351,7 @@ config policy
 	option chain 'output'
 	option interface 'wan'
 ```
+**Note** This is a destination Domain policy see for all the pitfalls Note 1 above.  
   
 ## Different DNS servers and routing per domain 
 When using destination routing for a specific domain, you often have to take care that the DNS resolution for that domain is also routed accordingly.  
@@ -373,7 +375,7 @@ config policy
 	option chain 'output'
 	option interface 'myvpn'
 ```
-For some discusion and explanation, see: https://forum.openwrt.org/t/wireguard-and-pbr-with-vpn-dns-leaks/205661/8?u=egc  
+For some discussion and explanation, see: https://forum.openwrt.org/t/wireguard-and-pbr-with-vpn-dns-leaks/205661/8?u=egc  
 
 Some general focus points for Domain based routing:  
 - You need to have DNSMasq full installed to use nftsets (recommended) see the [PBR read.me](https://docs.openwrt.melmac.net/pbr/#Domain-BasedPolicies)).  
