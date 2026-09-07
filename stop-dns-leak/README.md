@@ -351,7 +351,7 @@ config policy
 	option chain 'output'
 	option interface 'wan'
 ```
-**Note** This is a destination Domain policy see for all the pitfalls Note 1 above.  
+**Note** This is a destination Domain policy see for all the pitfalls Note 1 above it is recommende to run the pbr_dns_prefetch script or do an nslookup of cloudflare-dns.com or hardcode the ip address of cloudflare-dns.com.  
   
 ## Different DNS servers and routing per domain 
 When using destination routing for a specific domain, you often have to take care that the DNS resolution for that domain is also routed accordingly.  
