@@ -294,6 +294,22 @@ This only covers plaintext DNS on port 53. Clients using DNS over TLS (853)
 or DNS over HTTPS (443) are not matched by either policy type and will
 resolve through whichever policy governs their general traffic.
 
+**Regular [DNS hijack rules](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns) or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy are not compatible with PBR DNS Policies!**  
+nft rules are executed top to bottom and the PBR DNS Policies are appended to the nft rules, so usually are below other DNS hijacking rules and thus will not be executed (depending on the startup of the processesse but PBR ususally starts later than most processes).  
+<!-- 
+Starting with version 1.1.8-r10 the DNS policy is moved to the `chain-pre` so is executed earlier, although this is no guarantee. So the hack below is no longer necessary starting with 1.1.8-r10!  
+Experimental hack to work with existing DNS hijacking:  
+Move 30-pbr.nft from post chain to pre chain, to take precedence over DNS hijacking, execute the following two lines lines from the command line:  
+```
+mkdir -p /usr/share/nftables.d/chain-pre/dstnat/
+mv /usr/share/nftables.d/chain-post/dstnat/30-pbr.nft /usr/share/nftables.d/chain-pre/dstnat/
+```
+MOVE back to undo changes:  
+```
+mv /usr/share/nftables.d/chain-pre/dstnat/30-pbr.nft /usr/share/nftables.d/chain-post/dstnat/
+```
+-->
+  
 ## Bypassing DNSMasq
 When you want to bypass DNSMasq and use another DNS resolver (or a second instance of DNSMasq), you can use PBR DNS policies.  
 In this example I use HTTPS-DNS-proxy as it is already running on the router and used by DNSMasq but now I am going to use it as resolver for lan/wifi clients perhaps not the most logical choice as it is non-caching but you are free to use anything else.
@@ -315,7 +331,7 @@ config https-dns-proxy
 ```
 
 ### Add PBR DNS policy
-Next make a PBR DNS policy with e.g. MAC address or interface address (=device as shown by ifconfig e.g. @br-lan) prepended with @ as source and as destination the ip address and port the DNS server is listening on, in this case that is 192.168.9.1:5054 but adapt the IP address to your own router.:
+Next make a PBR DNS policy with e.g. MAC address or interface address (=device as shown by ifconfig e.g. @br-lan) prepended with @ as source and as destination the ip address and port the DNS server is listening on, in this case that is 192.168.9.1:5054 but adapt the IP address to your own router:
 ```
 config dns_policy
 	option name 'phone-dns'
@@ -333,22 +349,6 @@ config policy
 	option chain 'output'
 	option interface 'wan'
 ```
-  
-**Regular [DNS hijack rules](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns) or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy are not compatible with PBR DNS Policies!**  
-nft rules are executed top to bottom and the PBR DNS Policies are appended to the nft rules, so usually are below other DNS hijacking rules and thus will not be executed (depending on the startup of the processesse but PBR ususally starts later than most processes).  
-<!-- 
-Starting with version 1.1.8-r10 the DNS policy is moved to the `chain-pre` so is executed earlier, although this is no guarantee. So the hack below is no longer necessary starting with 1.1.8-r10!  
-Experimental hack to work with existing DNS hijacking:  
-Move 30-pbr.nft from post chain to pre chain, to take precedence over DNS hijacking, execute the following two lines lines from the command line:  
-```
-mkdir -p /usr/share/nftables.d/chain-pre/dstnat/
-mv /usr/share/nftables.d/chain-post/dstnat/30-pbr.nft /usr/share/nftables.d/chain-pre/dstnat/
-```
-MOVE back to undo changes:  
-```
-mv /usr/share/nftables.d/chain-pre/dstnat/30-pbr.nft /usr/share/nftables.d/chain-post/dstnat/
-```
--->
   
 ## Different DNS servers and routing per domain 
 When using destination routing for a specific domain, you often have to take care that the DNS resolution for that domain is also routed accordingly.  
