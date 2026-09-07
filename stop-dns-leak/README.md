@@ -295,16 +295,16 @@ or DNS over HTTPS (443) are not matched by either policy type and will
 resolve through whichever policy governs their general traffic.
 
 ## Bypassing DNSMasq
-When you want to bypass DNSMasq and use another DNS resolver (or a second instance of DNSMasq), you can use PBR DNS policies.
+When you want to bypass DNSMasq and use another DNS resolver (or a second instance of DNSMasq), you can use PBR DNS policies.  
 In this example I use HTTPS-DNS-proxy as it is already running on the router and used by DNSMasq but now I am going to use it as resolver for lan/wifi clients perhaps not the most logical choice as it is non-caching but you are free to use anything else.
 
-What a PBR DNS policy does is intercepting and redirecting the lan/wifi clients DNS query on its way to the router so that it can never reach DNSMasq and send it to another DNS server.
-That other DNS server can be a commercial DNS server e.g. 1.1.1.1 (Cloudlflare) but also another DNS server on your router
+What a PBR DNS policy does is intercepting and redirecting the lan/wifi clients DNS query on its way to the router so that it can never reach DNSMasq and send it to another DNS server.  
+That other DNS server can be a commercial DNS server e.g. 1.1.1.1 (Cloudlflare) but also another DNS server on your router.  
 In this example I will intercept DNS and send it to HTTPS-DNS-proxy which is already running on my router.
 
 ### Add HTTPS-DNS-proxy instance to Cloudflare
-Add another HTTPS-DNS-proxy instance to Cloudflare to be used for the PBR DNS policy.
-As the queries are coming from my lan/wifi this instance has to listen on the routers IP address instead of the local interface (127.0.0.1)
+Add another HTTPS-DNS-proxy instance to Cloudflare to be used for the PBR DNS policy.  
+As the queries are coming from my lan/wifi this instance has to listen on the routers IP address instead of the local interface (127.0.0.1).  
 My routers address is 192.168.9.1 but adapt it to your own routers address:
 ```
 config https-dns-proxy
@@ -315,7 +315,7 @@ config https-dns-proxy
 ```
 
 ### Add PBR DNS policy
-Next make a PBR DNS policy with e.g. MAC address or interface address (=device as shown by ifconfig e.g. @br-lan) prepended with @ as source and as destination the ip address and port the DNS server is lietening on, in this case that is 192.168.9.1:5054
+Next make a PBR DNS policy with e.g. MAC address or interface address (=device as shown by ifconfig e.g. @br-lan) prepended with @ as source and as destination the ip address and port the DNS server is listening on, in this case that is 192.168.9.1:5054 but adapt the IP address to your own router.:
 ```
 config dns_policy
 	option name 'phone-dns'
