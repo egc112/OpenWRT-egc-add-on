@@ -126,7 +126,7 @@ Reference: https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#dh
     
 ### iptables/nftables  
 You can use `Port Forwarding` to make the iptables rules, see [DNS Hijacking](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns): 
-this rule use a MAC address which is the easiset also for IPv6, you can also use an IPSET
+this rule use a MAC address which is the easiest also for IPv6, you can also use an IPSET
    
 ```  
 /etc/config/firewall:  
@@ -150,7 +150,7 @@ config redirect
 	option family 'ipv6'
 ```
   
-If you redirect to a DNS server in your LAN you have to exempt that IP address from being hijacked by making an exempt fo \r that address:  
+If you redirect to a DNS server in your LAN you have to exempt that IP address from being hijacked by making an exempt for that address:  
 ```
 	option src_ip '!192.168.1.2'  # the ! makes an exempt for 192.168.1.2 as that is the DNS server address
 ```
@@ -294,6 +294,45 @@ This only covers plaintext DNS on port 53. Clients using DNS over TLS (853)
 or DNS over HTTPS (443) are not matched by either policy type and will
 resolve through whichever policy governs their general traffic.
 
+## Bypassing DNSMasq
+When you want to bypass DNSMasq and use another DNS resolver (or a second instance of DNSMasq), you can use PBR DNS policies.
+In this example I use HTTPS-DNS-proxy as it is already running on the router and used by DNSMasq but now I am going to use it as resolver for lan/wifi clients perhaps not the most logical choice as it is non-caching but you are free to use anything else.
+
+What a PBR DNS policy does is intercepting and redirecting the lan/wifi clients DNS query on its way to the router so that it can never reach DNSMasq and send it to another DNS server.
+That other DNS server can be a commercial DNS server e.g. 1.1.1.1 (Cloudlflare) but also another DNS server on your router
+In this example I will intercept DNS and send it to HTTPS-DNS-proxy which is already running on my router.
+
+### Add HTTPS-DNS-proxy instance to Cloudflare
+For this I add another HTTPS-DNS-proxy instance to Cloudflare
+As the queries are coming from my lan/wifi this instance has to listen on the routers IP address instead of the local interface (127.0.0.1)
+My routers address is 192.168.9.1 but adapt it to your own routers address:
+```
+config https-dns-proxy
+	option resolver_url 'https://cloudflare-dns.com/dns-query'
+	option bootstrap_dns '9.9.9.9,149.112.112.112,2620:fe::fe,2620:fe::9'
+	option listen_port '5054'
+	option listen_addr '192.168.9.1'
+```
+
+### Add PBR DNS policy
+Next make a PBR DNS policy with e.g. MAC address or interface address (=device as shown by ifconfig e.g. @br-lan) prepended with @ as source and as destination the ip address and port the DNS server is lietening on, in this case that is 192.168.9.1:5054
+```
+config dns_policy
+	option name 'phone-dns'
+	option src_addr '98:B8:BC:8B:3F:9E'
+	option dest_dns '192.168.9.1'
+	option dest_dns_port '5054'
+```
+
+### PBR policy directing Cloudflare traffic through wan (optional)
+The make it complete you can also send the output of HTTPS-DNS-proxy via an interface of choice. Suppose you want to route the proxy to Cloudflare via your wan instead of the default route via your VPN, then make a PBR policy with destination/domain: cloudflare-dns.com on the output chain via the wan interface (output chain because this traffic is coming form the router itself).
+```
+config policy
+	option name 'https-dns-proxy'
+	option dest_addr 'cloudflare-dns.com dns.google'
+	option chain 'output'
+	option interface 'wan'
+```
   
 **Regular [DNS hijack rules](https://openwrt.org/docs/guide-user/firewall/fw3_configurations/intercept_dns) or other DNS hijacking rules such as the force DNS redirect of HTTPS-DNS proxy are not compatible with PBR DNS Policies!**  
 nft rules are executed top to bottom and the PBR DNS Policies are appended to the nft rules, so usually are below other DNS hijacking rules and thus will not be executed (depending on the startup of the processesse but PBR ususally starts later than most processes).  
