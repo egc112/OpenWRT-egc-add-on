@@ -303,7 +303,7 @@ That other DNS server can be a commercial DNS server e.g. 1.1.1.1 (Cloudlflare) 
 In this example I will intercept DNS and send it to HTTPS-DNS-proxy which is already running on my router.
 
 ### Add HTTPS-DNS-proxy instance to Cloudflare
-For this I add another HTTPS-DNS-proxy instance to Cloudflare
+Add another HTTPS-DNS-proxy instance to Cloudflare to be used for the PBR DNS policy.
 As the queries are coming from my lan/wifi this instance has to listen on the routers IP address instead of the local interface (127.0.0.1)
 My routers address is 192.168.9.1 but adapt it to your own routers address:
 ```
