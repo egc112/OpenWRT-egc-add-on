@@ -340,7 +340,7 @@ config dns_policy
 	option dest_dns '192.168.9.1 fe80::b697:12dd:abcc:3214'
 	option dest_dns_port '5054'
 ```
-**Note** If you use IPv6 you also have to set the routers IPv6 address as destiantion, in this case I am using the LLA of the router (you can get it from `ifconfig br-lan`)!  
+**Note** If you use IPv6 you also have to set the routers IPv6 address as destination, in this case I am using the LLA of the router (you can get it from `ifconfig br-lan`)!  
 
 ### PBR policy directing Cloudflare traffic through wan (optional)
 The make it complete you can also send the output of HTTPS-DNS-proxy via an interface of choice. Suppose you want to route the proxy to Cloudflare via your wan instead of the default route via your VPN, then make a PBR policy with destination/domain: cloudflare-dns.com on the output chain via the wan interface (output chain because this traffic is coming form the router itself).
