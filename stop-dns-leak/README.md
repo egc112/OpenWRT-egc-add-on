@@ -330,6 +330,7 @@ config https-dns-proxy
 	option listen_port '5054'
 	option listen_addr '192.168.9.1'
 ```
+**Note** Make sure the firewall does allow the listen-port (in this case 5054) on the router, a guest interface often allows only port 53.
 
 ### Add PBR DNS policy
 Next make a PBR DNS policy with e.g. MAC address or interface address (=device as shown by ifconfig e.g. @br-lan) prepended with @ as source and as destination the ip address and port the DNS server is listening on, in this case that is 192.168.9.1:5054 but adapt the IP address to your own router:
@@ -340,19 +341,19 @@ config dns_policy
 	option dest_dns '192.168.9.1 fe80::b697:12dd:abcc:3214'
 	option dest_dns_port '5054'
 ```
-**Note** If you use IPv6 you also have to set the routers IPv6 address as destination, in this case I am using the LLA of the router (you can get it from `ifconfig br-lan`) But link-local only works for clients on that link, so it breaks for a different bridge or VLAN. So considr using an  ULA on br-lan which gives
-  you both stability and routability.   
+**Note** If you use IPv6 you also have to set the routers IPv6 address as destination, in this case I am using the LLA of the router (you can get it from `ifconfig br-lan`) But link-local only works for clients on that link, so it breaks for a different bridge or VLAN. So consider using an ULA on br-lan which gives you both stability and routability.   
 
 ### PBR policy directing Cloudflare traffic through wan (optional)
 The make it complete you can also send the output of HTTPS-DNS-proxy via an interface of choice. Suppose you want to route the proxy to Cloudflare via your wan instead of the default route via your VPN, then make a PBR policy with destination/domain: cloudflare-dns.com on the output chain via the wan interface (output chain because this traffic is coming form the router itself).
 ```
 config policy
-	option name 'https-dns-proxy'
-	option dest_addr 'cloudflare-dns.com dns.google'
+	option name 'https-dns-proxy 1'
+	#option dest_addr 'cloudflare-dns.com'
+	option dest_addr '104.16.248.249 104.16.249.249 2606:4700::6810:f8f9 2606:4700::6810:f9f9'
 	option chain 'output'
 	option interface 'wan'
 ```
-**Note** This is a destination Domain policy see for all the pitfalls Note 1 above it is recommended to run the pbr_dns_prefetch script or do an nslookup of cloudflare-dns.com or hardcode the ip address of cloudflare-dns.com.  
+**Note** This is a destination Domain policy see for all the pitfalls Note 1 above it is recommended to run the pbr_dns_prefetch script or do an nslookup of cloudflare-dns.com or better hardcode the ip addresses of cloudflare-dns.com.  
   
 ## Different DNS servers and routing per domain 
 When using destination routing for a specific domain, you often have to take care that the DNS resolution for that domain is also routed accordingly.  
