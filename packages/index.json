@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "architecture": "x86_64",
+  "architecture": "arm_cortex-a15_neon-vfpv4",
   "packages": {
     "openvpn-watchdog": "1.0.7-r1",
     "wireguard-companion": "1.0.7-r1",
