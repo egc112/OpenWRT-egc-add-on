@@ -11,7 +11,7 @@ PKG_NAME:=wireguard-watchdog
 PKG_VERSION:=1.0.7
 PKG_RELEASE:=1
 PKG_LICENSE:=AGPL-3.0-or-later
-PKG_MAINTAINER:=Erik Conijn <egc6774@gmail.com
+PKG_MAINTAINER:=Erik Conijn <egc6774@gmail.com>
 
 include $(INCLUDE_DIR)/package.mk
 
